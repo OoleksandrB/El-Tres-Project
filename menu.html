@@ -836,12 +836,19 @@ function scrollToSection(id) {
 function updateActiveTab() {
   const navH = document.querySelector(".cat-nav")?.offsetHeight || 56;
   const ids = ["coffee","tea","cold","pastry","specials","about"];
+  const threshold = navH + Math.round(window.innerHeight * 0.25);
   let active = ids[0];
   for (const id of ids) {
     const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top <= navH + 40) active = id;
+    if (el && el.getBoundingClientRect().top <= threshold) active = id;
   }
-  document.querySelectorAll(".cat-tab").forEach(b=>b.classList.toggle("active", b.dataset.id===active));
+  document.querySelectorAll(".cat-tab").forEach(b => {
+    const wasActive = b.classList.contains("active");
+    b.classList.toggle("active", b.dataset.id === active);
+    if (!wasActive && b.dataset.id === active) {
+      b.scrollIntoView({ behavior:"smooth", block:"nearest", inline:"center" });
+    }
+  });
 }
 window.addEventListener("scroll", updateActiveTab, {passive:true});
 

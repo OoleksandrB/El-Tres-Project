@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Tres — Café</title>
+  <style>
+    :root {
+      --brand:       #E1A6AD;
+      --brand-light: #F0C8CC;
+      --brand-dark:  #C8848D;
+      --brand-muted: #F9EEF0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #fff; color: #111;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; height: 260px;
+      background: linear-gradient(135deg, var(--brand-dark), var(--brand), var(--brand-light));
+      overflow: hidden; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+    }
+    .hero::before {
+      content:""; position:absolute; top:-40px; right:-40px;
+      width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,.12);
+    }
+    .hero::after {
+      content:""; position:absolute; bottom:-20px; left:-20px;
+      width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,.10);
+    }
+    .hero-logo {
+      width:64px; height:64px; border-radius:18px;
+      background:rgba(255,255,255,.22); border:2px solid rgba(255,255,255,.35);
+      display:flex; align-items:center; justify-content:center;
+      font-size:26px; font-weight:800; color:#fff; margin-bottom:10px; position:relative; z-index:1;
+    }
+    .hero h1 { font-size:28px; font-weight:800; color:#fff; letter-spacing:-.5px; position:relative; z-index:1; }
+    .hero p  { color:rgba(255,255,255,.80); font-size:13px; margin-top:6px; position:relative; z-index:1; }
+    .hero-fade { position:absolute; bottom:0; left:0; right:0; height:30px; background:linear-gradient(to top,#fff,transparent); }
+
+    /* ─── LANG ─── */
+    .lang-btn {
+      position:absolute; top:14px; right:14px; z-index:10;
+      background:rgba(255,255,255,.22); border:1.5px solid rgba(255,255,255,.35);
+      color:#fff; border-radius:999px; padding:5px 14px; font-size:13px; font-weight:600;
+      cursor:pointer; display:flex; align-items:center; gap:6px;
+    }
+    .lang-dropdown {
+      position:absolute; top:48px; right:14px; z-index:99;
+      background:#fff; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,.13);
+      overflow:hidden; min-width:150px; display:none;
+    }
+    .lang-dropdown.open { display:block; }
+    .lang-option { display:flex; align-items:center; gap:8px; padding:10px 16px; font-size:14px; cursor:pointer; transition:background .15s; }
+    .lang-option:hover { background:var(--brand-muted); }
+    .lang-option.active { background:var(--brand-muted); font-weight:700; color:var(--brand-dark); }
+
+    /* ─── CART BTN in nav ─── */
+    .nav-row { display:flex; align-items:center; justify-content:space-between; max-width:960px; margin:0 auto; padding:0 8px; }
+    .cart-nav-btn {
+      flex:none; display:flex; align-items:center; gap:6px;
+      background:var(--brand); color:#fff; border:none; border-radius:999px;
+      padding:7px 14px; font-size:13px; font-weight:700; cursor:pointer;
+      transition:background .15s, transform .1s; white-space:nowrap;
+    }
+    .cart-nav-btn:hover { background:var(--brand-dark); }
+    .cart-nav-btn:active { transform:scale(.96); }
+    .cart-count {
+      background:#fff; color:var(--brand-dark);
+      border-radius:999px; font-size:11px; font-weight:800;
+      padding:1px 6px; min-width:18px; text-align:center;
+      display:none;
+    }
+    .cart-count.has-items { display:inline-block; }
+
+    /* ─── STICKY NAV ─── */
+    .cat-nav {
+      position:sticky; top:0; z-index:40; background:#fff;
+      border-bottom:1px solid #f0f0f0; box-shadow:0 1px 6px rgba(0,0,0,.05);
+    }
+    .cat-nav-inner {
+      display:flex; gap:6px; padding:8px 12px;
+      overflow-x:auto; scrollbar-width:none; flex:1;
+    }
+    .cat-nav-inner::-webkit-scrollbar { display:none; }
+    .cat-tab {
+      flex:none; display:flex; align-items:center; gap:5px;
+      padding:7px 16px; border-radius:999px; font-size:14px; font-weight:600;
+      color:#666; cursor:pointer; border:none; background:transparent;
+      transition:background .15s, color .15s; white-space:nowrap;
+    }
+    .cat-tab:hover { color:var(--brand-dark); background:var(--brand-muted); }
+    .cat-tab.active { background:var(--brand); color:#fff; }
+
+    /* ─── CONTENT ─── */
+    .content { max-width:960px; margin:0 auto; }
+
+    /* ─── SECTION ─── */
+    .menu-section { padding:28px 16px 8px; scroll-margin-top:56px; }
+    .section-title { display:flex; align-items:center; gap:8px; font-size:19px; font-weight:800; color:#111; margin-bottom:18px; }
+    .section-title span { font-size:22px; }
+
+    /* ─── GRID ─── */
+    .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    @media(min-width:600px) { .cards-grid { grid-template-columns:repeat(3,1fr); } }
+    @media(min-width:900px) { .cards-grid { grid-template-columns:repeat(4,1fr); } }
+
+    /* ─── CARD ─── */
+    .card {
+      background:#fff; border-radius:18px; overflow:hidden;
+      box-shadow:0 2px 12px rgba(225,166,173,.18);
+      transition:box-shadow .2s, transform .2s; cursor:pointer;
+    }
+    .card:hover { box-shadow:0 6px 24px rgba(225,166,173,.32); transform:translateY(-2px); }
+    .card-img {
+      width:100%; aspect-ratio:1/1; background:var(--brand-muted);
+      display:flex; align-items:center; justify-content:center; font-size:52px;
+    }
+    .card-body { padding:10px 11px 12px; }
+    .card-name { font-size:13px; font-weight:700; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .card-desc { font-size:11px; color:#888; margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.5; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:7px; gap:4px; }
+    .card-price { font-size:14px; font-weight:800; color:var(--brand-dark); }
+    .card-tags { display:flex; gap:4px; flex-wrap:wrap; }
+    .tag { font-size:10px; font-weight:600; padding:2px 7px; border-radius:999px; }
+    .tag-popular  { background:var(--brand); color:#fff; }
+    .tag-veg      { background:#dcfce7; color:#15803d; }
+    .tag-healthy  { background:#d1fae5; color:#065f46; }
+    .tag-seasonal { background:#fef3c7; color:#b45309; }
+
+    /* ─── SPECIALS ─── */
+    .specials-section { background:var(--brand-muted); padding:28px 16px; scroll-margin-top:56px; }
+    .specials-title { display:flex; align-items:center; gap:8px; font-size:19px; font-weight:800; color:#111; margin-bottom:6px; }
+    .specials-sub { font-size:13px; color:#888; margin-bottom:16px; margin-left:30px; }
+    .specials-scroll { display:flex; gap:14px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
+    .specials-scroll::-webkit-scrollbar { display:none; }
+    .special-card { flex:none; width:220px; background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 2px 12px rgba(225,166,173,.18); cursor:pointer; transition:transform .2s; }
+    .special-card:hover { transform:translateY(-2px); }
+    .special-card-img { width:100%; height:130px; background:var(--brand-light); display:flex; align-items:center; justify-content:center; font-size:48px; position:relative; }
+    .special-badge { position:absolute; top:8px; left:8px; background:var(--brand); color:#fff; font-size:10px; font-weight:700; padding:3px 9px; border-radius:999px; }
+    .special-card-body { padding:10px 12px 12px; }
+    .special-card-body .card-name { font-size:13px; }
+    .special-card-body .card-desc { font-size:11px; }
+    .special-card-body .card-price { font-size:14px; display:block; margin-top:7px; }
+
+    /* ─── ABOUT ─── */
+    .about-section { padding:32px 16px 40px; scroll-margin-top:56px; max-width:960px; margin:0 auto; }
+    .about-title { font-size:20px; font-weight:800; margin-bottom:20px; }
+    .about-grid { display:grid; gap:12px; grid-template-columns:1fr; }
+    @media(min-width:500px) { .about-grid { grid-template-columns:1fr 1fr; } }
+    .about-card { background:var(--brand-muted); border-radius:18px; padding:18px; }
+    .about-card-head { display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700; margin-bottom:8px; }
+    .about-card p, .about-card a { font-size:13px; color:#555; line-height:1.7; text-decoration:none; }
+    .about-card a { color:var(--brand-dark); font-weight:600; }
+    .about-card a:hover { text-decoration:underline; }
+    .contact-links { display:flex; flex-direction:column; gap:4px; }
+    .about-wide { grid-column:1/-1; }
+
+    /* ─── FOOTER ─── */
+    footer { text-align:center; padding:24px 16px; font-size:12px; color:#bbb; border-top:1px solid #f0f0f0; }
+
+    /* ══════════════════════════════════════
+       MODAL — ITEM DETAIL
+    ══════════════════════════════════════ */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:200;
+      background:rgba(0,0,0,0);
+      display:flex; align-items:flex-end; justify-content:center;
+      pointer-events:none;
+      transition:background .3s;
+    }
+    .modal-overlay.open {
+      background:rgba(0,0,0,.45);
+      pointer-events:all;
+    }
+    .modal {
+      width:100%; max-width:520px;
+      background:#fff; border-radius:28px 28px 0 0;
+      padding:0 0 calc(env(safe-area-inset-bottom) + 24px);
+      transform:translateY(100%);
+      transition:transform .38s cubic-bezier(.32,1.1,.6,1);
+      will-change:transform;
+      overflow:hidden;
+    }
+    .modal-overlay.open .modal {
+      transform:translateY(0);
+    }
+    /* drag handle */
+    .modal-handle {
+      width:40px; height:4px; border-radius:99px;
+      background:#ddd; margin:12px auto 0;
+    }
+    /* big emoji / image area */
+    .modal-img {
+      width:100%; height:200px;
+      background:var(--brand-muted);
+      display:flex; align-items:center; justify-content:center;
+      font-size:80px;
+      margin-top:12px;
+    }
+    .modal-body { padding:20px 22px 0; }
+    .modal-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .modal-name { font-size:22px; font-weight:800; color:#111; line-height:1.2; }
+    .modal-desc { font-size:14px; color:#666; margin-top:8px; line-height:1.6; }
+    .modal-price { font-size:26px; font-weight:800; color:var(--brand-dark); margin-top:14px; }
+
+    /* quantity row */
+    .modal-qty-row {
+      display:flex; align-items:center; gap:14px; margin-top:18px;
+    }
+    .qty-btn {
+      width:38px; height:38px; border-radius:50%; border:2px solid var(--brand);
+      background:#fff; color:var(--brand-dark); font-size:20px; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:background .15s, transform .1s; user-select:none;
+    }
+    .qty-btn:hover { background:var(--brand-muted); }
+    .qty-btn:active { transform:scale(.9); }
+    .qty-num { font-size:20px; font-weight:800; min-width:24px; text-align:center; }
+
+    /* add to cart btn */
+    .modal-add-btn {
+      flex:1; padding:14px; border-radius:16px; border:none;
+      background:var(--brand); color:#fff; font-size:16px; font-weight:700;
+      cursor:pointer; transition:background .15s, transform .1s;
+      display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .modal-add-btn:hover { background:var(--brand-dark); }
+    .modal-add-btn:active { transform:scale(.97); }
+
+    /* ── CART DRAWER ── */
+    .cart-overlay {
+      position:fixed; inset:0; z-index:300;
+      background:rgba(0,0,0,0);
+      display:flex; align-items:flex-end; justify-content:center;
+      pointer-events:none; transition:background .3s;
+    }
+    .cart-overlay.open { background:rgba(0,0,0,.45); pointer-events:all; }
+    .cart-drawer {
+      width:100%; max-width:520px; background:#fff;
+      border-radius:28px 28px 0 0;
+      padding:0 0 calc(env(safe-area-inset-bottom) + 24px);
+      max-height:85vh; overflow-y:auto;
+      transform:translateY(100%);
+      transition:transform .38s cubic-bezier(.32,1.1,.6,1);
+    }
+    .cart-overlay.open .cart-drawer { transform:translateY(0); }
+    .cart-drawer-handle { width:40px; height:4px; border-radius:99px; background:#ddd; margin:12px auto 0; }
+    .cart-drawer-head {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 22px 0; font-size:20px; font-weight:800;
+    }
+    .cart-close {
+      width:32px; height:32px; border-radius:50%; border:none;
+      background:#f5f5f5; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    }
+    .cart-items { padding:12px 22px 0; }
+    .cart-item {
+      display:flex; align-items:center; gap:12px;
+      padding:12px 0; border-bottom:1px solid #f5f5f5;
+    }
+    .cart-item-emoji { font-size:32px; flex:none; width:44px; text-align:center; }
+    .cart-item-info { flex:1; min-width:0; }
+    .cart-item-name { font-size:14px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cart-item-price { font-size:13px; color:var(--brand-dark); font-weight:600; margin-top:2px; }
+    .cart-item-qty-row { display:flex; align-items:center; gap:8px; flex:none; }
+    .cqty-btn {
+      width:28px; height:28px; border-radius:50%; border:1.5px solid var(--brand);
+      background:#fff; color:var(--brand-dark); font-size:16px; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:background .12s;
+    }
+    .cqty-btn:hover { background:var(--brand-muted); }
+    .cqty-num { font-size:15px; font-weight:800; min-width:18px; text-align:center; }
+    .cart-empty { text-align:center; padding:40px 20px; color:#aaa; font-size:15px; }
+    .cart-empty-icon { font-size:48px; display:block; margin-bottom:10px; }
+    .cart-total-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 22px 0; font-size:16px; font-weight:800;
+    }
+    .cart-total-price { color:var(--brand-dark); font-size:22px; }
+    .cart-order-btn {
+      margin:14px 22px 0; width:calc(100% - 44px);
+      padding:16px; border-radius:16px; border:none;
+      background:var(--brand); color:#fff; font-size:16px; font-weight:700;
+      cursor:pointer; transition:background .15s, transform .1s;
+    }
+    .cart-order-btn:hover { background:var(--brand-dark); }
+    .cart-order-btn:active { transform:scale(.98); }
+    .cart-order-btn:disabled { background:#ddd; color:#aaa; cursor:default; }
+
+    /* ── TOAST ── */
+    .toast {
+      position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px);
+      background:#222; color:#fff; border-radius:999px;
+      padding:10px 20px; font-size:14px; font-weight:600;
+      opacity:0; pointer-events:none; z-index:500;
+      transition:opacity .25s, transform .25s;
+      white-space:nowrap;
+    }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* ── FLY ANIMATION ── */
+    @keyframes flyToCart {
+      0%   { transform:scale(1) translateY(0); opacity:1; }
+      60%  { transform:scale(.5) translateY(-60px); opacity:.8; }
+      100% { transform:scale(.1) translateY(-120px); opacity:0; }
+    }
+    .fly-emoji {
+      position:fixed; pointer-events:none; z-index:999;
+      font-size:36px; animation:flyToCart .55s ease-in forwards;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ DATA ═══════════ -->
+<script>
+const LANGS = {
+  es: { label:"Español",    flag:"🇪🇸" },
+  en: { label:"English",    flag:"🇬🇧" },
+  ru: { label:"Русский",    flag:"🇷🇺" },
+  uk: { label:"Українська", flag:"🇺🇦" },
+  pl: { label:"Polski",     flag:"🇵🇱" },
+};
+const UI = {
+  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Todos los días: 9:00 – 18:00", weekend:"Martes: cerrado", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"} },
+  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Every day: 9:00 – 18:00", weekend:"Tuesday: closed", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"} },
+  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Каждый день: 9:00 – 18:00", weekend:"Вторник: выходной", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"} },
+  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Щодня: 9:00 – 18:00", weekend:"Вівторок: вихідний", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", tags:{popular:"Популярне",vegetarian:"Веганське",healthy:"Корисне",seasonal:"Сезонне"} },
+  pl: { tagline:"Rzemieślnicza kawiarnia w sercu miasta",   about:"O nas",           address:"Adres",     hours:"Godziny", contact:"Kontakt",  weekdays:"Każdy dzień: 9:00 – 18:00", weekend:"Wtorek: zamknięte", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Specjalne", addToCart:"Dodaj do zamówienia", cartTitle:"Moje zamówienie",orderBtn:"Potwierdź zamówienie",emptyCart:"Zamówienie jest puste",total:"Razem", tags:{popular:"Popularne",vegetarian:"Wegetariańskie",healthy:"Zdrowe",seasonal:"Sezonowe"} },
+};
+const MENU = {
+  es: {
+    categories: [
+      { id:"coffee", name:"Café", emoji:"☕", items:[
+        { id:"espresso",    name:"Espresso",          desc:"Solo intenso, 30 ml de puro café de origen",                     price:2.50, emoji:"☕", tags:["popular"] },
+        { id:"americano",   name:"Americano",          desc:"Espresso alargado con agua caliente, suave y aromático",          price:3.00, emoji:"🖤", tags:[] },
+        { id:"latte",       name:"Café Latte",         desc:"Espresso doble con leche vaporizada y arte latte",                price:4.00, emoji:"🥛", tags:["popular"] },
+        { id:"cappuccino",  name:"Cappuccino",         desc:"Espresso con leche vaporizada y espuma cremosa",                  price:3.80, emoji:"🫧", tags:["popular"] },
+        { id:"flat",        name:"Flat White",         desc:"Doble ristretto con microespuma de leche sedosa",                 price:4.20, emoji:"🤍", tags:[] },
+        { id:"cortado",     name:"Cortado",            desc:"Espresso con un toque de leche para equilibrar la acidez",        price:3.20, emoji:"🍶", tags:[] },
+        { id:"cold_brew",   name:"Cold Brew",          desc:"Café infusionado en frío 18h, suave y sin amargura",              price:4.50, emoji:"🧊", tags:["popular"] },
+        { id:"turco",       name:"Café Turco",         desc:"Preparado en cezve con cardamomo, rico y especiado",              price:4.00, emoji:"🫖", tags:[] },
+      ]},
+      { id:"tea", name:"Tés & Infusiones", emoji:"🍵", items:[
+        { id:"matcha",      name:"Matcha Latte",       desc:"Matcha ceremonial japonés con leche de avena o vaca",             price:4.80, emoji:"🍵", tags:["popular","vegetarian"] },
+        { id:"chai",        name:"Chai Latte",         desc:"Té negro especiado con canela, cardamomo, jengibre y leche",      price:4.50, emoji:"🫚", tags:["popular"] },
+        { id:"earl_grey",   name:"Earl Grey",          desc:"Clásico té negro con bergamota, delicado y fragante",             price:3.00, emoji:"🌸", tags:[] },
+        { id:"camomila",    name:"Manzanilla",         desc:"Infusión relajante de manzanilla con miel de flores",             price:2.80, emoji:"🌼", tags:["healthy"] },
+        { id:"menta",       name:"Menta Fresca",       desc:"Infusión de menta fresca, refrescante y digestiva",               price:2.80, emoji:"🌿", tags:["healthy"] },
+        { id:"hibisco",     name:"Hibisco & Jengibre", desc:"Infusión fría de hibisco con jengibre y limón",                   price:3.50, emoji:"🌺", tags:["healthy"] },
+        { id:"roibos",      name:"Rooibos Vainilla",   desc:"Rooibos sin cafeína con toque de vainilla natural",               price:3.20, emoji:"🟤", tags:[] },
+      ]},
+      { id:"cold", name:"Bebidas Frías", emoji:"🥤", items:[
+        { id:"limonada",    name:"Limonada Casera",    desc:"Limonada con limón fresco, menta y un toque de miel",             price:4.00, emoji:"🍋", tags:[] },
+        { id:"naranja",     name:"Zumo de Naranja",    desc:"Zumo natural recién exprimido, sin azúcar añadida",               price:3.80, emoji:"🍊", tags:["healthy"] },
+        { id:"agua",        name:"Agua Mineral",       desc:"Agua mineral natural o con gas, 500 ml",                          price:1.50, emoji:"💧", tags:["healthy"] },
+        { id:"smoothie",    name:"Smoothie del Día",   desc:"Batido fresco de frutas de temporada, sin lácteos",               price:5.50, emoji:"🫐", tags:["healthy","vegetarian"] },
+        { id:"iced_matcha", name:"Matcha Helado",      desc:"Matcha ceremonial con leche y hielo, refrescante y energizante",  price:5.20, emoji:"💚", tags:["popular"] },
+        { id:"iced_latte",  name:"Latte Helado",       desc:"Espresso doble sobre leche fría con hielo",                       price:4.80, emoji:"🧋", tags:["popular"] },
+      ]},
+      { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", items:[
+        { id:"croissant",   name:"Croissant de Mantequilla", desc:"Croissant hojaldrado artesanal, crujiente por fuera y tierno por dentro", price:3.20, emoji:"🥐", tags:["popular"] },
+        { id:"croissant_choco", name:"Croissant de Chocolate", desc:"Croissant relleno de chocolate negro belga, recién horneado",           price:3.80, emoji:"🍫", tags:["popular"] },
+        { id:"croissant_alm",   name:"Croissant de Almendra", desc:"Croissant con crema frangipane y almendras laminadas tostadas",          price:4.20, emoji:"🌰", tags:[] },
+        { id:"macaron_vain",    name:"Macaron Vainilla",       desc:"Macaron francés con ganache de vainilla de Madagascar",                 price:2.50, emoji:"🍬", tags:["popular"] },
+        { id:"macaron_rosa",    name:"Macaron Rosa",           desc:"Macaron con crema de frambuesa y rosas, delicado y floral",             price:2.50, emoji:"🌹", tags:[] },
+        { id:"macaron_pist",    name:"Macaron Pistacho",       desc:"Macaron con ganache de pistacho de Sicilia",                           price:2.80, emoji:"💚", tags:[] },
+        { id:"macaron_choco",   name:"Macaron Chocolate",      desc:"Macaron con ganache de chocolate 70% cacao, intenso",                  price:2.50, emoji:"🍫", tags:[] },
+        { id:"cookie_choco",    name:"Cookie Chocolate Chip",  desc:"Cookie artesanal con pepitas de chocolate negro, crujiente por fuera y tierna por dentro", price:2.80, emoji:"🍪", tags:["popular"] },
+        { id:"cookie_avena",    name:"Cookie Avena & Pasas",   desc:"Cookie integral con avena, pasas y canela, receta tradicional",        price:2.80, emoji:"🌾", tags:["healthy"] },
+        { id:"cookie_mant",     name:"Cookie Mantequilla",     desc:"Cookie clásica de mantequilla dorada con azúcar moreno",               price:2.50, emoji:"🟡", tags:[] },
+        { id:"datiles",         name:"Dátiles con Chocolate",  desc:"Dátiles Medjool rellenos de almendra y bañados en chocolate negro 70%", price:3.50, emoji:"🫕", tags:["popular","healthy"] },
+        { id:"datiles_coco",    name:"Dátiles Coco & Cacao",   desc:"Dátiles con mantequilla de cacao, coco rallado y sal marina",          price:3.80, emoji:"🥥", tags:["healthy"] },
+      ]},
+    ],
+    specials:{ title:"Favoritos de El Tres", subtitle:"Lo más pedido por nuestros clientes", items:[
+      { id:"s1", name:"Latte + Croissant",        desc:"Café latte artesanal con croissant de mantequilla recién horneado",  price:6.50, emoji:"🥐" },
+      { id:"s2", name:"Matcha + Dátiles",         desc:"Matcha latte con dos dátiles en chocolate, el combo perfecto",       price:7.50, emoji:"🍵" },
+      { id:"s3", name:"Caja de 4 Macarons",       desc:"Elige 4 sabores: vainilla, rosa, pistacho o chocolate",              price:9.00, emoji:"🎁" },
+      { id:"s4", name:"Cold Brew + Cookie",       desc:"Cold brew 18h con cookie artesanal a tu elección",                   price:7.00, emoji:"🧊" },
+    ]}
+  },
+  en: {
+    categories: [
+      { id:"coffee", name:"Coffee", emoji:"☕", items:[
+        { id:"espresso",    name:"Espresso",          desc:"Intense solo, 30 ml of pure single-origin coffee",                price:2.50, emoji:"☕", tags:["popular"] },
+        { id:"americano",   name:"Americano",          desc:"Espresso lengthened with hot water, smooth and aromatic",         price:3.00, emoji:"🖤", tags:[] },
+        { id:"latte",       name:"Café Latte",         desc:"Double espresso with steamed milk and latte art",                 price:4.00, emoji:"🥛", tags:["popular"] },
+        { id:"cappuccino",  name:"Cappuccino",         desc:"Espresso with steamed milk and creamy foam",                      price:3.80, emoji:"🫧", tags:["popular"] },
+        { id:"flat",        name:"Flat White",         desc:"Double ristretto with silky steamed milk microfoam",              price:4.20, emoji:"🤍", tags:[] },
+        { id:"cortado",     name:"Cortado",            desc:"Espresso with a dash of milk to balance the acidity",             price:3.20, emoji:"🍶", tags:[] },
+        { id:"cold_brew",   name:"Cold Brew",          desc:"Coffee steeped cold for 18h, smooth and bitter-free",             price:4.50, emoji:"🧊", tags:["popular"] },
+        { id:"turco",       name:"Turkish Coffee",     desc:"Prepared in cezve with cardamom, rich and spiced",                price:4.00, emoji:"🫖", tags:[] },
+      ]},
+      { id:"tea", name:"Teas & Infusions", emoji:"🍵", items:[
+        { id:"matcha",      name:"Matcha Latte",       desc:"Japanese ceremonial matcha with oat or cow's milk",               price:4.80, emoji:"🍵", tags:["popular","vegetarian"] },
+        { id:"chai",        name:"Chai Latte",         desc:"Spiced black tea with cinnamon, cardamom, ginger and milk",       price:4.50, emoji:"🫚", tags:["popular"] },
+        { id:"earl_grey",   name:"Earl Grey",          desc:"Classic black tea with bergamot, delicate and fragrant",          price:3.00, emoji:"🌸", tags:[] },
+        { id:"camomila",    name:"Chamomile",          desc:"Relaxing chamomile infusion with flower honey",                   price:2.80, emoji:"🌼", tags:["healthy"] },
+        { id:"menta",       name:"Fresh Mint",         desc:"Fresh mint infusion, refreshing and digestive",                   price:2.80, emoji:"🌿", tags:["healthy"] },
+        { id:"hibisco",     name:"Hibiscus & Ginger",  desc:"Cold hibiscus infusion with ginger and lemon",                    price:3.50, emoji:"🌺", tags:["healthy"] },
+        { id:"roibos",      name:"Rooibos Vanilla",    desc:"Caffeine-free rooibos with natural vanilla touch",                price:3.20, emoji:"🟤", tags:[] },
+      ]},
+      { id:"cold", name:"Cold Drinks", emoji:"🥤", items:[
+        { id:"limonada",    name:"Homemade Lemonade",  desc:"Lemonade with fresh lemon, mint and a touch of honey",            price:4.00, emoji:"🍋", tags:[] },
+        { id:"naranja",     name:"Orange Juice",       desc:"Freshly squeezed natural juice, no added sugar",                  price:3.80, emoji:"🍊", tags:["healthy"] },
+        { id:"agua",        name:"Mineral Water",      desc:"Natural still or sparkling mineral water, 500 ml",                price:1.50, emoji:"💧", tags:["healthy"] },
+        { id:"smoothie",    name:"Smoothie of the Day",desc:"Fresh seasonal fruit smoothie, dairy-free",                       price:5.50, emoji:"🫐", tags:["healthy","vegetarian"] },
+        { id:"iced_matcha", name:"Iced Matcha",        desc:"Ceremonial matcha with milk and ice, refreshing and energizing",  price:5.20, emoji:"💚", tags:["popular"] },
+        { id:"iced_latte",  name:"Iced Latte",         desc:"Double espresso over cold milk with ice",                         price:4.80, emoji:"🧋", tags:["popular"] },
+      ]},
+      { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", items:[
+        { id:"croissant",       name:"Butter Croissant",        desc:"Artisan layered croissant, crispy outside and tender inside",           price:3.20, emoji:"🥐", tags:["popular"] },
+        { id:"croissant_choco", name:"Chocolate Croissant",     desc:"Croissant filled with Belgian dark chocolate, freshly baked",           price:3.80, emoji:"🍫", tags:["popular"] },
+        { id:"croissant_alm",   name:"Almond Croissant",        desc:"Croissant with frangipane cream and toasted sliced almonds",            price:4.20, emoji:"🌰", tags:[] },
+        { id:"macaron_vain",    name:"Vanilla Macaron",         desc:"French macaron with Madagascar vanilla ganache",                        price:2.50, emoji:"🍬", tags:["popular"] },
+        { id:"macaron_rosa",    name:"Rose Macaron",            desc:"Macaron with raspberry and rose cream, delicate and floral",            price:2.50, emoji:"🌹", tags:[] },
+        { id:"macaron_pist",    name:"Pistachio Macaron",       desc:"Macaron with Sicilian pistachio ganache",                               price:2.80, emoji:"💚", tags:[] },
+        { id:"macaron_choco",   name:"Chocolate Macaron",       desc:"Macaron with 70% cacao dark chocolate ganache",                         price:2.50, emoji:"🍫", tags:[] },
+        { id:"cookie_choco",    name:"Chocolate Chip Cookie",   desc:"Artisan cookie with dark chocolate chips, crispy outside, soft inside", price:2.80, emoji:"🍪", tags:["popular"] },
+        { id:"cookie_avena",    name:"Oat & Raisin Cookie",     desc:"Wholegrain cookie with oats, raisins and cinnamon",                     price:2.80, emoji:"🌾", tags:["healthy"] },
+        { id:"cookie_mant",     name:"Butter Cookie",           desc:"Classic golden butter cookie with brown sugar",                         price:2.50, emoji:"🟡", tags:[] },
+        { id:"datiles",         name:"Chocolate Dates",         desc:"Medjool dates filled with almonds, dipped in 70% dark chocolate",       price:3.50, emoji:"🫕", tags:["popular","healthy"] },
+        { id:"datiles_coco",    name:"Coconut Cacao Dates",     desc:"Dates with cacao butter, shredded coconut and sea salt",                price:3.80, emoji:"🥥", tags:["healthy"] },
+      ]},
+    ],
+    specials:{ title:"El Tres Favourites", subtitle:"Most ordered by our customers", items:[
+      { id:"s1", name:"Latte + Croissant",    desc:"Artisan café latte with freshly baked butter croissant",             price:6.50, emoji:"🥐" },
+      { id:"s2", name:"Matcha + Dates",       desc:"Matcha latte with two chocolate dates, the perfect combo",           price:7.50, emoji:"🍵" },
+      { id:"s3", name:"Box of 4 Macarons",    desc:"Choose 4 flavours: vanilla, rose, pistachio or chocolate",           price:9.00, emoji:"🎁" },
+      { id:"s4", name:"Cold Brew + Cookie",   desc:"18h cold brew with an artisan cookie of your choice",                price:7.00, emoji:"🧊" },
+    ]}
+  },
+  ru: {
+    categories: [
+      { id:"coffee", name:"Кофе", emoji:"☕", items:[
+        { id:"espresso",    name:"Эспрессо",          desc:"Интенсивный, 30 мл чистого кофе из моно-источника",             price:2.50, emoji:"☕", tags:["popular"] },
+        { id:"americano",   name:"Американо",         desc:"Эспрессо с горячей водой, мягкий и ароматный",                  price:3.00, emoji:"🖤", tags:[] },
+        { id:"latte",       name:"Кофе Латте",        desc:"Двойной эспрессо с вспененным молоком и latte art",             price:4.00, emoji:"🥛", tags:["popular"] },
+        { id:"cappuccino",  name:"Капучино",          desc:"Эспрессо с молоком и кремовой пенкой",                          price:3.80, emoji:"🫧", tags:["popular"] },
+        { id:"flat",        name:"Флэт Уайт",         desc:"Двойной ристретто с шёлковой молочной микропенкой",             price:4.20, emoji:"🤍", tags:[] },
+        { id:"cortado",     name:"Кортадо",           desc:"Эспрессо с каплей молока для баланса кислотности",              price:3.20, emoji:"🍶", tags:[] },
+        { id:"cold_brew",   name:"Колд Брю",          desc:"Кофе холодного заваривания 18 ч, мягкий, без горечи",          price:4.50, emoji:"🧊", tags:["popular"] },
+        { id:"turco",       name:"Кофе по-турецки",   desc:"Приготовлен в джезве с кардамоном, насыщенный и пряный",       price:4.00, emoji:"🫖", tags:[] },
+      ]},
+      { id:"tea", name:"Чаи & Настои", emoji:"🍵", items:[
+        { id:"matcha",      name:"Матча Латте",       desc:"Японская церемониальная матча с овсяным или коровьим молоком",  price:4.80, emoji:"🍵", tags:["popular","vegetarian"] },
+        { id:"chai",        name:"Чай Масала",        desc:"Пряный чёрный чай с корицей, кардамоном, имбирём и молоком",   price:4.50, emoji:"🫚", tags:["popular"] },
+        { id:"earl_grey",   name:"Эрл Грей",          desc:"Классический чёрный чай с бергамотом, нежный и ароматный",    price:3.00, emoji:"🌸", tags:[] },
+        { id:"camomila",    name:"Ромашка с мёдом",   desc:"Расслабляющий ромашковый настой с цветочным мёдом",            price:2.80, emoji:"🌼", tags:["healthy"] },
+        { id:"menta",       name:"Свежая мята",       desc:"Настой из свежей мяты, освежающий и успокаивающий",            price:2.80, emoji:"🌿", tags:["healthy"] },
+        { id:"hibisco",     name:"Каркаде & Имбирь",  desc:"Холодный настой каркаде с имбирём и лимоном",                 price:3.50, emoji:"🌺", tags:["healthy"] },
+        { id:"roibos",      name:"Ройбуш Ваниль",     desc:"Ройбуш без кофеина с натуральной ванилью",                    price:3.20, emoji:"🟤", tags:[] },
+      ]},
+      { id:"cold", name:"Холодные напитки", emoji:"🥤", items:[
+        { id:"limonada",    name:"Домашний лимонад",  desc:"Лимонад из свежего лимона, мяты и капли мёда",                 price:4.00, emoji:"🍋", tags:[] },
+        { id:"naranja",     name:"Апельсиновый сок",  desc:"Натуральный свежевыжатый сок, без сахара",                     price:3.80, emoji:"🍊", tags:["healthy"] },
+        { id:"agua",        name:"Минеральная вода",  desc:"Негазированная или газированная вода, 500 мл",                  price:1.50, emoji:"💧", tags:["healthy"] },
+        { id:"smoothie",    name:"Смузи дня",         desc:"Свежий смузи из сезонных фруктов, без молока",                 price:5.50, emoji:"🫐", tags:["healthy","vegetarian"] },
+        { id:"iced_matcha", name:"Матча со льдом",    desc:"Церемониальная матча с молоком и льдом, бодрящий",             price:5.20, emoji:"💚", tags:["popular"] },
+        { id:"iced_latte",  name:"Айс Латте",         desc:"Двойной эспрессо поверх холодного молока со льдом",            price:4.80, emoji:"🧋", tags:["popular"] },
+      ]},
+      { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", items:[
+        { id:"croissant",       name:"Круассан с маслом",     desc:"Слоёный ремесленный круассан, хрустящий снаружи и нежный внутри",  price:3.20, emoji:"🥐", tags:["popular"] },
+        { id:"croissant_choco", name:"Круассан с шоколадом",  desc:"Круассан с бельгийским горьким шоколадом, свежевыпеченный",       price:3.80, emoji:"🍫", tags:["popular"] },
+        { id:"croissant_alm",   name:"Круассан с миндалём",   desc:"Круассан с франжипановым кремом и жареными лепестками миндаля",   price:4.20, emoji:"🌰", tags:[] },
+        { id:"macaron_vain",    name:"Макарон Ваниль",        desc:"Французский макарон с ганашем из мадагаскарской ванили",          price:2.50, emoji:"🍬", tags:["popular"] },
+        { id:"macaron_rosa",    name:"Макарон Роза",          desc:"Макарон с кремом малина-роза, нежный и цветочный",                price:2.50, emoji:"🌹", tags:[] },
+        { id:"macaron_pist",    name:"Макарон Фисташка",      desc:"Макарон с ганашем из сицилийской фисташки",                      price:2.80, emoji:"💚", tags:[] },
+        { id:"macaron_choco",   name:"Макарон Шоколад",       desc:"Макарон с ганашем из 70% какао, насыщенный вкус",                price:2.50, emoji:"🍫", tags:[] },
+        { id:"cookie_choco",    name:"Печенье Шоколадное",    desc:"Ремесленное печенье с кусочками горького шоколада",               price:2.80, emoji:"🍪", tags:["popular"] },
+        { id:"cookie_avena",    name:"Печенье Овсяное",       desc:"Цельнозерновое печенье с овсом, изюмом и корицей",               price:2.80, emoji:"🌾", tags:["healthy"] },
+        { id:"cookie_mant",     name:"Сливочное печенье",     desc:"Классическое золотистое масляное печенье с тростниковым сахаром", price:2.50, emoji:"🟡", tags:[] },
+        { id:"datiles",         name:"Финики в шоколаде",     desc:"Финики Medjool с миндалём в горьком шоколаде 70%",               price:3.50, emoji:"🫕", tags:["popular","healthy"] },
+        { id:"datiles_coco",    name:"Финики Кокос & Какао",  desc:"Финики с какао-маслом, кокосом и морской солью",                 price:3.80, emoji:"🥥", tags:["healthy"] },
+      ]},
+    ],
+    specials:{ title:"Фавориты El Tres", subtitle:"Самое популярное у наших гостей", items:[
+      { id:"s1", name:"Латте + Круассан",     desc:"Кофе латте с только что испечённым круассаном с маслом",          price:6.50, emoji:"🥐" },
+      { id:"s2", name:"Матча + Финики",       desc:"Матча латте с двумя финиками в шоколаде — идеальное сочетание",  price:7.50, emoji:"🍵" },
+      { id:"s3", name:"Набор 4 макарона",     desc:"Выберите 4 вкуса: ваниль, роза, фисташка или шоколад",           price:9.00, emoji:"🎁" },
+      { id:"s4", name:"Колд Брю + Печенье",   desc:"Холодный кофе 18 ч с ремесленным печеньем на выбор",             price:7.00, emoji:"🧊" },
+    ]}
+  },
+  uk: {
+    categories: [
+      { id:"coffee", name:"Кава", emoji:"☕", items:[
+        { id:"espresso",    name:"Еспресо",           desc:"Інтенсивний, 30 мл чистої кави з моно-джерела",               price:2.50, emoji:"☕", tags:["popular"] },
+        { id:"americano",   name:"Американо",         desc:"Еспресо з гарячою водою, м'який і ароматний",                 price:3.00, emoji:"🖤", tags:[] },
+        { id:"latte",       name:"Кава Лате",         desc:"Подвійний еспресо зі спіненим молоком і latte art",           price:4.00, emoji:"🥛", tags:["popular"] },
+        { id:"cappuccino",  name:"Капучіно",          desc:"Еспресо з молоком і кремовою пінкою",                        price:3.80, emoji:"🫧", tags:["popular"] },
+        { id:"flat",        name:"Флет Уайт",         desc:"Подвійний різтрето з шовковою мікропінкою молока",            price:4.20, emoji:"🤍", tags:[] },
+        { id:"cortado",     name:"Кортадо",           desc:"Еспресо з краплею молока для балансу кислотності",            price:3.20, emoji:"🍶", tags:[] },
+        { id:"cold_brew",   name:"Колд Брю",          desc:"Кава холодного заварювання 18 год, м'яка, без гіркоти",      price:4.50, emoji:"🧊", tags:["popular"] },
+        { id:"turco",       name:"Кава по-турецьки",  desc:"Приготована в джезві з кардамоном, насичена і пряна",        price:4.00, emoji:"🫖", tags:[] },
+      ]},
+      { id:"tea", name:"Чаї & Настої", emoji:"🍵", items:[
+        { id:"matcha",      name:"Матча Лате",        desc:"Японська церемоніальна матча з вівсяним або коров'ячим молоком", price:4.80, emoji:"🍵", tags:["popular","vegetarian"] },
+        { id:"chai",        name:"Чай Масала",        desc:"Пряний чорний чай з корицею, кардамоном, імбиром і молоком",    price:4.50, emoji:"🫚", tags:["popular"] },
+        { id:"earl_grey",   name:"Ерл Грей",          desc:"Класичний чорний чай з бергамотом, ніжний і ароматний",         price:3.00, emoji:"🌸", tags:[] },
+        { id:"camomila",    name:"Ромашка з медом",   desc:"Розслаблюючий ромашковий настій з квітковим медом",             price:2.80, emoji:"🌼", tags:["healthy"] },
+        { id:"menta",       name:"Свіжа м'ята",       desc:"Настій зі свіжої м'яти, освіжаючий і заспокійливий",           price:2.80, emoji:"🌿", tags:["healthy"] },
+        { id:"hibisco",     name:"Каркаде & Імбир",   desc:"Холодний настій каркаде з імбиром і лимоном",                  price:3.50, emoji:"🌺", tags:["healthy"] },
+        { id:"roibos",      name:"Ройбуш Ваніль",     desc:"Ройбуш без кофеїну з натуральною ваніллю",                    price:3.20, emoji:"🟤", tags:[] },
+      ]},
+      { id:"cold", name:"Холодні напої", emoji:"🥤", items:[
+        { id:"limonada",    name:"Домашній лимонад",  desc:"Лимонад зі свіжого лимону, м'яти і краплі меду",               price:4.00, emoji:"🍋", tags:[] },
+        { id:"naranja",     name:"Апельсиновий сік",  desc:"Натуральний свіжовичавлений сік, без цукру",                    price:3.80, emoji:"🍊", tags:["healthy"] },
+        { id:"agua",        name:"Мінеральна вода",   desc:"Негазована або газована вода, 500 мл",                           price:1.50, emoji:"💧", tags:["healthy"] },
+        { id:"smoothie",    name:"Смузі дня",         desc:"Свіжий смузі із сезонних фруктів, без молока",                  price:5.50, emoji:"🫐", tags:["healthy","vegetarian"] },
+        { id:"iced_matcha", name:"Матча з льодом",    desc:"Церемоніальна матча з молоком і льодом, освіжаючий",            price:5.20, emoji:"💚", tags:["popular"] },
+        { id:"iced_latte",  name:"Айс Лате",          desc:"Подвійний еспресо поверх холодного молока з льодом",             price:4.80, emoji:"🧋", tags:["popular"] },
+      ]},
+      { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", items:[
+        { id:"croissant",       name:"Круасан з маслом",      desc:"Шарований ремісничий круасан, хрусткий зовні і ніжний всередині",   price:3.20, emoji:"🥐", tags:["popular"] },
+        { id:"croissant_choco", name:"Круасан з шоколадом",   desc:"Круасан з бельгійським чорним шоколадом, свіжовипечений",          price:3.80, emoji:"🍫", tags:["popular"] },
+        { id:"croissant_alm",   name:"Круасан з мигдалем",    desc:"Круасан з франжипановим кремом і підсмаженими пелюстками мигдалю", price:4.20, emoji:"🌰", tags:[] },
+        { id:"macaron_vain",    name:"Макарон Ваніль",        desc:"Французький макарон з ганашем мадагаскарської ванілі",             price:2.50, emoji:"🍬", tags:["popular"] },
+        { id:"macaron_rosa",    name:"Макарон Троянда",       desc:"Макарон з кремом малина-троянда, ніжний і квітковий",              price:2.50, emoji:"🌹", tags:[] },
+        { id:"macaron_pist",    name:"Макарон Фісташка",      desc:"Макарон з ганашем сицилійської фісташки",                         price:2.80, emoji:"💚", tags:[] },
+        { id:"macaron_choco",   name:"Макарон Шоколад",       desc:"Макарон з ганашем 70% какао, насичений смак",                     price:2.50, emoji:"🍫", tags:[] },
+        { id:"cookie_choco",    name:"Печиво Шоколадне",      desc:"Ремісниче печиво з шматочками чорного шоколаду",                  price:2.80, emoji:"🍪", tags:["popular"] },
+        { id:"cookie_avena",    name:"Вівсяне печиво",        desc:"Цільнозернове печиво з вівсом, родзинками і корицею",             price:2.80, emoji:"🌾", tags:["healthy"] },
+        { id:"cookie_mant",     name:"Вершкове печиво",       desc:"Класичне золотисте масляне печиво з тростинним цукром",           price:2.50, emoji:"🟡", tags:[] },
+        { id:"datiles",         name:"Фініки в шоколаді",     desc:"Фініки Medjool з мигдалем у чорному шоколаді 70%",               price:3.50, emoji:"🫕", tags:["popular","healthy"] },
+        { id:"datiles_coco",    name:"Фініки Кокос & Какао",  desc:"Фініки з какао-маслом, кокосом і морською сіллю",                price:3.80, emoji:"🥥", tags:["healthy"] },
+      ]},
+    ],
+    specials:{ title:"Фаворити El Tres", subtitle:"Найпопулярніше у наших гостей", items:[
+      { id:"s1", name:"Лате + Круасан",       desc:"Кава лате зі свіжовипеченим круасаном з маслом",               price:6.50, emoji:"🥐" },
+      { id:"s2", name:"Матча + Фініки",       desc:"Матча лате з двома фініками в шоколаді — ідеальне поєднання",  price:7.50, emoji:"🍵" },
+      { id:"s3", name:"Набір 4 макарони",     desc:"Оберіть 4 смаки: ваніль, троянда, фісташка або шоколад",       price:9.00, emoji:"🎁" },
+      { id:"s4", name:"Колд Брю + Печиво",    desc:"Холодна кава 18 год з ремісничим печивом на вибір",            price:7.00, emoji:"🧊" },
+    ]}
+  },
+  pl: {
+    categories: [
+      { id:"coffee", name:"Kawa", emoji:"☕", items:[
+        { id:"espresso",    name:"Espresso",          desc:"Intensywne, 30 ml czystej kawy single origin",                  price:2.50, emoji:"☕", tags:["popular"] },
+        { id:"americano",   name:"Americano",         desc:"Espresso wydłużone gorącą wodą, łagodne i aromatyczne",         price:3.00, emoji:"🖤", tags:[] },
+        { id:"latte",       name:"Café Latte",        desc:"Podwójne espresso z spienionym mlekiem i latte art",            price:4.00, emoji:"🥛", tags:["popular"] },
+        { id:"cappuccino",  name:"Cappuccino",        desc:"Espresso z parowanym mlekiem i kremową pianką",                 price:3.80, emoji:"🫧", tags:["popular"] },
+        { id:"flat",        name:"Flat White",        desc:"Podwójne ristretto z jedwabistą mikropianka mleka",             price:4.20, emoji:"🤍", tags:[] },
+        { id:"cortado",     name:"Cortado",           desc:"Espresso z odrobiną mleka dla zbalansowania kwasowości",        price:3.20, emoji:"🍶", tags:[] },
+        { id:"cold_brew",   name:"Cold Brew",         desc:"Kawa parzona na zimno 18h, łagodna i bez goryczy",             price:4.50, emoji:"🧊", tags:["popular"] },
+        { id:"turco",       name:"Kawa po turecku",   desc:"Parzona w dżewie z kardamonem, bogata i korzenna",             price:4.00, emoji:"🫖", tags:[] },
+      ]},
+      { id:"tea", name:"Herbaty & Napary", emoji:"🍵", items:[
+        { id:"matcha",      name:"Matcha Latte",      desc:"Japońska matcha ceremonialna z mlekiem owsianym lub krowim",    price:4.80, emoji:"🍵", tags:["popular","vegetarian"] },
+        { id:"chai",        name:"Chai Latte",        desc:"Korzenna czarna herbata z cynamonem, kardamonem, imbirem i mlekiem", price:4.50, emoji:"🫚", tags:["popular"] },
+        { id:"earl_grey",   name:"Earl Grey",         desc:"Klasyczna czarna herbata z bergamotą, delikatna i aromatyczna", price:3.00, emoji:"🌸", tags:[] },
+        { id:"camomila",    name:"Rumianek z miodem", desc:"Relaksujący napar rumiankowy z kwiatowym miodem",               price:2.80, emoji:"🌼", tags:["healthy"] },
+        { id:"menta",       name:"Świeża Mięta",      desc:"Napar ze świeżej mięty, orzeźwiający i trawienny",              price:2.80, emoji:"🌿", tags:["healthy"] },
+        { id:"hibisco",     name:"Hibiskus & Imbir",  desc:"Zimny napar z hibiskusa z imbirem i cytryną",                   price:3.50, emoji:"🌺", tags:["healthy"] },
+        { id:"roibos",      name:"Rooibos Wanilia",   desc:"Rooibos bez kofeiny z naturalną wanilią",                       price:3.20, emoji:"🟤", tags:[] },
+      ]},
+      { id:"cold", name:"Zimne Napoje", emoji:"🥤", items:[
+        { id:"limonada",    name:"Domowa lemoniada",  desc:"Lemoniada ze świeżej cytryny, mięty i odrobiny miodu",          price:4.00, emoji:"🍋", tags:[] },
+        { id:"naranja",     name:"Sok pomarańczowy",  desc:"Świeżo wyciskany naturalny sok, bez cukru",                     price:3.80, emoji:"🍊", tags:["healthy"] },
+        { id:"agua",        name:"Woda mineralna",    desc:"Woda niegazowana lub gazowana, 500 ml",                          price:1.50, emoji:"💧", tags:["healthy"] },
+        { id:"smoothie",    name:"Smoothie dnia",     desc:"Świeże smoothie z sezonowych owoców, bez nabiału",              price:5.50, emoji:"🫐", tags:["healthy","vegetarian"] },
+        { id:"iced_matcha", name:"Matcha z lodem",    desc:"Ceremonialna matcha z mlekiem i lodem, orzeźwiająca",           price:5.20, emoji:"💚", tags:["popular"] },
+        { id:"iced_latte",  name:"Iced Latte",        desc:"Podwójne espresso na zimnym mleku z lodem",                     price:4.80, emoji:"🧋", tags:["popular"] },
+      ]},
+      { id:"pastry", name:"Pieczywo & Słodycze", emoji:"🥐", items:[
+        { id:"croissant",       name:"Rogalik maślany",       desc:"Rzemieślniczy rogalik warstwowy, chrupiący na zewnątrz i delikatny w środku", price:3.20, emoji:"🥐", tags:["popular"] },
+        { id:"croissant_choco", name:"Rogalik czekoladowy",   desc:"Rogalik z belgijską czarną czekoladą, świeżo upieczony",                     price:3.80, emoji:"🍫", tags:["popular"] },
+        { id:"croissant_alm",   name:"Rogalik migdałowy",     desc:"Rogalik z kremem frangipane i prażonymi płatkami migdałów",                  price:4.20, emoji:"🌰", tags:[] },
+        { id:"macaron_vain",    name:"Macaron Wanilia",       desc:"Francuski macaron z ganaszem wanilii madagaskarskiej",                       price:2.50, emoji:"🍬", tags:["popular"] },
+        { id:"macaron_rosa",    name:"Macaron Róża",          desc:"Macaron z kremem malinowo-różanym, delikatny i kwiatowy",                    price:2.50, emoji:"🌹", tags:[] },
+        { id:"macaron_pist",    name:"Macaron Pistacja",      desc:"Macaron z ganaszem pistacji sycylijskiej",                                   price:2.80, emoji:"💚", tags:[] },
+        { id:"macaron_choco",   name:"Macaron Czekolada",     desc:"Macaron z ganaszem 70% kakao, intensywny smak",                             price:2.50, emoji:"🍫", tags:[] },
+        { id:"cookie_choco",    name:"Ciastko czekoladowe",   desc:"Rzemieślnicze ciastko z kawałkami ciemnej czekolady",                        price:2.80, emoji:"🍪", tags:["popular"] },
+        { id:"cookie_avena",    name:"Ciastko owsiane",       desc:"Pełnoziarniste ciastko z owsem, rodzynkami i cynamonem",                     price:2.80, emoji:"🌾", tags:["healthy"] },
+        { id:"cookie_mant",     name:"Ciastko maślane",       desc:"Klasyczne złociste ciastko maślane z brązowym cukrem",                       price:2.50, emoji:"🟡", tags:[] },
+        { id:"datiles",         name:"Daktyle w czekoladzie", desc:"Daktyle Medjool z migdałem w ciemnej czekoladzie 70%",                       price:3.50, emoji:"🫕", tags:["popular","healthy"] },
+        { id:"datiles_coco",    name:"Daktyle Kokos & Kakao", desc:"Daktyle z masłem kakaowym, wiórkami kokosowymi i solą morską",               price:3.80, emoji:"🥥", tags:["healthy"] },
+      ]},
+    ],
+    specials:{ title:"Ulubione El Tres", subtitle:"Najczęściej zamawiane przez naszych gości", items:[
+      { id:"s1", name:"Latte + Rogalik",      desc:"Kawa latte z świeżo upieczonym rogalikiem maślanym",           price:6.50, emoji:"🥐" },
+      { id:"s2", name:"Matcha + Daktyle",     desc:"Matcha latte z dwoma daktylami w czekoladzie — idealne combo", price:7.50, emoji:"🍵" },
+      { id:"s3", name:"Zestaw 4 Macarons",    desc:"Wybierz 4 smaki: wanilia, róża, pistacja lub czekolada",       price:9.00, emoji:"🎁" },
+      { id:"s4", name:"Cold Brew + Ciastko",  desc:"Cold brew 18h z rzemieślniczym ciastkiem do wyboru",           price:7.00, emoji:"🧊" },
+    ]}
+  },
+};
+</script>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="lang-btn" id="langBtn">
+    <span id="langFlag">🇪🇸</span>
+    <span id="langLabel">Español</span>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="lang-dropdown" id="langDropdown"></div>
+  <div class="hero-logo">El</div>
+  <h1>El Tres</h1>
+  <p id="heroTagline"></p>
+  <div class="hero-fade"></div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="cat-nav">
+  <div class="nav-row">
+    <div class="cat-nav-inner" id="catNav"></div>
+    <button class="cart-nav-btn" id="cartNavBtn" onclick="openCart()">
+      🛒 <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="content" id="menuContent"></div>
+<div id="aboutSection"></div>
+<footer>© 2026 El Tres Café</footer>
+
+<!-- ITEM MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-body">
+      <div class="modal-tags" id="modalTags"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-qty-row">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="qty-num" id="modalQty">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+        <button class="modal-add-btn" id="modalAddBtn" onclick="addToCart()">
+          🛒 <span id="addBtnLabel"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartEvent(event)">
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-handle"></div>
+    <div class="cart-drawer-head">
+      <span id="cartTitle"></span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total-row" id="cartTotalRow" style="display:none">
+      <span id="cartTotalLabel"></span>
+      <span class="cart-total-price" id="cartTotalPrice"></span>
+    </div>
+    <button class="cart-order-btn" id="cartOrderBtn" onclick="confirmOrder()"></button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════ JS ═══════════ -->
+<script>
+let currentLang = "es";
+let cart = [];          // [{item, qty}]
+let modalItem = null;
+let modalQtyVal = 1;
+
+/* ─── helpers ─── */
+function fmt(price) { return price.toFixed(2).replace(".",",") + " €"; }
+function tagClass(t) { return t==="popular"?"tag-popular":t==="vegetarian"?"tag-veg":t==="healthy"?"tag-healthy":"tag-seasonal"; }
+function tagLabel(t)  { return UI[currentLang].tags[t] || t; }
+function allItems()   {
+  const d = MENU[currentLang];
+  return [...d.categories.flatMap(c=>c.items), ...d.specials.items];
+}
+
+/* ─── render ─── */
+function render() {
+  const ui   = UI[currentLang];
+  const data = MENU[currentLang];
+
+  document.getElementById("heroTagline").textContent = ui.tagline;
+  document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
+  document.getElementById("langLabel").textContent   = LANGS[currentLang].label;
+
+  // lang dropdown
+  document.getElementById("langDropdown").innerHTML = Object.entries(LANGS).map(([k,v])=>
+    `<div class="lang-option ${k===currentLang?"active":""}" onclick="setLang('${k}')">
+      <span>${v.flag}</span><span>${v.label}</span></div>`
+  ).join("");
+
+  // nav tabs
+  const tabs = [...data.categories.map(c=>({id:c.id,label:c.name,emoji:c.emoji})), {id:"about",label:ui.about,emoji:"📍"}];
+  document.getElementById("catNav").innerHTML = tabs.map(t=>
+    `<button class="cat-tab" data-id="${t.id}" onclick="scrollToSection('${t.id}')"><span>${t.emoji}</span>${t.label}</button>`
+  ).join("");
+
+  // menu sections
+  const content = document.getElementById("menuContent");
+  content.innerHTML = data.categories.map(cat=>`
+    <section class="menu-section" id="${cat.id}">
+      <div class="section-title"><span>${cat.emoji}</span>${cat.name}</div>
+      <div class="cards-grid">
+        ${cat.items.map(item=>`
+          <div class="card" onclick="openModal('${item.id}', this)">
+            <div class="card-img">${item.emoji}</div>
+            <div class="card-body">
+              <div class="card-name">${item.name}</div>
+              <div class="card-desc">${item.desc}</div>
+              <div class="card-footer">
+                <span class="card-price">${fmt(item.price)}</span>
+                <div class="card-tags">${item.tags.slice(0,2).map(t=>`<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`).join("")}</div>
+              </div>
+            </div>
+          </div>`).join("")}
+      </div>
+    </section>`).join("");
+
+  // specials
+  const sp = data.specials;
+  content.innerHTML += `
+    <section class="specials-section" id="specials">
+      <div class="specials-title"><span>✨</span>${sp.title}</div>
+      <div class="specials-sub">${sp.subtitle}</div>
+      <div class="specials-scroll">
+        ${sp.items.map(item=>`
+          <div class="special-card" onclick="openModal('${item.id}', this)">
+            <div class="special-card-img">${item.emoji}<span class="special-badge">${ui.specialsBadge}</span></div>
+            <div class="special-card-body">
+              <div class="card-name">${item.name}</div>
+              <div class="card-desc">${item.desc}</div>
+              <span class="card-price">${fmt(item.price)}</span>
+            </div>
+          </div>`).join("")}
+      </div>
+    </section>`;
+
+  // about
+  document.getElementById("aboutSection").innerHTML = `
+    <section class="about-section" id="about">
+      <div class="about-title">${ui.about}</div>
+      <div class="about-grid">
+        <div class="about-card"><div class="about-card-head">📍 ${ui.address}</div><p><a href="https://www.google.com/maps/place/El+Tres/@38.3708006,-0.4326601,3240m/data=!3m1!1e3!4m10!1m2!2m1!1sel+tres!3m6!1s0xd62393ab71ef353:0x8c32fa1101e3ee89!8m2!3d38.3708006!4d-0.4151506!15sCgdlbCB0cmVzkgEEY2FmZeABAA!16s%2Fg%2F11n56prjw5?entry=ttu&g_ep=EgoyMDI2MDMwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">${ui.addressText}</a></p></div>
+        <div class="about-card"><div class="about-card-head">🕐 ${ui.hours}</div><p>${ui.weekdays}<br>${ui.weekend}</p></div>
+        <div class="about-card about-wide">
+          <div class="about-card-head">📬 ${ui.contact}</div>
+          <div class="contact-links">
+            <a href="tel:+34692842996">📞 692 842 996</a>
+            <a href="https://instagram.com/eltres.es" target="_blank" rel="noopener">📸 @eltres.es</a>
+          </div>
+        </div>
+      </div>
+    </section>`;
+
+  // update cart label
+  document.getElementById("addBtnLabel").textContent = ui.addToCart;
+  document.getElementById("cartTitle").textContent   = ui.cartTitle;
+  document.getElementById("cartOrderBtn").textContent = ui.orderBtn;
+  updateCartUI();
+  updateActiveTab();
+}
+
+/* ─── lang ─── */
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById("langDropdown").classList.remove("open");
+  render();
+}
+document.getElementById("langBtn").addEventListener("click", e=>{ e.stopPropagation(); document.getElementById("langDropdown").classList.toggle("open"); });
+document.addEventListener("click", ()=>document.getElementById("langDropdown").classList.remove("open"));
+
+/* ─── scroll ─── */
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector(".cat-nav").offsetHeight;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navH - 4, behavior:"smooth" });
+}
+function updateActiveTab() {
+  const navH = document.querySelector(".cat-nav")?.offsetHeight || 56;
+  const ids = ["coffee","tea","cold","pastry","specials","about"];
+  let active = ids[0];
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= navH + 40) active = id;
+  }
+  document.querySelectorAll(".cat-tab").forEach(b=>b.classList.toggle("active", b.dataset.id===active));
+}
+window.addEventListener("scroll", updateActiveTab, {passive:true});
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+function openModal(itemId, triggerEl) {
+  const item = allItems().find(i=>i.id===itemId);
+  if (!item) return;
+  modalItem    = item;
+  modalQtyVal  = 1;
+
+  document.getElementById("modalImg").textContent      = item.emoji;
+  document.getElementById("modalName").textContent     = item.name;
+  document.getElementById("modalDesc").textContent     = item.desc;
+  document.getElementById("modalPrice").textContent    = fmt(item.price);
+  document.getElementById("modalQty").textContent      = "1";
+  document.getElementById("addBtnLabel").textContent   = UI[currentLang].addToCart;
+  document.getElementById("modalTags").innerHTML = (item.tags||[]).map(t=>
+    `<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`).join("");
+
+  document.getElementById("modalOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById("modalOverlay")) return;
+  _closeModal();
+}
+function _closeModal() {
+  document.getElementById("modalOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function changeQty(delta) {
+  modalQtyVal = Math.max(1, modalQtyVal + delta);
+  document.getElementById("modalQty").textContent = modalQtyVal;
+}
+
+function addToCart() {
+  if (!modalItem) return;
+
+  // fly animation
+  const imgEl = document.getElementById("modalImg");
+  const rect  = imgEl.getBoundingClientRect();
+  const fly   = document.createElement("div");
+  fly.className = "fly-emoji";
+  fly.textContent = modalItem.emoji;
+  fly.style.left = rect.left + rect.width/2 - 18 + "px";
+  fly.style.top  = rect.top  + rect.height/2 - 18 + "px";
+  document.body.appendChild(fly);
+  setTimeout(()=>fly.remove(), 600);
+
+  // add to cart
+  const existing = cart.find(c=>c.item.id===modalItem.id);
+  if (existing) existing.qty += modalQtyVal;
+  else cart.push({ item: modalItem, qty: modalQtyVal });
+
+  _closeModal();
+  updateCartUI();
+  showToast(`${modalItem.emoji} ${modalItem.name} ×${modalQtyVal}`);
+}
+
+/* ══════════════════════════════════════
+   CART
+══════════════════════════════════════ */
+function updateCartUI() {
+  const total = cart.reduce((s,c)=>s+c.qty, 0);
+  const countEl = document.getElementById("cartCount");
+  countEl.textContent = total;
+  countEl.classList.toggle("has-items", total > 0);
+}
+
+function openCart() {
+  renderCartDrawer();
+  document.getElementById("cartOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeCart() {
+  document.getElementById("cartOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+function closeCartEvent(e) {
+  if (e.target === document.getElementById("cartOverlay")) closeCart();
+}
+
+function renderCartDrawer() {
+  const ui = UI[currentLang];
+  document.getElementById("cartTitle").textContent    = ui.cartTitle;
+  document.getElementById("cartOrderBtn").textContent = ui.orderBtn;
+
+  const itemsEl = document.getElementById("cartItems");
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `<div class="cart-empty"><span class="cart-empty-icon">🛒</span>${ui.emptyCart}</div>`;
+    document.getElementById("cartTotalRow").style.display  = "none";
+    document.getElementById("cartOrderBtn").disabled = true;
+    return;
+  }
+
+  document.getElementById("cartOrderBtn").disabled = false;
+  itemsEl.innerHTML = cart.map((c,i)=>`
+    <div class="cart-item">
+      <div class="cart-item-emoji">${c.item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${c.item.name}</div>
+        <div class="cart-item-price">${fmt(c.item.price * c.qty)}</div>
+      </div>
+      <div class="cart-item-qty-row">
+        <button class="cqty-btn" onclick="cartChangeQty(${i},-1)">−</button>
+        <span class="cqty-num">${c.qty}</span>
+        <button class="cqty-btn" onclick="cartChangeQty(${i},1)">+</button>
+      </div>
+    </div>`).join("");
+
+  const total = cart.reduce((s,c)=>s+c.item.price*c.qty, 0);
+  const tr = document.getElementById("cartTotalRow");
+  tr.style.display = "flex";
+  document.getElementById("cartTotalLabel").textContent = ui.total;
+  document.getElementById("cartTotalPrice").textContent = fmt(total);
+}
+
+function cartChangeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  updateCartUI();
+  renderCartDrawer();
+}
+
+function confirmOrder() {
+  const ui = UI[currentLang];
+  cart = [];
+  closeCart();
+  updateCartUI();
+  showToast("✅ " + ui.orderBtn + "!");
+}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("show"), 2200);
+}
+
+/* ── init ── */
+render();
+</script>
+</body>
+</html>

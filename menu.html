@@ -10,13 +10,33 @@
       --brand-light: #F0C8CC;
       --brand-dark:  #C8848D;
       --brand-muted: #F9EEF0;
+      --bg:          #fff;
+      --bg2:         #f9f9f9;
+      --text:        #111;
+      --text2:       #666;
+      --text3:       #888;
+      --border:      #f0f0f0;
+      --shadow:      rgba(225,166,173,.18);
+      --nav-bg:      #fff;
+    }
+    [data-theme="dark"] {
+      --bg:          #111;
+      --bg2:         #1a1a1a;
+      --text:        #f0f0f0;
+      --text2:       #aaa;
+      --text3:       #777;
+      --border:      #2a2a2a;
+      --shadow:      rgba(0,0,0,.35);
+      --nav-bg:      #161616;
+      --brand-muted: #2a1e20;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #fff; color: #111;
+      background: var(--bg); color: var(--text);
       -webkit-font-smoothing: antialiased;
+      transition: background .3s, color .3s;
     }
 
     /* ─── HERO ─── */
@@ -100,10 +120,29 @@
     .search-empty { text-align:center; padding:40px 16px; color:#aaa; font-size:15px; display:none; }
     .search-empty.visible { display:block; }
 
+    /* ─── DARK MODE TOGGLE ─── */
+    .theme-btn {
+      position:absolute; top:14px; left:14px; z-index:10;
+      background:rgba(255,255,255,.22); border:1.5px solid rgba(255,255,255,.35);
+      color:#fff; border-radius:999px; width:36px; height:36px;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      font-size:16px; transition:background .2s;
+    }
+    .theme-btn:hover { background:rgba(255,255,255,.35); }
+
+    /* ─── ENTRANCE ANIMATION ─── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .hero-logo { animation: fadeUp .6s cubic-bezier(.22,1,.36,1) both; }
+    .card { opacity:0; animation: fadeUp .5s cubic-bezier(.22,1,.36,1) both; }
+
     /* ─── STICKY NAV ─── */
     .cat-nav {
-      position:sticky; top:0; z-index:40; background:#fff;
-      border-bottom:1px solid #f0f0f0; box-shadow:0 1px 6px rgba(0,0,0,.05);
+      position:sticky; top:0; z-index:40; background:var(--nav-bg);
+      border-bottom:1px solid var(--border); box-shadow:0 1px 6px rgba(0,0,0,.05);
+      transition: background .3s;
     }
     .cat-nav-inner {
       display:flex; gap:6px; padding:8px 12px;
@@ -124,7 +163,7 @@
 
     /* ─── SECTION ─── */
     .menu-section { padding:28px 16px 8px; scroll-margin-top:56px; }
-    .section-title { display:flex; align-items:center; gap:8px; font-size:19px; font-weight:800; color:#111; margin-bottom:18px; }
+    .section-title { display:flex; align-items:center; gap:8px; font-size:19px; font-weight:800; color:var(--text); margin-bottom:18px; }
     .section-title span { font-size:22px; }
 
     /* ─── GRID ─── */
@@ -134,11 +173,11 @@
 
     /* ─── CARD ─── */
     .card {
-      background:#fff; border-radius:18px; overflow:hidden;
-      box-shadow:0 2px 12px rgba(225,166,173,.18);
-      transition:box-shadow .2s, transform .2s; cursor:pointer;
+      background:var(--bg); border-radius:18px; overflow:hidden;
+      box-shadow:0 2px 12px var(--shadow);
+      transition:box-shadow .2s, transform .2s, background .3s; cursor:pointer;
     }
-    .card:hover { box-shadow:0 6px 24px rgba(225,166,173,.32); transform:translateY(-2px); }
+    .card:hover { box-shadow:0 6px 24px var(--shadow); transform:translateY(-2px); }
     .card-img {
       width:100%; aspect-ratio:1/1; background:var(--brand-muted);
       display:flex; align-items:center; justify-content:center; font-size:52px;
@@ -146,8 +185,8 @@
     }
     .card-img img { width:100%; height:100%; object-fit:cover; display:block; }
     .card-body { padding:10px 11px 12px; }
-    .card-name { font-size:13px; font-weight:700; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .card-desc { font-size:11px; color:#888; margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.5; }
+    .card-name { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .card-desc { font-size:11px; color:var(--text3); margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.5; }
     .card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:7px; gap:4px; }
     .card-price { font-size:14px; font-weight:800; color:var(--brand-dark); }
     .card-tags { display:flex; gap:4px; flex-wrap:wrap; }
@@ -186,7 +225,7 @@
     .about-wide { grid-column:1/-1; }
 
     /* ─── FOOTER ─── */
-    footer { text-align:center; padding:24px 16px; font-size:12px; color:#bbb; border-top:1px solid #f0f0f0; }
+    footer { text-align:center; padding:24px 16px; font-size:12px; color:var(--text3); border-top:1px solid var(--border); }
 
     /* ══════════════════════════════════════
        MODAL — ITEM DETAIL
@@ -204,7 +243,7 @@
     }
     .modal {
       width:100%; max-width:520px;
-      background:#fff; border-radius:28px 28px 0 0;
+      background:var(--bg); border-radius:28px 28px 0 0;
       padding:0 0 calc(env(safe-area-inset-bottom) + 24px);
       transform:translateY(100%);
       transition:transform .38s cubic-bezier(.32,1.1,.6,1);
@@ -229,8 +268,8 @@
     }
     .modal-body { padding:20px 22px 0; }
     .modal-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
-    .modal-name { font-size:22px; font-weight:800; color:#111; line-height:1.2; }
-    .modal-desc { font-size:14px; color:#666; margin-top:8px; line-height:1.6; }
+    .modal-name { font-size:22px; font-weight:800; color:var(--text); line-height:1.2; }
+    .modal-desc { font-size:14px; color:var(--text2); margin-top:8px; line-height:1.6; }
     .modal-price { font-size:26px; font-weight:800; color:var(--brand-dark); margin-top:14px; }
 
     /* quantity row */
@@ -266,7 +305,7 @@
     }
     .cart-overlay.open { background:rgba(0,0,0,.45); pointer-events:all; }
     .cart-drawer {
-      width:100%; max-width:520px; background:#fff;
+      width:100%; max-width:520px; background:var(--bg);
       border-radius:28px 28px 0 0;
       padding:0 0 calc(env(safe-area-inset-bottom) + 24px);
       max-height:85vh; overflow-y:auto;
@@ -595,6 +634,7 @@ const MENU = {
 
 <!-- HERO -->
 <header class="hero">
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
   <div class="lang-btn" id="langBtn">
     <span id="langFlag">🇪🇸</span>
     <span id="langLabel">Español</span>
@@ -774,6 +814,7 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
   document.getElementById("searchInput").setAttribute("placeholder", ui.searchPlaceholder || "Buscar...");
   updateCartUI();
   updateActiveTab();
+  animateCards();
 }
 
 /* ─── lang ─── */
@@ -803,6 +844,36 @@ function updateActiveTab() {
   document.querySelectorAll(".cat-tab").forEach(b=>b.classList.toggle("active", b.dataset.id===active));
 }
 window.addEventListener("scroll", updateActiveTab, {passive:true});
+
+/* ─── dark mode ─── */
+function toggleTheme() {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  document.getElementById("themeBtn").textContent = dark ? "🌙" : "☀️";
+  localStorage.setItem("theme", dark ? "light" : "dark");
+}
+(function(){
+  const saved = localStorage.getItem("theme") ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", saved);
+  document.getElementById("themeBtn").textContent = saved === "dark" ? "☀️" : "🌙";
+})();
+
+/* ─── card entrance animation ─── */
+function animateCards() {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card, i) => {
+    card.style.animationDelay = (i * 40) + "ms";
+    card.style.animationFillMode = "both";
+  });
+}
+
+/* ─── haptic feedback ─── */
+function haptic(style) {
+  if (window.navigator && window.navigator.vibrate) {
+    window.navigator.vibrate(style === "light" ? 10 : style === "medium" ? 30 : [20,10,20]);
+  }
+}
 
 /* ─── search ─── */
 function toggleSearch() {
@@ -884,6 +955,7 @@ function changeQty(delta) {
 
 function addToCart() {
   if (!modalItem) return;
+  haptic("medium");
 
   // fly animation
   const imgEl = document.getElementById("modalImg");

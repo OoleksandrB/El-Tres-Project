@@ -77,6 +77,29 @@
     }
     .cart-count.has-items { display:inline-block; }
 
+    /* ─── SEARCH ─── */
+    .search-bar {
+      display:none; padding:8px 12px 10px;
+      border-top:1px solid #f0f0f0;
+    }
+    .search-bar.open { display:block; }
+    .search-input-wrap { position:relative; max-width:960px; margin:0 auto; }
+    .search-input {
+      width:100%; padding:9px 36px 9px 14px; border-radius:999px;
+      border:1.5px solid var(--brand-light); font-size:14px;
+      outline:none; background:var(--brand-muted); color:#111;
+      transition:border-color .2s;
+    }
+    .search-input:focus { border-color:var(--brand-dark); }
+    .search-clear {
+      position:absolute; right:12px; top:50%; transform:translateY(-50%);
+      background:none; border:none; font-size:16px; cursor:pointer;
+      color:#aaa; display:none; line-height:1;
+    }
+    .search-clear.visible { display:block; }
+    .search-empty { text-align:center; padding:40px 16px; color:#aaa; font-size:15px; display:none; }
+    .search-empty.visible { display:block; }
+
     /* ─── STICKY NAV ─── */
     .cat-nav {
       position:sticky; top:0; z-index:40; background:#fff;
@@ -330,11 +353,11 @@ const LANGS = {
   pl: { label:"Polski",     flag:"🇵🇱" },
 };
 const UI = {
-  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Todos los días: 9:00 – 18:00", weekend:"Martes: cerrado", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"} },
-  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Every day: 9:00 – 18:00", weekend:"Tuesday: closed", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"} },
-  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Каждый день: 9:00 – 18:00", weekend:"Вторник: выходной", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"} },
-  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Щодня: 9:00 – 18:00", weekend:"Вівторок: вихідний", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", tags:{popular:"Популярне",vegetarian:"Веганське",healthy:"Корисне",seasonal:"Сезонне"} },
-  pl: { tagline:"Rzemieślnicza kawiarnia w sercu miasta",   about:"O nas",           address:"Adres",     hours:"Godziny", contact:"Kontakt",  weekdays:"Każdy dzień: 9:00 – 18:00", weekend:"Wtorek: zamknięte", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Specjalne", addToCart:"Dodaj do zamówienia", cartTitle:"Moje zamówienie",orderBtn:"Potwierdź zamówienie",emptyCart:"Zamówienie jest puste",total:"Razem", tags:{popular:"Popularne",vegetarian:"Wegetariańskie",healthy:"Zdrowe",seasonal:"Sezonowe"} },
+  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Todos los días: 9:00 – 18:00", weekend:"Martes: cerrado", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", searchPlaceholder:"Buscar...", searchEmpty:"No hay resultados", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"} },
+  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Every day: 9:00 – 18:00", weekend:"Tuesday: closed", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", searchPlaceholder:"Search...", searchEmpty:"No results found", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"} },
+  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Каждый день: 9:00 – 18:00", weekend:"Вторник: выходной", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", searchPlaceholder:"Поиск...", searchEmpty:"Ничего не найдено", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"} },
+  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Щодня: 9:00 – 18:00", weekend:"Вівторок: вихідний", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", searchPlaceholder:"Пошук...", searchEmpty:"Нічого не знайдено", tags:{popular:"Популярне",vegetarian:"Веганське",healthy:"Корисне",seasonal:"Сезонне"} },
+  pl: { tagline:"Rzemieślnicza kawiarnia w sercu miasta",   about:"O nas",           address:"Adres",     hours:"Godziny", contact:"Kontakt",  weekdays:"Każdy dzień: 9:00 – 18:00", weekend:"Wtorek: zamknięte", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Specjalne", addToCart:"Dodaj do zamówienia", cartTitle:"Moje zamówienie",orderBtn:"Potwierdź zamówienie",emptyCart:"Zamówienie jest puste",total:"Razem", searchPlaceholder:"Szukaj...", searchEmpty:"Brak wyników", tags:{popular:"Popularne",vegetarian:"Wegetariańskie",healthy:"Zdrowe",seasonal:"Sezonowe"} },
 };
 const MENU = {
   es: {
@@ -586,11 +609,23 @@ const MENU = {
 <nav class="cat-nav">
   <div class="nav-row">
     <div class="cat-nav-inner" id="catNav"></div>
-    <button class="cart-nav-btn" id="cartNavBtn" onclick="openCart()">
-      🛒 <span class="cart-count" id="cartCount">0</span>
-    </button>
+    <div style="display:flex;align-items:center;gap:6px;flex:none;">
+      <button class="cart-nav-btn" id="searchNavBtn" onclick="toggleSearch()" style="background:transparent;color:#666;padding:7px 10px;" title="Buscar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="cart-nav-btn" id="cartNavBtn" onclick="openCart()">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="search-bar" id="searchBar">
+    <div class="search-input-wrap">
+      <input class="search-input" id="searchInput" type="search" oninput="onSearch(this.value)" placeholder="Buscar...">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+    </div>
   </div>
 </nav>
+<div class="search-empty" id="searchEmpty">🔍 <span id="searchEmptyMsg">No hay resultados</span></div>
 
 <!-- CONTENT -->
 <div class="content" id="menuContent"></div>
@@ -736,6 +771,7 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
   document.getElementById("addBtnLabel").textContent = ui.addToCart;
   document.getElementById("cartTitle").textContent   = ui.cartTitle;
   document.getElementById("cartOrderBtn").textContent = ui.orderBtn;
+  document.getElementById("searchInput").setAttribute("placeholder", ui.searchPlaceholder || "Buscar...");
   updateCartUI();
   updateActiveTab();
 }
@@ -767,6 +803,43 @@ function updateActiveTab() {
   document.querySelectorAll(".cat-tab").forEach(b=>b.classList.toggle("active", b.dataset.id===active));
 }
 window.addEventListener("scroll", updateActiveTab, {passive:true});
+
+/* ─── search ─── */
+function toggleSearch() {
+  const bar = document.getElementById("searchBar");
+  bar.classList.toggle("open");
+  if (bar.classList.contains("open")) {
+    document.getElementById("searchInput").focus();
+  } else {
+    clearSearch();
+  }
+}
+function onSearch(q) {
+  const val = q.trim().toLowerCase();
+  document.getElementById("searchClear").classList.toggle("visible", val.length > 0);
+  let total = 0;
+  document.querySelectorAll(".card").forEach(card => {
+    const name = (card.querySelector(".card-name")?.textContent || "").toLowerCase();
+    const desc = (card.querySelector(".card-desc")?.textContent || "").toLowerCase();
+    const match = !val || name.includes(val) || desc.includes(val);
+    card.style.display = match ? "" : "none";
+    if (match) total++;
+  });
+  // hide empty section titles
+  document.querySelectorAll(".menu-section").forEach(sec => {
+    const visible = [...sec.querySelectorAll(".card")].some(c => c.style.display !== "none");
+    sec.style.display = visible ? "" : "none";
+  });
+  const ui = UI[currentLang];
+  const ui2 = UI[currentLang];
+  document.getElementById("searchEmpty").classList.toggle("visible", total === 0 && val.length > 0);
+  document.getElementById("searchEmptyMsg").textContent = ui2.searchEmpty || "No hay resultados";
+  document.getElementById("searchInput").setAttribute("placeholder", ui2.searchPlaceholder || "Buscar...");
+}
+function clearSearch() {
+  document.getElementById("searchInput").value = "";
+  onSearch("");
+}
 
 /* ══════════════════════════════════════
    MODAL

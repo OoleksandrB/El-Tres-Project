@@ -768,8 +768,8 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
       <div class="section-title"><span>${cat.emoji}</span>${cat.name}</div>
       <div class="cards-grid">
         ${cat.items.map(item=>`
-          <div class="card" onclick="openModal('${item.id}', this)">
-            <div class="card-img">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy">` : item.emoji}</div>
+          <div class="card${item.soldOut ? ' sold-out' : ''}" onclick="openModal('${item.id}', this)">
+            <div class="card-img" style="position:relative">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">Agotado</span>` : ''}</div>
             <div class="card-body">
               <div class="card-name">${item.name}</div>
               <div class="card-desc">${item.desc}</div>

@@ -386,25 +386,81 @@
       position:fixed; pointer-events:none; z-index:999;
       font-size:36px; animation:flyToCart .55s ease-in forwards;
     }
+
+    /* ─── GROUPS ─── */
+    .group-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 0 8px; cursor:pointer; user-select:none;
+      border-bottom:1.5px solid var(--border); margin-bottom:12px;
+    }
+    .group-header-left { display:flex; align-items:center; gap:8px; }
+    .group-header-emoji { font-size:18px; }
+    .group-header-name { font-size:15px; font-weight:700; color:var(--text); }
+    .group-header-count { font-size:12px; color:var(--text3); font-weight:500; }
+    .group-chevron {
+      font-size:13px; color:var(--text3); transition:transform .25s;
+      display:inline-block;
+    }
+    .group-chevron.open { transform:rotate(180deg); }
+    .group-body { overflow:hidden; transition:max-height .3s ease, opacity .25s; }
+    .group-body.collapsed { max-height:0 !important; opacity:0; }
+    .group-wrap { margin-bottom:20px; }
+
+    /* ─── CHECKOUT ─── */
+    .order-type-btn {
+      flex:1; padding:10px 6px; border-radius:14px; border:2px solid var(--border);
+      background:var(--bg2); font-size:12px; font-weight:600; cursor:pointer;
+      transition:border-color .15s, background .15s; text-align:center; line-height:1.4;
+    }
+    .order-type-btn.active { border-color:var(--brand); background:var(--brand-muted); color:var(--brand-dark); }
+    .checkout-field { margin-bottom:14px; }
+    .checkout-field label { display:block; font-size:12px; color:var(--text2); margin-bottom:4px; font-weight:600; }
+    .checkout-input {
+      width:100%; padding:10px 14px; border-radius:12px;
+      border:1.5px solid var(--border); font-size:14px;
+      background:var(--bg); color:var(--text); outline:none;
+      transition:border-color .2s; -webkit-appearance:none;
+    }
+    .checkout-input:focus { border-color:var(--brand-dark); }
+    .table-num-btn {
+      width:44px; height:44px; border-radius:12px; border:2px solid var(--border);
+      background:var(--bg2); font-size:16px; font-weight:700; cursor:pointer;
+      transition:border-color .15s, background .15s;
+    }
+    .table-num-btn.active { border-color:var(--brand); background:var(--brand-muted); color:var(--brand-dark); }
+    .addr-suggestions {
+      position:absolute; left:0; right:0; top:100%; z-index:50;
+      background:var(--bg); border:1.5px solid var(--border); border-top:none;
+      border-radius:0 0 12px 12px; overflow:hidden; box-shadow:0 4px 16px var(--shadow);
+    }
+    .addr-suggestion {
+      padding:10px 14px; font-size:13px; cursor:pointer;
+      border-bottom:1px solid var(--border); transition:background .1s;
+    }
+    .addr-suggestion:last-child { border-bottom:none; }
+    .addr-suggestion:hover { background:var(--brand-muted); }
   </style>
 </head>
 <body>
 
 <!-- ═══════════ DATA ═══════════ -->
 <script>
+const CONFIG = {
+  whatsapp: "34692842996",
+  tables:   [1, 2, 3, 4, 5],
+};
+
 const LANGS = {
   es: { label:"Español",    flag:"🇪🇸" },
   en: { label:"English",    flag:"🇬🇧" },
   ru: { label:"Русский",    flag:"🇷🇺" },
   uk: { label:"Українська", flag:"🇺🇦" },
-  pl: { label:"Polski",     flag:"🇵🇱" },
 };
 const UI = {
-  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Todos los días: 9:00 – 18:00", weekend:"Martes: cerrado", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", searchPlaceholder:"Buscar...", searchEmpty:"No hay resultados", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"} },
-  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Every day: 9:00 – 18:00", weekend:"Tuesday: closed", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", searchPlaceholder:"Search...", searchEmpty:"No results found", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"} },
-  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Каждый день: 9:00 – 18:00", weekend:"Вторник: выходной", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", searchPlaceholder:"Поиск...", searchEmpty:"Ничего не найдено", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"} },
-  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Щодня: 9:00 – 18:00", weekend:"Вівторок: вихідний", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", searchPlaceholder:"Пошук...", searchEmpty:"Нічого не знайдено", tags:{popular:"Популярне",vegetarian:"Веганське",healthy:"Корисне",seasonal:"Сезонне"} },
-  pl: { tagline:"Rzemieślnicza kawiarnia w sercu miasta",   about:"O nas",           address:"Adres",     hours:"Godziny", contact:"Kontakt",  weekdays:"Każdy dzień: 9:00 – 18:00", weekend:"Wtorek: zamknięte", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Specjalne", addToCart:"Dodaj do zamówienia", cartTitle:"Moje zamówienie",orderBtn:"Potwierdź zamówienie",emptyCart:"Zamówienie jest puste",total:"Razem", searchPlaceholder:"Szukaj...", searchEmpty:"Brak wyników", tags:{popular:"Popularne",vegetarian:"Wegetariańskie",healthy:"Zdrowe",seasonal:"Sezonowe"} },
+  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Todos los días: 9:00 – 18:00", weekend:"Martes: cerrado", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", searchPlaceholder:"Buscar...", searchEmpty:"No hay resultados", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"}, soldOut:"Agotado", orderType:"Elige el tipo de pedido", pickup:"Recoger en cafetería", delivery:"Envío a domicilio", tableOrder:"Pedir en mesa", yourName:"Tu nombre", yourPhone:"Tu teléfono", pickupTime:"Hora de recogida", address2:"Dirección de entrega", tableNum:"Mesa", tableSelect:"¿Qué mesa?", send:"Enviar pedido por WhatsApp" },
+  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Every day: 9:00 – 18:00", weekend:"Tuesday: closed", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", searchPlaceholder:"Search...", searchEmpty:"No results found", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"}, soldOut:"Sold out", orderType:"Choose order type", pickup:"Pick up at café", delivery:"Home delivery", tableOrder:"Order at table", yourName:"Your name", yourPhone:"Your phone", pickupTime:"Pickup time", address2:"Delivery address", tableNum:"Table", tableSelect:"Which table?", send:"Send order via WhatsApp" },
+  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Каждый день: 9:00 – 18:00", weekend:"Вторник: выходной", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", searchPlaceholder:"Поиск...", searchEmpty:"Ничего не найдено", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"}, soldOut:"Нет в наличии", orderType:"Выберите тип заказа", pickup:"Самовывоз", delivery:"Доставка", tableOrder:"Заказ за столик", yourName:"Ваше имя", yourPhone:"Ваш телефон", pickupTime:"Время самовывоза", address2:"Адрес доставки", tableNum:"Стол", tableSelect:"Какой столик?", send:"Отправить заказ в WhatsApp" },
+  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Щодня: 9:00 – 18:00", weekend:"Вівторок: вихідний", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", searchPlaceholder:"Пошук...", searchEmpty:"Нічого не знайдено", tags:{popular:"Популярне",vegetarian:"Веганське",healthy:"Корисне",seasonal:"Сезонне"}, soldOut:"Немає в наявності", orderType:"Оберіть тип замовлення", pickup:"Самовивіз", delivery:"Доставка", tableOrder:"Замовлення за столик", yourName:"Ваше ім'я", yourPhone:"Ваш телефон", pickupTime:"Час самовивозу", address2:"Адреса доставки", tableNum:"Стіл", tableSelect:"Який столик?", send:"Надіслати замовлення у WhatsApp" },
 };
 const MENU = {
   es: {
@@ -431,19 +487,27 @@ const MENU = {
         { id:"agua_gas",   name:"Agua con gas",       desc:"S.Pellegrino 500 ml",                                         price:2.00, emoji:"💧", tags:[] },
         { id:"agua_sin",   name:"Agua sin gas",       desc:"Cortes 500 ml",                                               price:1.00, emoji:"💧", tags:["healthy"] },
       ]},
-      { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", items:[
-        { id:"croissant_jamon",  name:"Croissant jamón y queso", desc:"Croissant relleno de queso y jamón de York",       price:3.00, emoji:"🥐", tags:["popular"] },
-        { id:"croissant_mant",   name:"Croissant mantequilla",   desc:"Croissant de mantequilla artesanal",               price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
-        { id:"cookie_rv",        name:"Cookie Red Velvet",       desc:"Red Velvet con Nutella, azúcar muscovado",         price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
-        { id:"galleta_gata",     name:"Galleta Gata",            desc:"Galleta artesana",                                 price:1.20, emoji:"🍪", tags:[] },
-        { id:"macaron",          name:"Macaron de almendra",     desc:"Sin gluten · Ferrero · Pistacho-frambuesa · Snickers · Caramelo salado · Bounty · Raffaello · Fresa · Mango-maracuyá · Frambuesa · Vainilla · Choco con leche", price:2.80, emoji:"🩷", tags:["popular"] },
-        { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_cacahuete",  name:"Dátil con cacahuete",     desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_avellana",   name:"Dátil con avellana",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_nuez",       name:"Dátil con nuez",          desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_negro",      name:"Dátil chocolate negro",   desc:"En chocolate negro sin azúcar",                    price:2.50, emoji:"🍫", tags:["healthy"] },
+      { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", groups:[
+        { id:"croissant", name:"Croissant", emoji:"🥐", items:[
+          { id:"croissant_jamon",  name:"Croissant jamón y queso", desc:"Croissant relleno de queso y jamón de York",       price:3.00, emoji:"🥐", tags:["popular"] },
+          { id:"croissant_mant",   name:"Croissant mantequilla",   desc:"Croissant de mantequilla artesanal",               price:1.50, emoji:"🥐", tags:[] },
+        ]},
+        { id:"cookie", name:"Cookie", emoji:"🍪", items:[
+          { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Cookie Red Velvet",       desc:"Red Velvet con Nutella, azúcar muscovado",         price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
+          { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.jpg", modalImage:"Assets/cookie-cholate-modal.jpg", tags:[] },
+          { id:"galleta_gata",     name:"Galleta Gata",            desc:"Galleta artesana",                                 price:1.20, emoji:"🍪", tags:[] },
+        ]},
+        { id:"macaron", name:"Macaron", emoji:"🩷", items:[
+          { id:"macaron",          name:"Macaron de almendra",     desc:"Sin gluten · Ferrero · Pistacho-frambuesa · Snickers · Caramelo salado · Bounty · Raffaello · Fresa · Mango-maracuyá · Frambuesa · Vainilla · Choco con leche", price:2.80, emoji:"🩷", tags:["popular"] },
+        ]},
+        { id:"datil", name:"Dátiles", emoji:"🍫", items:[
+          { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
+          { id:"datil_cacahuete",  name:"Dátil con cacahuete",     desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_avellana",   name:"Dátil con avellana",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_nuez",       name:"Dátil con nuez",          desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_negro",      name:"Dátil chocolate negro",   desc:"En chocolate negro sin azúcar",                    price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
+        ]},
       ]},
     ],
     specials:{ title:"Favoritos de El Tres", subtitle:"Lo más pedido por nuestros clientes", items:[
@@ -477,19 +541,27 @@ const MENU = {
         { id:"agua_gas",   name:"Sparkling water",    desc:"S.Pellegrino 500 ml",                                         price:2.00, emoji:"💧", tags:[] },
         { id:"agua_sin",   name:"Still water",        desc:"Cortes 500 ml",                                               price:1.00, emoji:"💧", tags:["healthy"] },
       ]},
-      { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", items:[
-        { id:"croissant_jamon",  name:"Ham & cheese croissant", desc:"Filled with cheese and York ham",                   price:3.00, emoji:"🥐", tags:["popular"] },
-        { id:"croissant_mant",   name:"Butter croissant",       desc:"Artisan butter croissant",                         price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
-        { id:"cookie_rv",        name:"Red Velvet cookie",      desc:"Red Velvet with Nutella, muscovado sugar",          price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
-        { id:"galleta_gata",     name:"Galleta Gata",           desc:"Artisan biscuit",                                   price:1.20, emoji:"🍪", tags:[] },
-        { id:"macaron",          name:"Almond macaron",         desc:"Gluten free · Ferrero · Pistachio-raspberry · Snickers · Salted caramel · Bounty · Raffaello · Strawberry · Mango-passionfruit · Raspberry · Vanilla · Milk choc", price:2.80, emoji:"🩷", tags:["popular"] },
-        { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_cacahuete",  name:"Date with peanut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_avellana",   name:"Date with hazelnut",     desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_nuez",       name:"Date with walnut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_negro",      name:"Dark chocolate date",    desc:"Sugar-free dark chocolate",                         price:2.50, emoji:"🍫", tags:["healthy"] },
+      { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", groups:[
+        { id:"croissant", name:"Croissant", emoji:"🥐", items:[
+          { id:"croissant_jamon",  name:"Ham & cheese croissant", desc:"Filled with cheese and York ham",                   price:3.00, emoji:"🥐", tags:["popular"] },
+          { id:"croissant_mant",   name:"Butter croissant",       desc:"Artisan butter croissant",                         price:1.50, emoji:"🥐", tags:[] },
+        ]},
+        { id:"cookie", name:"Cookie", emoji:"🍪", items:[
+          { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Red Velvet cookie",      desc:"Red Velvet with Nutella, muscovado sugar",          price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
+          { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.jpg", modalImage:"Assets/cookie-cholate-modal.jpg", tags:[] },
+          { id:"galleta_gata",     name:"Galleta Gata",           desc:"Artisan biscuit",                                   price:1.20, emoji:"🍪", tags:[] },
+        ]},
+        { id:"macaron", name:"Macaron", emoji:"🩷", items:[
+          { id:"macaron",          name:"Almond macaron",         desc:"Gluten free · Ferrero · Pistachio-raspberry · Snickers · Salted caramel · Bounty · Raffaello · Strawberry · Mango-passionfruit · Raspberry · Vanilla · Milk choc", price:2.80, emoji:"🩷", tags:["popular"] },
+        ]},
+        { id:"datil", name:"Dates", emoji:"🍫", items:[
+          { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
+          { id:"datil_cacahuete",  name:"Date with peanut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_avellana",   name:"Date with hazelnut",     desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_nuez",       name:"Date with walnut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_negro",      name:"Dark chocolate date",    desc:"Sugar-free dark chocolate",                         price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
+        ]},
       ]},
     ],
     specials:{ title:"El Tres Favourites", subtitle:"Most ordered by our customers", items:[
@@ -523,19 +595,27 @@ const MENU = {
         { id:"agua_gas",   name:"Газированная вода",   desc:"S.Pellegrino 500 мл",                                       price:2.00, emoji:"💧", tags:[] },
         { id:"agua_sin",   name:"Негазированная вода", desc:"Cortes 500 мл",                                             price:1.00, emoji:"💧", tags:["healthy"] },
       ]},
-      { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", items:[
-        { id:"croissant_jamon",  name:"Круассан с ветчиной и сыром", desc:"Начинка: сыр и ветчина",                      price:3.00, emoji:"🥐", tags:["popular"] },
-        { id:"croissant_mant",   name:"Круассан с маслом",           desc:"Ремесленный масляный круассан",               price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
-        { id:"cookie_rv",        name:"Cookie Red Velvet",           desc:"Красный бархат с Nutella",                    price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
-        { id:"galleta_gata",     name:"Galleta Gata",                desc:"Ремесленное печенье",                         price:1.20, emoji:"🍪", tags:[] },
-        { id:"macaron",          name:"Макарон миндальный",          desc:"Без глютена · Ferrero · Фисташка-малина · Snickers · Солёная карамель · Bounty · Raffaello · Клубника · Манго-маракуйя · Малина · Ваниль · Молочный шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
-        { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_cacahuete",  name:"Финик с арахисом",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_avellana",   name:"Финик с фундуком",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_nuez",       name:"Финик с грецким орехом",     desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_negro",      name:"Финик в чёрном шоколаде",   desc:"Чёрный шоколад без сахара",                   price:2.50, emoji:"🍫", tags:["healthy"] },
+      { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", groups:[
+        { id:"croissant", name:"Круассан", emoji:"🥐", items:[
+          { id:"croissant_jamon",  name:"Круассан с ветчиной и сыром", desc:"Начинка: сыр и ветчина",                      price:3.00, emoji:"🥐", tags:["popular"] },
+          { id:"croissant_mant",   name:"Круассан с маслом",           desc:"Ремесленный масляный круассан",               price:1.50, emoji:"🥐", tags:[] },
+        ]},
+        { id:"cookie", name:"Cookie", emoji:"🍪", items:[
+          { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Cookie Red Velvet",           desc:"Красный бархат с Nutella",                    price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
+          { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.jpg", modalImage:"Assets/cookie-cholate-modal.jpg", tags:[] },
+          { id:"galleta_gata",     name:"Galleta Gata",                desc:"Ремесленное печенье",                         price:1.20, emoji:"🍪", tags:[] },
+        ]},
+        { id:"macaron", name:"Макарон", emoji:"🩷", items:[
+          { id:"macaron",          name:"Макарон миндальный",          desc:"Без глютена · Ferrero · Фисташка-малина · Snickers · Солёная карамель · Bounty · Raffaello · Клубника · Манго-маракуйя · Малина · Ваниль · Молочный шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
+        ]},
+        { id:"datil", name:"Финики", emoji:"🍫", items:[
+          { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
+          { id:"datil_cacahuete",  name:"Финик с арахисом",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_avellana",   name:"Финик с фундуком",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_nuez",       name:"Финик с грецким орехом",     desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_negro",      name:"Финик в чёрном шоколаде",   desc:"Чёрный шоколад без сахара",                   price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
+        ]},
       ]},
     ],
     specials:{ title:"Фавориты El Tres", subtitle:"Самое популярное у наших гостей", items:[
@@ -569,19 +649,27 @@ const MENU = {
         { id:"agua_gas",   name:"Газована вода",       desc:"S.Pellegrino 500 мл",                                       price:2.00, emoji:"💧", tags:[] },
         { id:"agua_sin",   name:"Негазована вода",     desc:"Cortes 500 мл",                                             price:1.00, emoji:"💧", tags:["healthy"] },
       ]},
-      { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", items:[
-        { id:"croissant_jamon",  name:"Круасан з шинкою і сиром", desc:"Начинка: сир і шинка",                           price:3.00, emoji:"🥐", tags:["popular"] },
-        { id:"croissant_mant",   name:"Круасан з маслом",         desc:"Ремісничий масляний круасан",                    price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
-        { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Червоний оксамит з Nutella",                     price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
-        { id:"galleta_gata",     name:"Galleta Gata",             desc:"Ремісниче печиво",                               price:1.20, emoji:"🍪", tags:[] },
-        { id:"macaron",          name:"Макарон мигдальний",       desc:"Без глютену · Ferrero · Фісташка-малина · Snickers · Солона карамель · Bounty · Raffaello · Полуниця · Манго-маракуйя · Малина · Ваніль · Молочний шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
-        { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_cacahuete",  name:"Фінік з арахісом",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_avellana",   name:"Фінік з фундуком",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_nuez",       name:"Фінік з волоським горіхом", desc:"Вкритий шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_negro",      name:"Фінік у чорному шоколаді", desc:"Чорний шоколад без цукру",                      price:2.50, emoji:"🍫", tags:["healthy"] },
+      { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", groups:[
+        { id:"croissant", name:"Круасан", emoji:"🥐", items:[
+          { id:"croissant_jamon",  name:"Круасан з шинкою і сиром", desc:"Начинка: сир і шинка",                           price:3.00, emoji:"🥐", tags:["popular"] },
+          { id:"croissant_mant",   name:"Круасан з маслом",         desc:"Ремісничий масляний круасан",                    price:1.50, emoji:"🥐", tags:[] },
+        ]},
+        { id:"cookie", name:"Cookie", emoji:"🍪", items:[
+          { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Червоний оксамит з Nutella",                     price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
+          { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.jpg", modalImage:"Assets/cookie-cholate-modal.jpg", tags:[] },
+          { id:"galleta_gata",     name:"Galleta Gata",             desc:"Ремісниче печиво",                               price:1.20, emoji:"🍪", tags:[] },
+        ]},
+        { id:"macaron", name:"Макарон", emoji:"🩷", items:[
+          { id:"macaron",          name:"Макарон мигдальний",       desc:"Без глютену · Ferrero · Фісташка-малина · Snickers · Солона карамель · Bounty · Raffaello · Полуниця · Манго-маракуйя · Малина · Ваніль · Молочний шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
+        ]},
+        { id:"datil", name:"Фініки", emoji:"🍫", items:[
+          { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
+          { id:"datil_cacahuete",  name:"Фінік з арахісом",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_avellana",   name:"Фінік з фундуком",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_nuez",       name:"Фінік з волоським горіхом", desc:"Вкритий шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
+          { id:"datil_negro",      name:"Фінік у чорному шоколаді", desc:"Чорний шоколад без цукру",                      price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
+        ]},
       ]},
     ],
     specials:{ title:"Фаворити El Tres", subtitle:"Найпопулярніше у наших гостей", items:[
@@ -589,52 +677,6 @@ const MENU = {
       { id:"s2", name:"Лате + Макарон",           desc:"М'яке лате з макароном на вибір",                               price:6.00, emoji:"🩷" },
       { id:"s3", name:"Набір 4 макарони",         desc:"Оберіть 4 смаки з нашої колекції",                             price:10.00, emoji:"🎁" },
       { id:"s4", name:"Чай + Фінік",              desc:"Чорний або зелений чай з фініком у шоколаді",                   price:4.00, emoji:"🍵" },
-    ]}
-  },
-  pl: {
-    categories: [
-      { id:"coffee", name:"Specialty kawa", emoji:"☕", items:[
-        { id:"espresso",   name:"Espresso",       desc:"Intensywne solo",                                                price:1.50, emoji:"☕", tags:["popular"] },
-        { id:"doble",      name:"Podwójne",        desc:"Podwójne espresso",                                              price:2.00, emoji:"☕", tags:[] },
-        { id:"latte",      name:"Kawa z mlekiem",  desc:"Espresso z spienionym mlekiem",                                  price:2.50, emoji:"🥛", tags:["popular"] },
-        { id:"cortado",    name:"Cortado",         desc:"Espresso z odrobiną mleka",                                      price:2.30, emoji:"🍶", tags:[] },
-        { id:"americano",  name:"Americano",       desc:"Espresso z gorącą wodą",                                         price:2.00, emoji:"🖤", tags:[] },
-        { id:"flat",       name:"Flat White",      desc:"Podwójne ristretto z jedwabistą mikropianka",                    price:2.80, emoji:"🤍", tags:[] },
-        { id:"cappuccino", name:"Cappuccino",      desc:"Espresso z parowanym mlekiem i pianką",                          price:3.20, emoji:"🫧", tags:[] },
-        { id:"cafe_latte", name:"Latte",           desc:"Espresso z miękkim spienionym mlekiem",                          price:3.50, emoji:"🥛", tags:[] },
-      ]},
-      { id:"tea", name:"Herbaty", emoji:"🍵", items:[
-        { id:"te_negro_s",  name:"Czarna herbata 200 ml", desc:"Ceylon Highlands · Earl Grey · Paradise",                price:1.75, emoji:"🍵", tags:[] },
-        { id:"te_negro_l",  name:"Czarna herbata 500 ml", desc:"Ceylon Highlands · Earl Grey · Paradise",                price:4.00, emoji:"🍵", tags:[] },
-        { id:"te_verde_s",  name:"Zielona herbata 200 ml", desc:"Milk Oolong · Sancha Jasmin · Sancha",                  price:1.75, emoji:"🌿", tags:[] },
-        { id:"te_verde_l",  name:"Zielona herbata 500 ml", desc:"Milk Oolong · Sancha Jasmin · Sancha",                  price:4.00, emoji:"🌿", tags:[] },
-      ]},
-      { id:"cold", name:"Napoje", emoji:"🥤", items:[
-        { id:"cola",       name:"Coca Cola",           desc:"330 ml",                                                    price:1.70, emoji:"🥤", tags:[] },
-        { id:"naranja",    name:"Sok pomarańczowy",    desc:"Rioba 200 ml",                                              price:1.50, emoji:"🍊", tags:["healthy"] },
-        { id:"agua_gas",   name:"Woda gazowana",       desc:"S.Pellegrino 500 ml",                                       price:2.00, emoji:"💧", tags:[] },
-        { id:"agua_sin",   name:"Woda niegazowana",    desc:"Cortes 500 ml",                                             price:1.00, emoji:"💧", tags:["healthy"] },
-      ]},
-      { id:"pastry", name:"Pieczywo & Słodycze", emoji:"🥐", items:[
-        { id:"croissant_jamon",  name:"Rogalik z szynką i serem", desc:"Nadzienie: ser i szynka",                        price:3.00, emoji:"🥐", tags:["popular"] },
-        { id:"croissant_mant",   name:"Rogalik maślany",          desc:"Rzemieślniczy rogalik maślany",                  price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Pistacja",          desc:"Gourmet ciastko z cukrem muscovado",             price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
-        { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Red Velvet z Nutellą, cukier muscovado",         price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Czekolada",         desc:"Czekolada z Nutellą i orzechami laskowymi",      price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
-        { id:"galleta_gata",     name:"Galleta Gata",             desc:"Rzemieślnicze ciasteczko",                       price:1.20, emoji:"🍪", tags:[] },
-        { id:"macaron",          name:"Macaron migdałowy",        desc:"Bez glutenu · Ferrero · Pistacja-malina · Snickers · Słony karmel · Bounty · Raffaello · Truskawka · Mango-marakuja · Malina · Wanilia · Mleczna czekolada", price:2.80, emoji:"🩷", tags:["popular"] },
-        { id:"datil_pist",       name:"Daktyl z pistacją",        desc:"Pokryty czekoladą",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_cacahuete",  name:"Daktyl z orzeszkiem",      desc:"Pokryty czekoladą",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_avellana",   name:"Daktyl z orzechem lask.",  desc:"Pokryty czekoladą",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_nuez",       name:"Daktyl z orzechem włos.",  desc:"Pokryty czekoladą",                              price:2.50, emoji:"🍫", tags:[] },
-        { id:"datil_negro",      name:"Daktyl w czarnej czekoladzie", desc:"Czarna czekolada bez cukru",                 price:2.50, emoji:"🍫", tags:["healthy"] },
-      ]},
-    ],
-    specials:{ title:"Ulubione El Tres", subtitle:"Najczęściej zamawiane przez naszych gości", items:[
-      { id:"s1", name:"Kawa z mlekiem + Rogalik", desc:"Kawa z mlekiem i rogalik maślany",                              price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Latte + Macaron",          desc:"Delikatne latte z macaron do wyboru",                           price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Zestaw 4 Macarons",        desc:"Wybierz 4 smaki z naszej kolekcji",                            price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Herbata + Daktyl",         desc:"Czarna lub zielona herbata z daktyl w czekoladzie",             price:4.00, emoji:"🍵" },
     ]}
   },
 };
@@ -722,12 +764,38 @@ const MENU = {
   </div>
 </div>
 
+<!-- CHECKOUT DRAWER -->
+<div class="cart-overlay" id="checkoutOverlay" onclick="closeCheckoutEvent(event)">
+  <div class="cart-drawer" id="checkoutDrawer">
+    <div class="cart-drawer-handle"></div>
+    <div class="cart-drawer-head">
+      <span id="checkoutTitle"></span>
+      <button class="cart-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div id="orderTypeSection" style="padding:12px 22px 0">
+      <div id="orderTypeLabel" style="font-size:13px;color:var(--text2);margin-bottom:8px"></div>
+      <div style="display:flex;gap:8px" id="orderTypeBtns">
+        <button class="order-type-btn" data-type="pickup"   onclick="selectOrderType('pickup')"></button>
+        <button class="order-type-btn" data-type="delivery" onclick="selectOrderType('delivery')"></button>
+        <button class="order-type-btn" data-type="table"    onclick="selectOrderType('table')"></button>
+      </div>
+    </div>
+    <div id="checkoutFields" style="padding:12px 22px 0"></div>
+    <button class="cart-order-btn" id="checkoutSendBtn" onclick="submitOrder()"></button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- ═══════════ JS ═══════════ -->
 <script>
-let currentLang = "es";
+let currentLang = localStorage.getItem("lang") || "es";
+if (!["es","en","ru","uk"].includes(currentLang)) currentLang = "es";
+const urlParams = new URLSearchParams(window.location.search);
+const tableNumber = urlParams.get("table") || null;
+let orderType = null;
+let selectedTable = null;
 let cart = [];          // [{item, qty}]
 let modalItem = null;
 let modalQtyVal = 1;
@@ -736,9 +804,44 @@ let modalQtyVal = 1;
 function fmt(price) { return price.toFixed(2).replace(".",",") + " €"; }
 function tagClass(t) { return t==="popular"?"tag-popular":t==="vegetarian"?"tag-veg":t==="healthy"?"tag-healthy":"tag-seasonal"; }
 function tagLabel(t)  { return UI[currentLang].tags[t] || t; }
-function allItems()   {
+function allItems() {
   const d = MENU[currentLang];
-  return [...d.categories.flatMap(c=>c.items), ...d.specials.items];
+  return [
+    ...d.categories.flatMap(c => c.groups ? c.groups.flatMap(g=>g.items) : c.items),
+    ...d.specials.items
+  ];
+}
+
+/* ─── card html ─── */
+function renderCard(item) {
+  return `<div class="card${item.soldOut ? ' sold-out' : ''}" onclick="openModal('${item.id}', this)">
+    <div class="card-img" style="position:relative">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
+    <div class="card-body">
+      <div class="card-name">${item.name}</div>
+      <div class="card-desc">${item.desc}</div>
+      <div class="card-footer">
+        <span class="card-price">${fmt(item.price)}</span>
+        <div class="card-tags">${item.tags.slice(0,2).map(t=>`<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`).join("")}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─── group toggle ─── */
+function toggleGroup(id) {
+  const body = document.getElementById("grp-" + id);
+  const chev = document.getElementById("chev-" + id);
+  if (!body) return;
+  const isOpen = !body.classList.contains("collapsed");
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + "px";
+    requestAnimationFrame(()=>{ body.style.maxHeight = "0"; body.classList.add("collapsed"); });
+  } else {
+    body.classList.remove("collapsed");
+    body.style.maxHeight = body.scrollHeight + "px";
+    setTimeout(()=>{ body.style.maxHeight = "none"; }, 320);
+  }
+  chev?.classList.toggle("open", isOpen ? false : true);
 }
 
 /* ─── render ─── */
@@ -766,20 +869,25 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
   content.innerHTML = data.categories.map(cat=>`
     <section class="menu-section" id="${cat.id}">
       <div class="section-title"><span>${cat.emoji}</span>${cat.name}</div>
-      <div class="cards-grid">
-        ${cat.items.map(item=>`
-          <div class="card${item.soldOut ? ' sold-out' : ''}" onclick="openModal('${item.id}', this)">
-            <div class="card-img" style="position:relative">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">Agotado</span>` : ''}</div>
-            <div class="card-body">
-              <div class="card-name">${item.name}</div>
-              <div class="card-desc">${item.desc}</div>
-              <div class="card-footer">
-                <span class="card-price">${fmt(item.price)}</span>
-                <div class="card-tags">${item.tags.slice(0,2).map(t=>`<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`).join("")}</div>
-              </div>
+      ${cat.groups ? cat.groups.map(g=>`
+        <div class="group-wrap">
+          <div class="group-header" onclick="toggleGroup('${cat.id}-${g.id}')">
+            <div class="group-header-left">
+              <span class="group-header-emoji">${g.emoji||''}</span>
+              <span class="group-header-name">${g.name}</span>
+              <span class="group-header-count">${g.items.length}</span>
             </div>
-          </div>`).join("")}
-      </div>
+            <span class="group-chevron open" id="chev-${cat.id}-${g.id}">▼</span>
+          </div>
+          <div class="group-body" id="grp-${cat.id}-${g.id}">
+            <div class="cards-grid" style="padding-top:4px">
+              ${g.items.map(item=>renderCard(item)).join("")}
+            </div>
+          </div>
+        </div>`).join("") : `
+      <div class="cards-grid">
+        ${cat.items.map(item=>renderCard(item)).join("")}
+      </div>`}
     </section>`).join("");
 
   // specials
@@ -831,6 +939,7 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
 /* ─── lang ─── */
 function setLang(lang) {
   currentLang = lang;
+  localStorage.setItem("lang", lang);
   document.getElementById("langDropdown").classList.remove("open");
   render();
 }
@@ -920,10 +1029,9 @@ function onSearch(q) {
     sec.style.display = visible ? "" : "none";
   });
   const ui = UI[currentLang];
-  const ui2 = UI[currentLang];
   document.getElementById("searchEmpty").classList.toggle("visible", total === 0 && val.length > 0);
-  document.getElementById("searchEmptyMsg").textContent = ui2.searchEmpty || "No hay resultados";
-  document.getElementById("searchInput").setAttribute("placeholder", ui2.searchPlaceholder || "Buscar...");
+  document.getElementById("searchEmptyMsg").textContent = ui.searchEmpty || "No hay resultados";
+  document.getElementById("searchInput").setAttribute("placeholder", ui.searchPlaceholder || "Buscar...");
 }
 function clearSearch() {
   document.getElementById("searchInput").value = "";
@@ -1064,11 +1172,8 @@ function cartChangeQty(idx, delta) {
 }
 
 function confirmOrder() {
-  const ui = UI[currentLang];
-  cart = [];
   closeCart();
-  updateCartUI();
-  showToast("✅ " + ui.orderBtn + "!");
+  openCheckout();
 }
 
 /* ══════════════════════════════════════
@@ -1081,6 +1186,143 @@ function showToast(msg) {
   t.classList.add("show");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>t.classList.remove("show"), 2200);
+}
+
+/* ══════════════════════════════════════
+   CHECKOUT
+══════════════════════════════════════ */
+function openCheckout() {
+  orderType = tableNumber ? "table" : null;
+  selectedTable = null;
+  renderCheckout();
+  document.getElementById("checkoutOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeCheckout() {
+  document.getElementById("checkoutOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+function closeCheckoutEvent(e) {
+  if (e.target === document.getElementById("checkoutOverlay")) closeCheckout();
+}
+function selectOrderType(type) {
+  orderType = type;
+  selectedTable = null;
+  document.querySelectorAll(".order-type-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.type === type));
+  renderCheckoutFields();
+}
+function selectTable(n) {
+  selectedTable = n;
+  document.querySelectorAll(".table-num-btn").forEach(b =>
+    b.classList.toggle("active", parseInt(b.textContent) === n));
+}
+function renderCheckout() {
+  const ui = UI[currentLang];
+  document.getElementById("checkoutTitle").textContent    = ui.cartTitle;
+  document.getElementById("orderTypeLabel").textContent   = ui.orderType;
+  document.getElementById("checkoutSendBtn").textContent  = ui.send;
+  document.getElementById("orderTypeSection").style.display = tableNumber ? "none" : "";
+  const btns = document.getElementById("orderTypeBtns").children;
+  btns[0].textContent = "🥡 " + ui.pickup;
+  btns[1].textContent = "🛵 " + ui.delivery;
+  btns[2].textContent = "🪑 " + ui.tableOrder;
+  document.querySelectorAll(".order-type-btn").forEach(b =>
+    b.classList.toggle("active", tableNumber ? b.dataset.type === "table" : false));
+  renderCheckoutFields();
+}
+function renderCheckoutFields() {
+  const ui = UI[currentLang];
+  const el = document.getElementById("checkoutFields");
+  if (orderType === "table") {
+    if (tableNumber) {
+      el.innerHTML = `<div class="checkout-field"><label>${ui.tableNum}</label><div style="font-size:24px;font-weight:800;color:var(--brand-dark);margin-top:2px">#${tableNumber}</div></div>`;
+    } else {
+      el.innerHTML = `<div class="checkout-field"><label>${ui.tableSelect}</label><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">${CONFIG.tables.map(n=>`<button class="table-num-btn${selectedTable===n?" active":""}" onclick="selectTable(${n})">${n}</button>`).join("")}</div></div>`;
+    }
+    return;
+  }
+  if (!orderType) { el.innerHTML = ""; return; }
+  let html = `
+    <div class="checkout-field"><label>${ui.yourName} *</label><input class="checkout-input" id="co-name" type="text" autocomplete="given-name"></div>
+    <div class="checkout-field"><label>${ui.yourPhone} *</label><input class="checkout-input" id="co-phone" type="tel" autocomplete="tel"></div>`;
+  if (orderType === "pickup") {
+    html += `<div class="checkout-field"><label>${ui.pickupTime}</label><input class="checkout-input" id="co-time" type="time" min="09:00" max="18:00"></div>`;
+  } else if (orderType === "delivery") {
+    html += `<div class="checkout-field"><label>${ui.address2} *</label><div style="position:relative" id="addr-wrap"><input class="checkout-input" id="co-address" type="text" autocomplete="off" oninput="onAddressInput(this.value)" onblur="hideAddrSuggestions()" placeholder="Calle, número, piso..."><div class="addr-suggestions" id="addr-suggestions" style="display:none"></div></div></div>`;
+  }
+  el.innerHTML = html;
+}
+function submitOrder() {
+  const ui = UI[currentLang];
+  if (!orderType) { showToast("⚠️ " + ui.orderType); return; }
+  if (orderType === "table") {
+    const tbl = tableNumber || selectedTable;
+    if (!tbl) { showToast("⚠️ " + ui.tableSelect); return; }
+  } else {
+    const name  = document.getElementById("co-name")?.value.trim();
+    const phone = document.getElementById("co-phone")?.value.trim();
+    if (!name || !phone) { showToast("⚠️ " + ui.yourName + " / " + ui.yourPhone); return; }
+    if (orderType === "delivery") {
+      const addr = document.getElementById("co-address")?.value.trim();
+      if (!addr) { showToast("⚠️ " + ui.address2); return; }
+    }
+  }
+  const items = cart.map(c=>`• ${c.qty}× ${c.item.name} — ${fmt(c.item.price*c.qty)}`).join("\n");
+  const total = cart.reduce((s,c)=>s+c.item.price*c.qty, 0);
+  let header = "";
+  if (orderType === "table") {
+    header = `🪑 ${ui.tableNum} #${tableNumber||selectedTable}`;
+  } else if (orderType === "pickup") {
+    const name  = document.getElementById("co-name").value.trim();
+    const phone = document.getElementById("co-phone").value.trim();
+    const time  = document.getElementById("co-time")?.value || "";
+    header = `🥡 ${ui.pickup}\n👤 ${name}\n📞 ${phone}${time?"\n🕐 "+time:""}`;
+  } else if (orderType === "delivery") {
+    const name  = document.getElementById("co-name").value.trim();
+    const phone = document.getElementById("co-phone").value.trim();
+    const addr  = document.getElementById("co-address").value.trim();
+    header = `🛵 ${ui.delivery}\n👤 ${name}\n📞 ${phone}\n📍 ${addr}`;
+  }
+  const message = `📋 El Tres — Nuevo pedido\n\n${header}\n\n${items}\n\n💰 Total: ${fmt(total)}`;
+  cart = []; updateCartUI(); closeCheckout();
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
+}
+
+/* ─── address autocomplete ─── */
+let addrTimer;
+function onAddressInput(val) {
+  clearTimeout(addrTimer);
+  const box = document.getElementById("addr-suggestions");
+  if (!box) return;
+  if (val.trim().length < 3) { box.style.display = "none"; return; }
+  addrTimer = setTimeout(()=>fetchAddrSuggestions(val), 350);
+}
+async function fetchAddrSuggestions(q) {
+  const box = document.getElementById("addr-suggestions");
+  if (!box) return;
+  try {
+    const lang = (currentLang==="ru"||currentLang==="uk") ? "es" : currentLang;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=4&countrycodes=es&addressdetails=1`;
+    const res  = await fetch(url, { headers:{"Accept-Language": lang} });
+    const data = await res.json();
+    if (!data.length) { box.style.display = "none"; return; }
+    box.innerHTML = data.map(r => {
+      const a = r.address;
+      const parts = [a.road, a.house_number, a.apartment ? `apt. ${a.apartment}` : null, a.city||a.town||a.village].filter(Boolean);
+      const label = parts.length ? parts.join(", ") : r.display_name.split(",").slice(0,3).join(",");
+      return `<div class="addr-suggestion" onmousedown="pickAddress('${label.replace(/'/g,"\\'")}')">📍 ${label}</div>`;
+    }).join("");
+    box.style.display = "block";
+  } catch { box.style.display = "none"; }
+}
+function pickAddress(val) {
+  const input = document.getElementById("co-address");
+  if (input) input.value = val;
+  hideAddrSuggestions();
+}
+function hideAddrSuggestions() {
+  setTimeout(()=>{ const box = document.getElementById("addr-suggestions"); if (box) box.style.display = "none"; }, 150);
 }
 
 /* ── init ── */

@@ -268,7 +268,7 @@
     }
     /* big emoji / image area */
     .modal-img {
-      width:100%; height:200px;
+      width:100%; height:320px;
       background:var(--brand-muted);
       display:flex; align-items:center; justify-content:center;
       font-size:80px;
@@ -434,9 +434,9 @@ const MENU = {
       { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", items:[
         { id:"croissant_jamon",  name:"Croissant jamón y queso", desc:"Croissant relleno de queso y jamón de York",       price:3.00, emoji:"🥐", tags:["popular"] },
         { id:"croissant_mant",   name:"Croissant mantequilla",   desc:"Croissant de mantequilla artesanal",               price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", tags:["popular"] },
+        { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
         { id:"cookie_rv",        name:"Cookie Red Velvet",       desc:"Red Velvet con Nutella, azúcar muscovado",         price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", tags:[] },
+        { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
         { id:"galleta_gata",     name:"Galleta Gata",            desc:"Galleta artesana",                                 price:1.20, emoji:"🍪", tags:[] },
         { id:"macaron",          name:"Macaron de almendra",     desc:"Sin gluten · Ferrero · Pistacho-frambuesa · Snickers · Caramelo salado · Bounty · Raffaello · Fresa · Mango-maracuyá · Frambuesa · Vainilla · Choco con leche", price:2.80, emoji:"🩷", tags:["popular"] },
         { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
@@ -480,9 +480,9 @@ const MENU = {
       { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", items:[
         { id:"croissant_jamon",  name:"Ham & cheese croissant", desc:"Filled with cheese and York ham",                   price:3.00, emoji:"🥐", tags:["popular"] },
         { id:"croissant_mant",   name:"Butter croissant",       desc:"Artisan butter croissant",                         price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", tags:["popular"] },
+        { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
         { id:"cookie_rv",        name:"Red Velvet cookie",      desc:"Red Velvet with Nutella, muscovado sugar",          price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", tags:[] },
+        { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
         { id:"galleta_gata",     name:"Galleta Gata",           desc:"Artisan biscuit",                                   price:1.20, emoji:"🍪", tags:[] },
         { id:"macaron",          name:"Almond macaron",         desc:"Gluten free · Ferrero · Pistachio-raspberry · Snickers · Salted caramel · Bounty · Raffaello · Strawberry · Mango-passionfruit · Raspberry · Vanilla · Milk choc", price:2.80, emoji:"🩷", tags:["popular"] },
         { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
@@ -526,9 +526,9 @@ const MENU = {
       { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", items:[
         { id:"croissant_jamon",  name:"Круассан с ветчиной и сыром", desc:"Начинка: сыр и ветчина",                      price:3.00, emoji:"🥐", tags:["popular"] },
         { id:"croissant_mant",   name:"Круассан с маслом",           desc:"Ремесленный масляный круассан",               price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", tags:["popular"] },
+        { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
         { id:"cookie_rv",        name:"Cookie Red Velvet",           desc:"Красный бархат с Nutella",                    price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", tags:[] },
+        { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
         { id:"galleta_gata",     name:"Galleta Gata",                desc:"Ремесленное печенье",                         price:1.20, emoji:"🍪", tags:[] },
         { id:"macaron",          name:"Макарон миндальный",          desc:"Без глютена · Ferrero · Фисташка-малина · Snickers · Солёная карамель · Bounty · Raffaello · Клубника · Манго-маракуйя · Малина · Ваниль · Молочный шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
         { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
@@ -572,9 +572,9 @@ const MENU = {
       { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", items:[
         { id:"croissant_jamon",  name:"Круасан з шинкою і сиром", desc:"Начинка: сир і шинка",                           price:3.00, emoji:"🥐", tags:["popular"] },
         { id:"croissant_mant",   name:"Круасан з маслом",         desc:"Ремісничий масляний круасан",                    price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", tags:["popular"] },
+        { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
         { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Червоний оксамит з Nutella",                     price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", tags:[] },
+        { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
         { id:"galleta_gata",     name:"Galleta Gata",             desc:"Ремісниче печиво",                               price:1.20, emoji:"🍪", tags:[] },
         { id:"macaron",          name:"Макарон мигдальний",       desc:"Без глютену · Ferrero · Фісташка-малина · Snickers · Солона карамель · Bounty · Raffaello · Полуниця · Манго-маракуйя · Малина · Ваніль · Молочний шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
         { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
@@ -618,9 +618,9 @@ const MENU = {
       { id:"pastry", name:"Pieczywo & Słodycze", emoji:"🥐", items:[
         { id:"croissant_jamon",  name:"Rogalik z szynką i serem", desc:"Nadzienie: ser i szynka",                        price:3.00, emoji:"🥐", tags:["popular"] },
         { id:"croissant_mant",   name:"Rogalik maślany",          desc:"Rzemieślniczy rogalik maślany",                  price:1.50, emoji:"🥐", tags:[] },
-        { id:"cookie_pist",      name:"Cookie Pistacja",          desc:"Gourmet ciastko z cukrem muscovado",             price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", tags:["popular"] },
+        { id:"cookie_pist",      name:"Cookie Pistacja",          desc:"Gourmet ciastko z cukrem muscovado",             price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.jpg", modalImage:"Assets/cookie-pistachio-part.jpg", modalImagePosition:"center top", tags:["popular"] },
         { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Red Velvet z Nutellą, cukier muscovado",         price:4.00, emoji:"🍪", tags:[] },
-        { id:"cookie_choco",     name:"Cookie Czekolada",         desc:"Czekolada z Nutellą i orzechami laskowymi",      price:4.00, emoji:"🍪", tags:[] },
+        { id:"cookie_choco",     name:"Cookie Czekolada",         desc:"Czekolada z Nutellą i orzechami laskowymi",      price:4.00, emoji:"🍪", image:"Assets/Chocolate-con-nutella-y-avellana.jpg", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.jpg", tags:[] },
         { id:"galleta_gata",     name:"Galleta Gata",             desc:"Rzemieślnicze ciasteczko",                       price:1.20, emoji:"🍪", tags:[] },
         { id:"macaron",          name:"Macaron migdałowy",        desc:"Bez glutenu · Ferrero · Pistacja-malina · Snickers · Słony karmel · Bounty · Raffaello · Truskawka · Mango-marakuja · Malina · Wanilia · Mleczna czekolada", price:2.80, emoji:"🩷", tags:["popular"] },
         { id:"datil_pist",       name:"Daktyl z pistacją",        desc:"Pokryty czekoladą",                              price:2.50, emoji:"🍫", tags:[] },
@@ -941,8 +941,9 @@ function openModal(itemId, triggerEl) {
 
   const modalImgEl = document.getElementById("modalImg");
   const modalSrc = item.modalImage || item.image;
+  const modalPos = item.modalImagePosition || "center bottom";
   if (modalSrc) {
-    modalImgEl.innerHTML = `<img src="${modalSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+    modalImgEl.innerHTML = `<img src="${modalSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;object-position:${modalPos};display:block;">`;
   } else {
     modalImgEl.textContent = item.emoji;
   }

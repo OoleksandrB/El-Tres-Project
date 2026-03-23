@@ -406,6 +406,25 @@
     .group-body.collapsed { max-height:0 !important; opacity:0; }
     .group-wrap { margin-bottom:20px; }
 
+    /* ─── MACARON FLAVOR LIST ─── */
+    .macaron-intro { padding:0 16px 20px; }
+    .macaron-base-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text3); margin-bottom:8px; }
+    .macaron-base { font-size:13px; color:var(--text2); line-height:1.5; }
+    .macaron-price-badge {
+      display:inline-block; background:var(--brand); color:#fff;
+      font-size:14px; font-weight:800; padding:6px 18px; border-radius:999px;
+      margin:4px 0 20px;
+    }
+    .macaron-grid { display:flex; flex-direction:column; gap:2px; padding:0 16px 32px; }
+    .macaron-row {
+      display:flex; align-items:baseline; gap:10px;
+      padding:12px 0; border-bottom:1px solid var(--border);
+    }
+    .macaron-row:last-child { border-bottom:none; }
+    .macaron-dot { width:8px; height:8px; border-radius:50%; background:var(--brand); flex:none; margin-top:5px; }
+    .macaron-name { font-size:15px; font-weight:700; color:var(--text); min-width:120px; flex:none; }
+    .macaron-comp { font-size:13px; color:var(--text2); line-height:1.4; flex:1; }
+
     /* ─── CHECKOUT ─── */
     .order-type-btn {
       flex:1; padding:10px 6px; border-radius:14px; border:2px solid var(--border);
@@ -509,6 +528,27 @@ const MENU = {
           { id:"datil_negro",      name:"Dátil chocolate negro",   desc:"En chocolate negro sin azúcar",                    price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
         ]},
       ]},
+      { id:"macarons", name:"Macarons", emoji:"🩷", type:"flavors",
+        price: 2.80, priceLabel: "2,80 € / unidad",
+        gluten: "Sin gluten",
+        baseLabel: "Base",
+        base: "Harina de almendra · azúcar · clara de huevo",
+        flavorsLabel: "Sabores",
+        flavors: [
+          { name:"Ferrero",                    comp:"Chocolate con leche · nata · pasta de avellana · avellanas" },
+          { name:"Pistacho · frambuesa",        comp:"Chocolate blanco · nata · pasta de pistacho · frambuesa" },
+          { name:"Snickers",                   comp:"Chocolate con leche · nata · crema de cacahuete · azúcar · mantequilla" },
+          { name:"Caramelo salado · avellana",  comp:"Chocolate blanco · nata · azúcar · pasta de avellana · mantequilla" },
+          { name:"Bounty",                     comp:"Chocolate blanco · nata · crema de coco" },
+          { name:"Raffaello",                  comp:"Chocolate blanco · nata · crema de coco · coco rallado · almendra · pasta de almendra" },
+          { name:"Fresa",                      comp:"Chocolate blanco · nata · fresa" },
+          { name:"Mango · maracuyá",            comp:"Chocolate blanco · nata · mango · maracuyá" },
+          { name:"Frambuesa",                  comp:"Chocolate blanco · nata · frambuesa" },
+          { name:"Vainilla",                   comp:"Chocolate blanco · nata · vainilla" },
+          { name:"Chocolate con leche",        comp:"Chocolate con leche · nata" },
+        ],
+        items: [],
+      },
     ],
     specials:{ title:"Favoritos de El Tres", subtitle:"Lo más pedido por nuestros clientes", items:[
       { id:"s1", name:"Café con leche + Croissant", desc:"Café con leche artesanal con croissant de mantequilla",        price:3.80, emoji:"🥐" },
@@ -563,6 +603,27 @@ const MENU = {
           { id:"datil_negro",      name:"Dark chocolate date",    desc:"Sugar-free dark chocolate",                         price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
         ]},
       ]},
+      { id:"macarons", name:"Macarons", emoji:"🩷", type:"flavors",
+        price: 2.80, priceLabel: "2.80 € / unit",
+        gluten: "Gluten free",
+        baseLabel: "Base",
+        base: "Almond flour · sugar · egg white",
+        flavorsLabel: "Flavours",
+        flavors: [
+          { name:"Ferrero",                    comp:"Milk chocolate · cream · hazelnut paste · hazelnuts" },
+          { name:"Pistachio · raspberry",       comp:"White chocolate · cream · pistachio paste · raspberry" },
+          { name:"Snickers",                   comp:"Milk chocolate · cream · peanut butter · sugar · butter" },
+          { name:"Salted caramel · hazelnut",   comp:"White chocolate · cream · sugar · hazelnut paste · butter" },
+          { name:"Bounty",                     comp:"White chocolate · cream · coconut cream" },
+          { name:"Raffaello",                  comp:"White chocolate · cream · coconut cream · shredded coconut · almond · almond paste" },
+          { name:"Strawberry",                 comp:"White chocolate · cream · strawberry" },
+          { name:"Mango · passionfruit",        comp:"White chocolate · cream · mango · passionfruit" },
+          { name:"Raspberry",                  comp:"White chocolate · cream · raspberry" },
+          { name:"Vanilla",                    comp:"White chocolate · cream · vanilla" },
+          { name:"Milk chocolate",             comp:"Milk chocolate · cream" },
+        ],
+        items: [],
+      },
     ],
     specials:{ title:"El Tres Favourites", subtitle:"Most ordered by our customers", items:[
       { id:"s1", name:"White coffee + Croissant", desc:"Coffee with milk and artisan butter croissant",                  price:3.80, emoji:"🥐" },
@@ -617,6 +678,27 @@ const MENU = {
           { id:"datil_negro",      name:"Финик в чёрном шоколаде",   desc:"Чёрный шоколад без сахара",                   price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
         ]},
       ]},
+      { id:"macarons", name:"Макароны", emoji:"🩷", type:"flavors",
+        price: 2.80, priceLabel: "2,80 € / шт",
+        gluten: "Без глютена",
+        baseLabel: "Основа",
+        base: "Миндальная мука · сахар · белок яйца",
+        flavorsLabel: "Вкусы",
+        flavors: [
+          { name:"Ferrero",                    comp:"Молочный шоколад · сливки · паста из фундука · фундук" },
+          { name:"Фисташка · малина",           comp:"Белый шоколад · сливки · фисташковая паста · малина" },
+          { name:"Snickers",                   comp:"Молочный шоколад · сливки · арахисовая паста · сахар · масло" },
+          { name:"Солёная карамель · фундук",   comp:"Белый шоколад · сливки · сахар · паста из фундука · масло" },
+          { name:"Bounty",                     comp:"Белый шоколад · сливки · кокосовый крем" },
+          { name:"Raffaello",                  comp:"Белый шоколад · сливки · кокосовый крем · кокос · миндаль · миндальная паста" },
+          { name:"Клубника",                   comp:"Белый шоколад · сливки · клубника" },
+          { name:"Манго · маракуйя",            comp:"Белый шоколад · сливки · манго · маракуйя" },
+          { name:"Малина",                     comp:"Белый шоколад · сливки · малина" },
+          { name:"Ваниль",                     comp:"Белый шоколад · сливки · ваниль" },
+          { name:"Молочный шоколад",           comp:"Молочный шоколад · сливки" },
+        ],
+        items: [],
+      },
     ],
     specials:{ title:"Фавориты El Tres", subtitle:"Самое популярное у наших гостей", items:[
       { id:"s1", name:"Кофе с молоком + Круассан", desc:"Кофе с молоком и масляный круассан",                           price:3.80, emoji:"🥐" },
@@ -671,6 +753,27 @@ const MENU = {
           { id:"datil_negro",      name:"Фінік у чорному шоколаді", desc:"Чорний шоколад без цукру",                      price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.jpg", modalImage:"Assets/date-without-sugar-modal.jpg", tags:["healthy"] },
         ]},
       ]},
+      { id:"macarons", name:"Макарони", emoji:"🩷", type:"flavors",
+        price: 2.80, priceLabel: "2,80 € / шт",
+        gluten: "Без глютену",
+        baseLabel: "Основа",
+        base: "Мигдалеве борошно · цукор · білок яйця",
+        flavorsLabel: "Смаки",
+        flavors: [
+          { name:"Ferrero",                    comp:"Молочний шоколад · вершки · паста з фундука · фундук" },
+          { name:"Фісташка · малина",           comp:"Білий шоколад · вершки · фісташкова паста · малина" },
+          { name:"Snickers",                   comp:"Молочний шоколад · вершки · арахісова паста · цукор · масло" },
+          { name:"Солона карамель · фундук",    comp:"Білий шоколад · вершки · цукор · паста з фундука · масло" },
+          { name:"Bounty",                     comp:"Білий шоколад · вершки · кокосовий крем" },
+          { name:"Raffaello",                  comp:"Білий шоколад · вершки · кокосовий крем · кокос · мигдаль · мигдальна паста" },
+          { name:"Полуниця",                   comp:"Білий шоколад · вершки · полуниця" },
+          { name:"Манго · маракуйя",            comp:"Білий шоколад · вершки · манго · маракуйя" },
+          { name:"Малина",                     comp:"Білий шоколад · вершки · малина" },
+          { name:"Ваніль",                     comp:"Білий шоколад · вершки · ваніль" },
+          { name:"Молочний шоколад",           comp:"Молочний шоколад · вершки" },
+        ],
+        items: [],
+      },
     ],
     specials:{ title:"Фаворити El Tres", subtitle:"Найпопулярніше у наших гостей", items:[
       { id:"s1", name:"Кава з молоком + Круасан", desc:"Кава з молоком і масляний круасан",                             price:3.80, emoji:"🥐" },
@@ -807,7 +910,7 @@ function tagLabel(t)  { return UI[currentLang].tags[t] || t; }
 function allItems() {
   const d = MENU[currentLang];
   return [
-    ...d.categories.flatMap(c => c.groups ? c.groups.flatMap(g=>g.items) : c.items),
+    ...d.categories.flatMap(c => c.type==="flavors" ? [] : c.groups ? c.groups.flatMap(g=>g.items) : c.items),
     ...d.specials.items
   ];
 }
@@ -884,7 +987,23 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
               ${g.items.map(item=>renderCard(item)).join("")}
             </div>
           </div>
-        </div>`).join("") : `
+        </div>`).join("") : cat.type === "flavors" ? `
+      <div class="macaron-intro">
+        <span class="macaron-price-badge">${cat.priceLabel}</span>
+        <div class="macaron-base-label">${cat.baseLabel}</div>
+        <div class="macaron-base">${cat.base}</div>
+      </div>
+      <div class="macaron-intro" style="padding-top:0">
+        <div class="macaron-base-label">${cat.flavorsLabel}</div>
+      </div>
+      <div class="macaron-grid">
+        ${cat.flavors.map(f=>`
+          <div class="macaron-row">
+            <div class="macaron-dot"></div>
+            <div class="macaron-name">${f.name}</div>
+            <div class="macaron-comp">${f.comp}</div>
+          </div>`).join("")}
+      </div>` : `
       <div class="cards-grid">
         ${cat.items.map(item=>renderCard(item)).join("")}
       </div>`}
@@ -955,7 +1074,7 @@ function scrollToSection(id) {
 }
 function updateActiveTab() {
   const navH = document.querySelector(".cat-nav")?.offsetHeight || 56;
-  const ids = ["coffee","tea","cold","pastry","specials","about"];
+  const ids = ["coffee","tea","cold","pastry","macarons","specials","about"];
   const threshold = navH + Math.round(window.innerHeight * 0.25);
   let active = ids[0];
   for (const id of ids) {

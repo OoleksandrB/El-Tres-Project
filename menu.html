@@ -503,7 +503,7 @@ const MENU = {
           { id:"galleta_gata",     name:"Galleta Gata",            desc:"Galleta artesana",                                 price:1.20, emoji:"🍪", tags:[] },
         ]},
         { id:"macaron", name:"Macaron", emoji:"🩷", items:[
-          { id:"macaron",          name:"Macaron con harina de almendra",     desc:"Sin gluten · Ferrero · Pistacho-frambuesa · Snickers · Caramelo salado · Bounty · Raffaello · Fresa · Mango-maracuyá · Frambuesa · Vainilla · Choco con leche", price:2.80, emoji:"🩷", tags:["popular"] },
+          { id:"macaron",          name:"Macaron con harina de almendra",     desc:"Sin gluten · Ferrero · Pistacho-frambuesa · Snickers · Caramelo salado · Bounty · Raffaello · Fresa · Mango-maracuyá · Frambuesa · Vainilla · Choco con leche", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
         ]},
         { id:"datil", name:"Dátiles", emoji:"🍫", items:[
           { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
@@ -572,7 +572,7 @@ const MENU = {
           { id:"galleta_gata",     name:"Galleta Gata",           desc:"Artisan biscuit",                                   price:1.20, emoji:"🍪", tags:[] },
         ]},
         { id:"macaron", name:"Macaron", emoji:"🩷", items:[
-          { id:"macaron",          name:"Almond macaron",         desc:"Gluten free · Ferrero · Pistachio-raspberry · Snickers · Salted caramel · Bounty · Raffaello · Strawberry · Mango-passionfruit · Raspberry · Vanilla · Milk choc", price:2.80, emoji:"🩷", tags:["popular"] },
+          { id:"macaron",          name:"Almond macaron",         desc:"Gluten free · Ferrero · Pistachio-raspberry · Snickers · Salted caramel · Bounty · Raffaello · Strawberry · Mango-passionfruit · Raspberry · Vanilla · Milk choc", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
         ]},
         { id:"datil", name:"Dates", emoji:"🍫", items:[
           { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
@@ -641,7 +641,7 @@ const MENU = {
           { id:"galleta_gata",     name:"Galleta Gata",                desc:"Ремесленное печенье",                         price:1.20, emoji:"🍪", tags:[] },
         ]},
         { id:"macaron", name:"Макарон", emoji:"🩷", items:[
-          { id:"macaron",          name:"Макарон миндальный",          desc:"Без глютена · Ferrero · Фисташка-малина · Snickers · Солёная карамель · Bounty · Raffaello · Клубника · Манго-маракуйя · Малина · Ваниль · Молочный шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
+          { id:"macaron",          name:"Макарон миндальный",          desc:"Без глютена · Ferrero · Фисташка-малина · Snickers · Солёная карамель · Bounty · Raffaello · Клубника · Манго-маракуйя · Малина · Ваниль · Молочный шоколад", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
         ]},
         { id:"datil", name:"Финики", emoji:"🍫", items:[
           { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
@@ -710,7 +710,7 @@ const MENU = {
           { id:"galleta_gata",     name:"Galleta Gata",             desc:"Ремісниче печиво",                               price:1.20, emoji:"🍪", tags:[] },
         ]},
         { id:"macaron", name:"Макарон", emoji:"🩷", items:[
-          { id:"macaron",          name:"Макарон мигдальний",       desc:"Без глютену · Ferrero · Фісташка-малина · Snickers · Солона карамель · Bounty · Raffaello · Полуниця · Манго-маракуйя · Малина · Ваніль · Молочний шоколад", price:2.80, emoji:"🩷", tags:["popular"] },
+          { id:"macaron",          name:"Макарон мигдальний",       desc:"Без глютену · Ferrero · Фісташка-малина · Snickers · Солона карамель · Bounty · Raffaello · Полуниця · Манго-маракуйя · Малина · Ваніль · Молочний шоколад", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
         ]},
         { id:"datil", name:"Фініки", emoji:"🍫", items:[
           { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.jpg", modalImage:"Assets/date-pistachio-modal.jpg", tags:[] },
@@ -877,7 +877,7 @@ function allItems() {
 /* ─── card html ─── */
 function renderCard(item) {
   return `<div class="card${item.soldOut ? ' sold-out' : ''}" onclick="openModal('${item.id}', this)">
-    <div class="card-img" style="position:relative">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
+    <div class="card-img" style="position:relative${item.imageContain ? ';background:#fff' : ''}">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy"${item.imageContain ? ' style="object-fit:contain"' : ''}>` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
     <div class="card-body">
       <div class="card-name">${item.name}</div>
       <div class="card-desc">${item.desc}</div>
@@ -1113,8 +1113,10 @@ function openModal(itemId, triggerEl) {
   const modalSrc = item.modalImage || item.image;
   const modalPos = item.modalImagePosition || "center bottom";
   if (modalSrc) {
-    modalImgEl.innerHTML = `<img src="${modalSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;object-position:${modalPos};display:block;">`;
+    modalImgEl.style.background = item.imageContain ? '#fff' : '';
+    modalImgEl.innerHTML = `<img src="${modalSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:${item.imageContain ? 'contain' : 'cover'};object-position:${modalPos};display:block;">`;
   } else {
+    modalImgEl.style.background = '';
     modalImgEl.textContent = item.emoji;
   }
   document.getElementById("modalName").textContent     = item.name;

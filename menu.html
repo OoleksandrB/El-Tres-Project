@@ -522,7 +522,7 @@ const MENU = {
         { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 kg",           price:37.00, emoji:"📦", tags:[] },
         { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 kg",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
         { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", image:"Assets/blend-vanilla-bloom-filter.png", modalImage:"Assets/blend-vanilla-bloom-filter.png", imageContain:true, tags:[] },
+        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", tags:[] },
         { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
         { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
@@ -531,21 +531,21 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
       ]},
       { id:"yogur", name:"Yogur con granola", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Salado", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Ensalada con salmón",           desc:"Ensalada fresca con salmón",                                                                                   price:9.00, emoji:"🥗", tags:[] },
+        { id:"es_salmon",        name:"Ensalada con salmón",           desc:"Ensalada fresca con salmón",                                                                                   price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Tostadas", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Pan rústico", emoji:"🍞", items:[
-          { id:"toast_rust_aceite",  name:"Pan rústico con aceite de oliva",         desc:"",  price:2.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_jamon",   name:"Pan rústico con jamón y aceite de oliva", desc:"",  price:3.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_mant",    name:"Pan rústico con mantequilla y mermelada", desc:"",  price:2.20, emoji:"🍞", tags:[] },
+          { id:"toast_rust_aceite",  name:"Pan rústico con aceite de oliva",         desc:"",  price:2.00, emoji:"🍞", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
+          { id:"toast_rust_jamon",   name:"Pan rústico con jamón y aceite de oliva", desc:"",  price:3.00, emoji:"🍞", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
+          { id:"toast_rust_mant",    name:"Pan rústico con mantequilla y mermelada", desc:"",  price:2.20, emoji:"🍞", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
         ]},
         { id:"toast_semillas", name:"Pan de semillas", emoji:"🌾", items:[
-          { id:"toast_sem_aceite",   name:"Pan de semillas con aceite de oliva",         desc:"", price:2.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_jamon",    name:"Pan de semillas con jamón y aceite de oliva", desc:"", price:3.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_mant",     name:"Pan de semillas con mantequilla y mermelada", desc:"", price:2.50, emoji:"🌾", tags:[] },
+          { id:"toast_sem_aceite",   name:"Pan de semillas con aceite de oliva",         desc:"", price:2.30, emoji:"🌾", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
+          { id:"toast_sem_jamon",    name:"Pan de semillas con jamón y aceite de oliva", desc:"", price:3.30, emoji:"🌾", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
+          { id:"toast_sem_mant",     name:"Pan de semillas con mantequilla y mermelada", desc:"", price:2.50, emoji:"🌾", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
         ]},
       ]},
     ],
@@ -613,7 +613,7 @@ const MENU = {
         { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 kg",           price:37.00, emoji:"📦", tags:[] },
         { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 kg",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
         { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", image:"Assets/blend-vanilla-bloom-filter.png", modalImage:"Assets/blend-vanilla-bloom-filter.png", imageContain:true, tags:[] },
+        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", tags:[] },
         { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
         { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
@@ -622,10 +622,10 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
       ]},
       { id:"yogur", name:"Yogurt with granola", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Savoury", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Salmon salad",                   desc:"Fresh salad with salmon",                                                                                              price:9.00, emoji:"🥗", tags:[] },
+        { id:"es_salmon",        name:"Salmon salad",                   desc:"Fresh salad with salmon",                                                                                              price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Toast", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Rustic bread", emoji:"🍞", items:[
@@ -704,7 +704,7 @@ const MENU = {
         { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 кг",           price:37.00, emoji:"📦", tags:[] },
         { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 кг",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
         { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 г",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 г",          price:18.00, emoji:"📦", image:"Assets/blend-vanilla-bloom-filter.png", modalImage:"Assets/blend-vanilla-bloom-filter.png", imageContain:true, tags:[] },
+        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 г",          price:18.00, emoji:"📦", tags:[] },
         { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 г",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
         { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
@@ -713,10 +713,10 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
       ]},
       { id:"yogur", name:"Йогурт с гранолой", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Йогурт с гранолой",              desc:"Основа: натуральный или лёгкий йогурт · Гранола: шоколадная, ягодная или из орехов · Фруктовое пюре: манго, банан или клубника", price:4.00, emoji:"🥣", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Йогурт с гранолой",              desc:"Основа: натуральный или лёгкий йогурт · Гранола: шоколадная, ягодная или из орехов · Фруктовое пюре: манго, банан или клубника", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Закуски", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Салат с лососем",                desc:"Свежий салат с лососем",                                                                                           price:9.00, emoji:"🥗", tags:[] },
+        { id:"es_salmon",        name:"Салат с лососем",                desc:"Свежий салат с лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Тосты", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Деревенский хлеб", emoji:"🍞", items:[
@@ -795,7 +795,7 @@ const MENU = {
         { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 кг",           price:37.00, emoji:"📦", tags:[] },
         { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 кг",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
         { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 г",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 г",          price:18.00, emoji:"📦", image:"Assets/blend-vanilla-bloom-filter.png", modalImage:"Assets/blend-vanilla-bloom-filter.png", imageContain:true, tags:[] },
+        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 г",          price:18.00, emoji:"📦", tags:[] },
         { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 г",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
         { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
@@ -804,10 +804,10 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
       ]},
       { id:"yogur", name:"Йогурт з гранолою", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Йогурт з гранолою",              desc:"Основа: натуральний або легкий йогурт · Гранола: шоколадна, ягідна або горіхова · Фруктове пюре: манго, банан або полуниця", price:4.00, emoji:"🥣", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Йогурт з гранолою",              desc:"Основа: натуральний або легкий йогурт · Гранола: шоколадна, ягідна або горіхова · Фруктове пюре: манго, банан або полуниця", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Закуски", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Салат з лососем",                desc:"Свіжий салат з лососем",                                                                                           price:9.00, emoji:"🥗", tags:[] },
+        { id:"es_salmon",        name:"Салат з лососем",                desc:"Свіжий салат з лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Тости", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Сільський хліб", emoji:"🍞", items:[

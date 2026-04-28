@@ -23,15 +23,20 @@ Everything lives in [menu.html](menu.html) in three inline blocks:
 
 **`<style>` (lines 7–389)** — All CSS using CSS custom properties (`--brand`, `--bg`, `--text`, etc.). Dark mode is implemented via `[data-theme="dark"]` overrides on `:root` variables, toggled with `localStorage`.
 
-**`<script>` block 1 — DATA (lines 394–646)** — Three global objects that contain all content:
-- `LANGS` — language codes to display names/flags
-- `UI` — all UI strings keyed by language code (`es`, `en`, `ru`, `uk`, `pl`)
+**`<script>` block 1 — DATA (lines ~449–745)** — Four global objects that contain all content:
+- `CONFIG` — `whatsapp` number and `tables` array (table numbers shown in checkout)
+- `LANGS` — language codes to display names/flags (currently `es`, `en`, `ru`, `uk`)
+- `UI` — all UI strings keyed by language code
 - `MENU` — full menu content keyed by language, containing `categories[]` and `specials`. Each item has: `id`, `name`, `desc`, `price`, `emoji`, optional `image`/`modalImage`/`modalImagePosition`, and `tags[]` (`"popular"`, `"vegetarian"`, `"healthy"`, `"seasonal"`). Mark an item unavailable with `soldOut: true`.
 
-**`<script>` block 2 — JS runtime (lines 729–end)** — Vanilla JS managing:
-- `currentLang` (string), `cart` (array of `{item, qty}`), `modalItem`, `modalQtyVal` — all module-level state
+Categories support two layouts: flat (`items[]`) or grouped (`groups[]`, each with its own `items[]`). Groups render as collapsible accordion sections within the category.
+
+**`<script>` block 2 — JS runtime (lines ~854–end)** — Vanilla JS managing:
+- `currentLang` (string), `cart` (array of `{item, qty}`), `modalItem`, `modalQtyVal`, `orderType`, `selectedTable` — all module-level state
 - `render()` — rebuilds all dynamic HTML from current `currentLang` state; called on every language switch
-- Cart drawer, item detail modal, search/filter, scroll-spy for nav tabs, fly-to-cart animation, haptic feedback via `navigator.vibrate`
+- Cart drawer → checkout drawer (pickup / table / delivery) → WhatsApp order via `submitOrder()`
+- Search/filter, scroll-spy for nav tabs, fly-to-cart animation, haptic feedback via `navigator.vibrate`
+- `?table=N` URL parameter pre-selects the table number in checkout (used by QR codes at tables)
 
 ## Adding/Editing Menu Items
 

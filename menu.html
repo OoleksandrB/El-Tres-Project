@@ -193,7 +193,7 @@
     }
     .card-img img { width:100%; height:100%; object-fit:cover; display:block; }
     .card-body { padding:10px 11px 12px; }
-    .card-name { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .card-name { font-size:13px; font-weight:700; color:var(--text); line-height:1.4; }
     .card-desc { font-size:11px; color:var(--text3); margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.5; }
     .card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:7px; gap:4px; }
     .card-price { font-size:14px; font-weight:800; color:var(--brand-dark); }
@@ -256,7 +256,8 @@
       transform:translateY(100%);
       transition:transform .38s cubic-bezier(.32,1.1,.6,1);
       will-change:transform;
-      overflow:hidden;
+      overflow-y:auto;
+      max-height:92vh;
     }
     .modal-overlay.open .modal {
       transform:translateY(0);
@@ -268,11 +269,13 @@
     }
     /* big emoji / image area */
     .modal-img {
-      width:100%; height:320px;
+      width:100%; height:300px;
       background:var(--brand-muted);
       display:flex; align-items:center; justify-content:center;
       font-size:80px;
       margin-top:12px;
+      overflow:hidden;
+      flex-shrink:0;
     }
     .modal-body { padding:20px 22px 0; }
     .modal-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
@@ -468,92 +471,96 @@ const MENU = {
   es: {
     categories: [
       { id:"coffee", name:"Café Specialty", emoji:"☕", items:[
-        { id:"espresso",   name:"Espresso",      desc:"Solo intenso",                                                    price:1.50, emoji:"☕", tags:["popular"] },
-        { id:"doble",      name:"Doble",          desc:"Espresso doble",                                                  price:2.20, emoji:"☕", tags:[] },
-        { id:"latte",      name:"Café con leche", desc:"Espresso con leche vaporizada",                                   price:2.80, emoji:"🥛", tags:["popular"] },
+        { id:"espresso",   name:"Espresso",      desc:"Solo intenso",                                                    price:1.50, emoji:"☕", image:"Assets/espresso.png", modalImage:"Assets/espresso.png", tags:["popular"] },
+        { id:"doble",      name:"Doble",          desc:"Espresso doble",                                                  price:2.20, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
+        { id:"latte",      name:"Café con leche", desc:"Espresso con leche vaporizada",                                   price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Cortado",        desc:"Espresso con un toque de leche",                                  price:2.30, emoji:"🍶", tags:[] },
-        { id:"americano",  name:"Americano",      desc:"Espresso alargado con agua caliente",                             price:2.20, emoji:"🖤", tags:[] },
-        { id:"flat",       name:"Flat White",     desc:"Doble ristretto con microespuma de leche sedosa",                 price:3.20, emoji:"🤍", tags:[] },
-        { id:"cappuccino", name:"Cappuccino",     desc:"Espresso con leche vaporizada y espuma cremosa",                  price:3.50, emoji:"🫧", tags:[] },
+        { id:"americano",  name:"Americano",      desc:"Espresso alargado con agua caliente",                             price:2.20, emoji:"🖤", image:"Assets/americano.png", modalImage:"Assets/americano.png", tags:[] },
+        { id:"flat",       name:"Flat White",     desc:"Doble ristretto con microespuma de leche sedosa",                 price:3.20, emoji:"🤍", image:"Assets/flat-white.png", modalImage:"Assets/flat-white.png", tags:[] },
+        { id:"cappuccino", name:"Cappuccino",     desc:"Espresso con leche vaporizada y espuma cremosa",                  price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Latte",          desc:"Espresso con leche vaporizada suave",                             price:2.80, emoji:"🥛", tags:[] },
-        { id:"ice_latte",  name:"Ice Latte",      desc:"Espresso con leche fría y hielo",                                 price:3.50, emoji:"🧊", tags:[] },
-        { id:"cacao",      name:"Cacao",          desc:"Cacao artesanal con leche",                                       price:2.50, emoji:"🍫", tags:[] },
+        { id:"ice_latte",  name:"Ice Latte",      desc:"Espresso con leche fría y hielo",                                 price:3.50, emoji:"🧊", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:[] },
+        { id:"cacao",      name:"Cacao",          desc:"Cacao artesanal con leche",                                       price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Tés", emoji:"🍵", items:[
-        { id:"te_negro_s",  name:"Té negro 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:1.75, emoji:"🍵", tags:[] },
-        { id:"te_negro_l",  name:"Té negro 500 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:4.00, emoji:"🍵", tags:[] },
-        { id:"te_verde_s",  name:"Té verde 200 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:1.75, emoji:"🌿", tags:[] },
-        { id:"te_verde_l",  name:"Té verde 500 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:4.00, emoji:"🌿", tags:[] },
+        { id:"te_negro_s",  name:"Té negro 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:1.75, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
+        { id:"te_negro_l",  name:"Té negro 500 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:4.00, emoji:"🍵", image:"Assets/tea-500-ml.png", modalImage:"Assets/tea-500-ml.png", tags:[] },
+        { id:"te_verde_s",  name:"Té verde 200 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:1.75, emoji:"🌿", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
+        { id:"te_verde_l",  name:"Té verde 500 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:4.00, emoji:"🌿", image:"Assets/tea-500-ml.png", modalImage:"Assets/tea-500-ml.png", tags:[] },
       ]},
       { id:"cold", name:"Bebidas", emoji:"🥤", items:[
-        { id:"refresco_leche",  name:"Refresco de leche y frutas",     desc:"Base: leche entera, sin lactosa, coco, avena o almendra · Sabor: mango-maracuyá, fresa, frambuesa o banana",   price:4.50, emoji:"🥤", tags:["popular"] },
-        { id:"refresco_gas",    name:"Bebida refrescante con gas",     desc:"Elige tu sabor: mango-maracuyá, fresa o frambuesa",                                                            price:3.50, emoji:"🫧", tags:[] },
-        { id:"iced_matcha",     name:"Iced Matcha",                    desc:"Base: leche entera, sin lactosa, coco, avena o almendra · Sabor: mango, fresa o frambuesa",                   price:4.50, emoji:"🍵", tags:["healthy"] },
+        { id:"refresco_leche",  name:"Refresco de leche y frutas",     desc:"Base: leche entera, sin lactosa, coco, avena o almendra · Sabor: mango-maracuyá, fresa, frambuesa o banana",   price:4.50, emoji:"🥤", image:"Assets/refresco-de-leche-y-frutas.png", modalImage:"Assets/refresco-de-leche-y-frutas.png", tags:["popular"] },
+        { id:"refresco_gas",    name:"Bebida refrescante con gas",     desc:"Elige tu sabor: mango-maracuyá, fresa o frambuesa",                                                            price:3.50, emoji:"🫧", image:"Assets/fresh-drink-with-gas.png", modalImage:"Assets/fresh-drink-with-gas.png", tags:[] },
+        { id:"iced_matcha",     name:"Iced Matcha",                    desc:"Base: leche entera, sin lactosa, coco, avena o almendra · Sabor: mango, fresa o frambuesa",                   price:4.50, emoji:"🍵", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
         { id:"cola",            name:"Coca Cola",                      desc:"330 ml",                                                                                                       price:2.20, emoji:"🥤", tags:[] },
-        { id:"cerveza_sin",     name:"Cerveza sin alcohol",            desc:"330 ml",                                                                                                       price:2.20, emoji:"🍺", tags:[] },
-        { id:"naranja",         name:"Zumo de naranja",                desc:"200 ml",                                                                                                       price:1.80, emoji:"🍊", tags:["healthy"] },
-        { id:"agua_gas_vichi",  name:"Agua con gas Vichy Catalan",     desc:"300 ml",                                                                                                       price:2.70, emoji:"💧", tags:[] },
-        { id:"agua_gas_pell",   name:"Agua con gas Pellegrino",        desc:"500 ml",                                                                                                       price:2.70, emoji:"💧", tags:[] },
-        { id:"agua_sin",        name:"Agua sin gas",                   desc:"500 ml",                                                                                                       price:1.80, emoji:"💧", tags:["healthy"] },
+        { id:"cerveza_sin",     name:"Cerveza sin alcohol",            desc:"330 ml",                                                                                                       price:2.20, emoji:"🍺", image:"Assets/drinks/beer.png", modalImage:"Assets/drinks/beer.png", tags:[] },
+        { id:"naranja",         name:"Zumo de naranja",                desc:"200 ml",                                                                                                       price:1.80, emoji:"🍊", image:"Assets/drinks/orange-juice.png", modalImage:"Assets/drinks/orange-juice.png", tags:["healthy"] },
+        { id:"agua_gas_vichi",  name:"Agua con gas Vichy Catalan",     desc:"300 ml",                                                                                                       price:2.70, emoji:"💧", image:"Assets/drinks/Vichy-Catalan-Agua-Con-Gas-Botella-NR-30CL-1200x1200.jpg", modalImage:"Assets/drinks/Vichy-Catalan-Agua-Con-Gas-Botella-NR-30CL-1200x1200.jpg", imageContain:true, tags:[] },
+        { id:"agua_gas_pell",   name:"Agua con gas Pellegrino",        desc:"500 ml",                                                                                                       price:2.70, emoji:"💧", image:"Assets/water.png", modalImage:"Assets/water.png", imageContain:true, tags:[] },
+        { id:"agua_sin",        name:"Agua sin gas",                   desc:"500 ml",                                                                                                       price:1.80, emoji:"💧", image:"Assets/drinks/sin-azucar.png", modalImage:"Assets/drinks/sin-azucar.png", imageContain:true, tags:["healthy"] },
         { id:"aquarius",        name:"Aquarius",                       desc:"330 ml",                                                                                                       price:2.20, emoji:"🥤", tags:[] },
-        { id:"tonica",          name:"Tónica Schweppes",               desc:"330 ml",                                                                                                       price:2.20, emoji:"🥤", tags:[] },
+        { id:"tonica",          name:"Tónica Schweppes",               desc:"330 ml",                                                                                                       price:2.20, emoji:"🥤", image:"Assets/drinks/schweppes.png", modalImage:"Assets/drinks/schweppes.png", imageContain:true, tags:[] },
       ]},
       { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", groups:[
         { id:"croissant", name:"Croissant", emoji:"🥐", items:[
           { id:"croissant_mant",   name:"Croissant mantequilla",   desc:"Croissant de mantequilla artesanal",               price:1.80, emoji:"🥐", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.png", modalImage:"Assets/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
-          { id:"cookie_rv",        name:"Cookie Red Velvet",       desc:"Red Velvet con Nutella, azúcar muscovado",         price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.png", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
-          { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.png", modalImage:"Assets/cookie-cholate-modal.png", tags:[] },
+          { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Cookie Red Velvet",       desc:"Red Velvet con Nutella, azúcar muscovado",         price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
+          { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Macaron", emoji:"🩷", items:[
-          { id:"macaron",          name:"Macaron (harina de almendra)", desc:"Limón · Frutos Rojos · Mango Matcha · Vainilla & Grosella Roja · Variedad de sabores — pregunta a nuestro personal por los disponibles hoy", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron",          name:"Macaron (harina de almendra)", desc:"Limón · Frutos Rojos · Mango Matcha · Vainilla & Grosella Roja · Variedad de sabores — pregunta a nuestro personal por los disponibles hoy", price:2.80, emoji:"🩷", image:"Assets/macaron/macaron.png", modalImage:"Assets/macaron/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron_box5",     name:"Caja de 5 macarons",          desc:"Caja regalo con 5 macarons a elegir · Ideal para regalar",                                                                                    price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box16",    name:"Caja de 16 macarons",         desc:"Caja regalo con 16 macarons a elegir",                                                                                                        price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
+          { id:"macaron_print",    name:"Caja con impresión personalizada", desc:"Diseño personalizado impreso en la caja · Disponible en caja de 5 o 16 · Consulta con nuestro personal",                               price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
         { id:"datil", name:"Dátiles", emoji:"🍫", items:[
-          { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
-          { id:"datil_cacahuete",  name:"Dátil con cacahuete",     desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_avellana",   name:"Dátil con avellana",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Dátil con nuez",          desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_negro",      name:"Dátil chocolate negro",   desc:"En chocolate negro sin azúcar",                    price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
+          { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date/date-pistachio.png", modalImage:"Assets/date/date-pistachio-modal.png", tags:[] },
+          { id:"datil_cacahuete",  name:"Dátil con cacahuete",     desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date/date-with-peanuts.png", modalImage:"Assets/date/date-with-peanuts-cut.png", tags:[] },
+          { id:"datil_avellana",   name:"Dátil con avellana",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date/date-avellana.png", modalImage:"Assets/date/date-avellana-modal.png", tags:[] },
+          { id:"datil_negro",      name:"Dátil chocolate negro",   desc:"En chocolate negro sin azúcar",                    price:2.50, emoji:"🍫", image:"Assets/date/date-without-sugar.png", modalImage:"Assets/date/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
       { id:"packaged", name:"Café empaquetado", emoji:"📦", items:[
-        { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 kg",           price:37.00, emoji:"📦", tags:[] },
-        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 kg",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
-        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", tags:[] },
-        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
-        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
+
+        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 kg",           price:36.00, emoji:"📦", image:"Assets/coffee-products/blend-summer.png", modalImage:"Assets/coffee-products/blend-summer.png", imageContain:true, tags:[] },
+        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/coffee-products/blend-berry-honey-filter.png", modalImage:"Assets/coffee-products/blend-berry-honey-filter.png", imageContain:true, tags:[] },
+
+        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/coffee-products/Honduras-Caviflor-expresso.png", modalImage:"Assets/coffee-products/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-blend-h5.png", modalImage:"Assets/coffee-products/drip-blend-h5.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-costa-rica.png", modalImage:"Assets/coffee-products/drip-costa-rica.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-ethiopia.png", modalImage:"Assets/coffee-products/drip-ethiopia.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-guatemala.png", modalImage:"Assets/coffee-products/drip-guatemala.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-honduras.png", modalImage:"Assets/coffee-products/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Yogur con granola", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Salado", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Ensalada con salmón",           desc:"Ensalada fresca con salmón",                                                                                   price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
+        { id:"es_salmon",        name:"Ensalada con salmón",           desc:"Ensalada fresca con salmón",                                                                                   price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Tostadas", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Pan rústico", emoji:"🍞", items:[
-          { id:"toast_rust_aceite",  name:"Pan rústico con aceite de oliva",         desc:"",  price:2.00, emoji:"🍞", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
-          { id:"toast_rust_jamon",   name:"Pan rústico con jamón y aceite de oliva", desc:"",  price:3.00, emoji:"🍞", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
-          { id:"toast_rust_mant",    name:"Pan rústico con mantequilla y mermelada", desc:"",  price:2.20, emoji:"🍞", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
+          { id:"toast_rust_aceite",  name:"Pan rústico con aceite de oliva y tomate", desc:"",  price:2.40, emoji:"🍞", image:"Assets/tostados/bread-with-olive-oil.png", modalImage:"Assets/tostados/bread-with-tomatoes.png", tags:[] },
+          { id:"toast_rust_jamon",   name:"Pan rústico con jamón y aceite de oliva", desc:"",  price:3.50, emoji:"🍞", image:"Assets/tostados/bread-with-tomatoe-and-avocado.png", modalImage:"Assets/tostados/bread-with-tomatoe-and-avocado.png", tags:[] },
+          { id:"toast_rust_mant",    name:"Pan rústico con mantequilla y mermelada", desc:"",  price:2.20, emoji:"🍞", image:"Assets/tostados/bread-with-jam.png", modalImage:"Assets/tostados/bread-with-jam.png", tags:[] },
+          { id:"toast_rust_aguacate", name:"Pan rústico con aguacate",               desc:"",  price:2.50, emoji:"🍞", image:"Assets/tostados/bread-with-avocado.png", modalImage:"Assets/tostados/bread-with-avocado.png", tags:[] },
         ]},
         { id:"toast_semillas", name:"Pan de semillas", emoji:"🌾", items:[
-          { id:"toast_sem_aceite",   name:"Pan de semillas con aceite de oliva",         desc:"", price:2.30, emoji:"🌾", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
-          { id:"toast_sem_jamon",    name:"Pan de semillas con jamón y aceite de oliva", desc:"", price:3.30, emoji:"🌾", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
-          { id:"toast_sem_mant",     name:"Pan de semillas con mantequilla y mermelada", desc:"", price:2.50, emoji:"🌾", image:"Assets/pan.png", modalImage:"Assets/pan.png", imageContain:true, tags:[] },
+          { id:"toast_sem_aceite",   name:"Pan de semillas con aceite de oliva",              desc:"", price:2.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil.png", tags:[] },
+          { id:"toast_sem_jamon",    name:"Pan de semillas con jamón y aceite de oliva",    desc:"", price:4.00, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", tags:[] },
+          { id:"toast_sem_mant",     name:"Pan de semillas con mantequilla y mermelada",    desc:"", price:2.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-jam-butter.png", modalImage:"Assets/tostados/seeds-bread-with-jam-butter.png", tags:[] },
+          { id:"toast_sem_aguacate", name:"Pan de semillas con aguacate y aceite de oliva", desc:"", price:3.00, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", tags:[] },
+          { id:"toast_sem_aguat",    name:"Pan de semillas con aguacate, tomate y aceite",  desc:"", price:3.80, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", tags:[] },
         ]},
       ]},
     ],
     specials:{ title:"Favoritos de El Tres", subtitle:"Lo más pedido por nuestros clientes", items:[
-      { id:"s1", name:"Café con leche + Croissant", desc:"Café con leche artesanal con croissant de mantequilla",        price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Latte + Macaron",            desc:"Latte suave con macaron de almendra a tu elección",            price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Caja de 4 Macarons",         desc:"Elige 4 sabores de nuestra selección artesanal",              price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Té + Dátil",                 desc:"Té negro o verde con dátil en chocolate a tu elección",        price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Macarons pistacho-frambuesa, fresa, mango-maracuyá", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Iced Matcha con frambuesa",                          desc:"", emoji:"🍵" },
+      { id:"s3", name:"Cappuccino",                                         desc:"", emoji:"🫧" },
     ]}
   },
   en: {
@@ -561,14 +568,14 @@ const MENU = {
       { id:"coffee", name:"Specialty Coffee", emoji:"☕", items:[
         { id:"espresso",   name:"Espresso",      desc:"Intense solo",                                                     price:1.50, emoji:"☕", tags:["popular"] },
         { id:"doble",      name:"Double",         desc:"Double espresso",                                                  price:2.20, emoji:"☕", tags:[] },
-        { id:"latte",      name:"White coffee",   desc:"Espresso with steamed milk",                                       price:2.80, emoji:"🥛", tags:["popular"] },
+        { id:"latte",      name:"White coffee",   desc:"Espresso with steamed milk",                                       price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Cortado",        desc:"Espresso with a dash of milk",                                     price:2.30, emoji:"🍶", tags:[] },
         { id:"americano",  name:"Americano",      desc:"Espresso with hot water",                                          price:2.20, emoji:"🖤", tags:[] },
         { id:"flat",       name:"Flat White",     desc:"Double ristretto with silky milk microfoam",                       price:3.20, emoji:"🤍", tags:[] },
-        { id:"cappuccino", name:"Cappuccino",     desc:"Espresso with steamed milk and creamy foam",                       price:3.50, emoji:"🫧", tags:[] },
+        { id:"cappuccino", name:"Cappuccino",     desc:"Espresso with steamed milk and creamy foam",                       price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Latte",          desc:"Espresso with soft steamed milk",                                  price:2.80, emoji:"🥛", tags:[] },
         { id:"ice_latte",  name:"Ice Latte",      desc:"Espresso with cold milk and ice",                                  price:3.50, emoji:"🧊", tags:[] },
-        { id:"cacao",      name:"Cacao",          desc:"Artisan cacao with milk",                                          price:2.50, emoji:"🍫", tags:[] },
+        { id:"cacao",      name:"Cacao",          desc:"Artisan cacao with milk",                                          price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Teas", emoji:"🍵", items:[
         { id:"te_negro_s",  name:"Black tea 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                    price:1.75, emoji:"🍵", tags:[] },
@@ -587,64 +594,68 @@ const MENU = {
         { id:"agua_gas_pell",   name:"Sparkling water Pellegrino",     desc:"500 ml",                                                                                                                price:2.70, emoji:"💧", tags:[] },
         { id:"agua_sin",        name:"Still water",                    desc:"500 ml",                                                                                                                price:1.80, emoji:"💧", tags:["healthy"] },
         { id:"aquarius",        name:"Aquarius",                       desc:"330 ml",                                                                                                                price:2.20, emoji:"🥤", tags:[] },
-        { id:"tonica",          name:"Schweppes Tonic",                desc:"330 ml",                                                                                                                price:2.20, emoji:"🥤", tags:[] },
+        { id:"tonica",          name:"Schweppes Tonic",                desc:"330 ml",                                                                                                                price:2.20, emoji:"🥤", image:"Assets/drinks/schweppes.png", modalImage:"Assets/drinks/schweppes.png", imageContain:true, tags:[] },
       ]},
       { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", groups:[
         { id:"croissant", name:"Croissant", emoji:"🥐", items:[
           { id:"croissant_mant",   name:"Butter croissant",       desc:"Artisan butter croissant",                         price:1.80, emoji:"🥐", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.png", modalImage:"Assets/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
-          { id:"cookie_rv",        name:"Red Velvet cookie",      desc:"Red Velvet with Nutella, muscovado sugar",          price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.png", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
-          { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.png", modalImage:"Assets/cookie-cholate-modal.png", tags:[] },
+          { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Red Velvet cookie",      desc:"Red Velvet with Nutella, muscovado sugar",          price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
+          { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Macaron", emoji:"🩷", items:[
-          { id:"macaron",          name:"Macaron (almond flour)",  desc:"Lemon · Red Berries · Mango Matcha · Vanilla & Red Currant · Ask our staff for today's available flavours", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron",          name:"Macaron (almond flour)",       desc:"Lemon · Red Berries · Mango Matcha · Vanilla & Red Currant · Ask our staff for today's available flavours",                                  price:2.80, emoji:"🩷", image:"Assets/macaron/macaron.png", modalImage:"Assets/macaron/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron_box5",     name:"Box of 5 macarons",            desc:"Gift box with 5 macarons of your choice · Perfect as a gift",                                                                                price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box16",    name:"Box of 16 macarons",           desc:"Gift box with 16 macarons of your choice",                                                                                                   price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
+          { id:"macaron_print",    name:"Box with custom print",        desc:"Custom design printed on the box · Available in box of 5 or 16 · Ask our staff",                                                            price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
         { id:"datil", name:"Dates", emoji:"🍫", items:[
-          { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
+          { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date/date-pistachio.png", modalImage:"Assets/date/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Date with peanut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_avellana",   name:"Date with hazelnut",     desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Date with walnut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_negro",      name:"Dark chocolate date",    desc:"Sugar-free dark chocolate",                         price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
+          { id:"datil_avellana",   name:"Date with hazelnut",     desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date/date-avellana.png", modalImage:"Assets/date/date-avellana-modal.png", tags:[] },
+          { id:"datil_negro",      name:"Dark chocolate date",    desc:"Sugar-free dark chocolate",                         price:2.50, emoji:"🍫", image:"Assets/date/date-without-sugar.png", modalImage:"Assets/date/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
       { id:"packaged", name:"Packaged Coffee", emoji:"📦", items:[
-        { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 kg",           price:37.00, emoji:"📦", tags:[] },
-        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 kg",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
-        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", tags:[] },
-        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
-        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
+
+        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 kg",           price:36.00, emoji:"📦", image:"Assets/coffee-products/blend-summer.png", modalImage:"Assets/coffee-products/blend-summer.png", imageContain:true, tags:[] },
+        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/coffee-products/blend-berry-honey-filter.png", modalImage:"Assets/coffee-products/blend-berry-honey-filter.png", imageContain:true, tags:[] },
+
+        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/coffee-products/Honduras-Caviflor-expresso.png", modalImage:"Assets/coffee-products/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-blend-h5.png", modalImage:"Assets/coffee-products/drip-blend-h5.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-costa-rica.png", modalImage:"Assets/coffee-products/drip-costa-rica.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-ethiopia.png", modalImage:"Assets/coffee-products/drip-ethiopia.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-guatemala.png", modalImage:"Assets/coffee-products/drip-guatemala.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-honduras.png", modalImage:"Assets/coffee-products/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Yogurt with granola", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Savoury", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Salmon salad",                   desc:"Fresh salad with salmon",                                                                                              price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
+        { id:"es_salmon",        name:"Salmon salad",                   desc:"Fresh salad with salmon",                                                                                              price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Toast", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Rustic bread", emoji:"🍞", items:[
-          { id:"toast_rust_aceite",  name:"Rustic bread with olive oil",              desc:"", price:2.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_jamon",   name:"Rustic bread with ham and olive oil",      desc:"", price:3.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_mant",    name:"Rustic bread with butter and jam",         desc:"", price:2.20, emoji:"🍞", tags:[] },
+          { id:"toast_rust_aceite",  name:"Rustic bread with olive oil and tomato",   desc:"", price:2.40, emoji:"🍞", image:"Assets/tostados/bread-with-olive-oil.png", modalImage:"Assets/tostados/bread-with-tomatoes.png", tags:[] },
+          { id:"toast_rust_jamon",   name:"Rustic bread with ham and olive oil",      desc:"", price:3.00, emoji:"🍞", image:"Assets/tostados/bread-with-tomatoe-and-avocado.png", modalImage:"Assets/tostados/bread-with-tomatoe-and-avocado.png", tags:[] },
+          { id:"toast_rust_mant",    name:"Rustic bread with butter and jam",         desc:"", price:2.20, emoji:"🍞", image:"Assets/tostados/bread-with-jam.png", modalImage:"Assets/tostados/bread-with-jam.png", tags:[] },
+          { id:"toast_rust_aguacate", name:"Rustic bread with avocado",               desc:"", price:3.00, emoji:"🍞", image:"Assets/tostados/bread-with-avocado.png", modalImage:"Assets/tostados/bread-with-avocado.png", tags:[] },
         ]},
         { id:"toast_semillas", name:"Seed bread", emoji:"🌾", items:[
-          { id:"toast_sem_aceite",   name:"Seed bread with olive oil",                desc:"", price:2.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_jamon",    name:"Seed bread with ham and olive oil",        desc:"", price:3.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_mant",     name:"Seed bread with butter and jam",           desc:"", price:2.50, emoji:"🌾", tags:[] },
+          { id:"toast_sem_aceite",   name:"Seed bread with olive oil",                       desc:"", price:2.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil.png", tags:[] },
+          { id:"toast_sem_jamon",    name:"Seed bread with ham and olive oil",               desc:"", price:3.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", tags:[] },
+          { id:"toast_sem_mant",     name:"Seed bread with butter and jam",                 desc:"", price:2.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-jam-butter.png", modalImage:"Assets/tostados/seeds-bread-with-jam-butter.png", tags:[] },
+          { id:"toast_sem_aguacate", name:"Seed bread with avocado and olive oil",          desc:"", price:3.00, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", tags:[] },
+          { id:"toast_sem_aguat",    name:"Seed bread with avocado, tomato and olive oil",  desc:"", price:3.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", tags:[] },
         ]},
       ]},
     ],
     specials:{ title:"El Tres Favourites", subtitle:"Most ordered by our customers", items:[
-      { id:"s1", name:"White coffee + Croissant", desc:"Coffee with milk and artisan butter croissant",                  price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Latte + Macaron",          desc:"Soft latte with almond macaron of your choice",                  price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Box of 4 Macarons",        desc:"Choose 4 flavours from our artisan selection",                  price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Tea + Date",               desc:"Black or green tea with chocolate date of your choice",          price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Macarons pistachio-raspberry, strawberry, mango-passionfruit", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Iced Matcha with raspberry",                                   desc:"", emoji:"🍵" },
+      { id:"s3", name:"Cappuccino",                                                   desc:"", emoji:"🫧" },
     ]}
   },
   ru: {
@@ -652,14 +663,14 @@ const MENU = {
       { id:"coffee", name:"Specialty кофе", emoji:"☕", items:[
         { id:"espresso",   name:"Эспрессо",       desc:"Интенсивный соло",                                               price:1.50, emoji:"☕", tags:["popular"] },
         { id:"doble",      name:"Двойной",         desc:"Двойной эспрессо",                                               price:2.20, emoji:"☕", tags:[] },
-        { id:"latte",      name:"Кофе с молоком",  desc:"Эспрессо с вспененным молоком",                                  price:2.80, emoji:"🥛", tags:["popular"] },
+        { id:"latte",      name:"Кофе с молоком",  desc:"Эспрессо с вспененным молоком",                                  price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Кортадо",         desc:"Эспрессо с каплей молока",                                       price:2.30, emoji:"🍶", tags:[] },
         { id:"americano",  name:"Американо",       desc:"Эспрессо с горячей водой",                                       price:2.20, emoji:"🖤", tags:[] },
         { id:"flat",       name:"Флэт Уайт",       desc:"Двойной ристретто с шёлковой микропенкой",                      price:3.20, emoji:"🤍", tags:[] },
-        { id:"cappuccino", name:"Капучино",        desc:"Эспрессо с молоком и кремовой пенкой",                           price:3.50, emoji:"🫧", tags:[] },
+        { id:"cappuccino", name:"Капучино",        desc:"Эспрессо с молоком и кремовой пенкой",                           price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Латте",           desc:"Эспрессо с мягким вспененным молоком",                           price:2.80, emoji:"🥛", tags:[] },
         { id:"ice_latte",  name:"Айс Латте",       desc:"Эспрессо с холодным молоком и льдом",                            price:3.50, emoji:"🧊", tags:[] },
-        { id:"cacao",      name:"Какао",           desc:"Авторское какао с молоком",                                       price:2.50, emoji:"🍫", tags:[] },
+        { id:"cacao",      name:"Какао",           desc:"Авторское какао с молоком",                                       price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Чаи", emoji:"🍵", items:[
         { id:"te_negro_s",  name:"Чёрный чай 200 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:1.75, emoji:"🍵", tags:[] },
@@ -678,34 +689,36 @@ const MENU = {
         { id:"agua_gas_pell",   name:"Газ. вода Pellegrino",           desc:"500 мл",                                                                                                            price:2.70, emoji:"💧", tags:[] },
         { id:"agua_sin",        name:"Вода без газа",                  desc:"500 мл",                                                                                                            price:1.80, emoji:"💧", tags:["healthy"] },
         { id:"aquarius",        name:"Aquarius",                       desc:"330 мл",                                                                                                            price:2.20, emoji:"🥤", tags:[] },
-        { id:"tonica",          name:"Тоник Schweppes",                desc:"330 мл",                                                                                                            price:2.20, emoji:"🥤", tags:[] },
+        { id:"tonica",          name:"Тоник Schweppes",                desc:"330 мл",                                                                                                            price:2.20, emoji:"🥤", image:"Assets/drinks/schweppes.png", modalImage:"Assets/drinks/schweppes.png", imageContain:true, tags:[] },
       ]},
       { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", groups:[
         { id:"croissant", name:"Круассан", emoji:"🥐", items:[
           { id:"croissant_mant",   name:"Круассан с маслом",           desc:"Ремесленный масляный круассан",               price:1.80, emoji:"🥐", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.png", modalImage:"Assets/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
-          { id:"cookie_rv",        name:"Cookie Red Velvet",           desc:"Красный бархат с Nutella",                    price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.png", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
-          { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.png", modalImage:"Assets/cookie-cholate-modal.png", tags:[] },
+          { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Cookie Red Velvet",           desc:"Красный бархат с Nutella",                    price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
+          { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Макарон", emoji:"🩷", items:[
-          { id:"macaron",          name:"Макарон (миндальная мука)",   desc:"Лимон · Лесные ягоды · Манго Матча · Ваниль & Красная смородина · Уточните у персонала вкусы, доступные сегодня", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron",          name:"Макарон (миндальная мука)",        desc:"Лимон · Лесные ягоды · Манго Матча · Ваниль & Красная смородина · Уточните у персонала вкусы, доступные сегодня",                      price:2.80, emoji:"🩷", image:"Assets/macaron/macaron.png", modalImage:"Assets/macaron/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron_box5",     name:"Коробка 5 макарон",               desc:"Подарочная коробка с 5 макаронами на выбор · Идеальный подарок",                                                                         price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box16",    name:"Коробка 16 макарон",              desc:"Подарочная коробка с 16 макаронами на выбор",                                                                                            price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
+          { id:"macaron_print",    name:"Коробка с персональной печатью",  desc:"Индивидуальный дизайн на коробке · Доступно в формате 5 или 16 · Уточните у персонала",                                                 price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
         { id:"datil", name:"Финики", emoji:"🍫", items:[
-          { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
+          { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date/date-pistachio.png", modalImage:"Assets/date/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Финик с арахисом",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_avellana",   name:"Финик с фундуком",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Финик с грецким орехом",     desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_negro",      name:"Финик в чёрном шоколаде",   desc:"Чёрный шоколад без сахара",                   price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
+          { id:"datil_avellana",   name:"Финик с фундуком",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date/date-avellana.png", modalImage:"Assets/date/date-avellana-modal.png", tags:[] },
+          { id:"datil_negro",      name:"Финик в чёрном шоколаде",   desc:"Чёрный шоколад без сахара",                   price:2.50, emoji:"🍫", image:"Assets/date/date-without-sugar.png", modalImage:"Assets/date/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
       { id:"packaged", name:"Кофе в упаковке", emoji:"📦", items:[
-        { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 кг",           price:37.00, emoji:"📦", tags:[] },
-        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 кг",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
-        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 г",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 г",          price:18.00, emoji:"📦", tags:[] },
-        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 г",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
+
+        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 кг",           price:36.00, emoji:"📦", image:"Assets/coffee-products/blend-summer.png", modalImage:"Assets/coffee-products/blend-summer.png", imageContain:true, tags:[] },
+        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 г",          price:15.00, emoji:"📦", image:"Assets/coffee-products/blend-berry-honey-filter.png", modalImage:"Assets/coffee-products/blend-berry-honey-filter.png", imageContain:true, tags:[] },
+
+        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 г",          price:13.00, emoji:"📦", image:"Assets/coffee-products/Honduras-Caviflor-expresso.png", modalImage:"Assets/coffee-products/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
         { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
@@ -713,29 +726,31 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
       ]},
       { id:"yogur", name:"Йогурт с гранолой", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Йогурт с гранолой",              desc:"Основа: натуральный или лёгкий йогурт · Гранола: шоколадная, ягодная или из орехов · Фруктовое пюре: манго, банан или клубника", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Йогурт с гранолой",              desc:"Основа: натуральный или лёгкий йогурт · Гранола: шоколадная, ягодная или из орехов · Фруктовое пюре: манго, банан или клубника", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Закуски", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Салат с лососем",                desc:"Свежий салат с лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
+        { id:"es_salmon",        name:"Салат с лососем",                desc:"Свежий салат с лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Тосты", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Деревенский хлеб", emoji:"🍞", items:[
-          { id:"toast_rust_aceite",  name:"Деревенский хлеб с оливковым маслом",          desc:"", price:2.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_jamon",   name:"Деревенский хлеб с ветчиной и маслом",         desc:"", price:3.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_mant",    name:"Деревенский хлеб со сливочным маслом и джемом", desc:"", price:2.20, emoji:"🍞", tags:[] },
+          { id:"toast_rust_aceite",  name:"Деревенский хлеб с оливковым маслом и томатом", desc:"", price:2.40, emoji:"🍞", image:"Assets/tostados/bread-with-olive-oil.png", modalImage:"Assets/tostados/bread-with-tomatoes.png", tags:[] },
+          { id:"toast_rust_jamon",   name:"Деревенский хлеб с ветчиной и маслом",          desc:"", price:3.00, emoji:"🍞", image:"Assets/tostados/bread-with-tomatoe-and-avocado.png", modalImage:"Assets/tostados/bread-with-tomatoe-and-avocado.png", tags:[] },
+          { id:"toast_rust_mant",    name:"Деревенский хлеб со сливочным маслом и джемом", desc:"", price:2.20, emoji:"🍞", image:"Assets/tostados/bread-with-jam.png", modalImage:"Assets/tostados/bread-with-jam.png", tags:[] },
+          { id:"toast_rust_aguacate", name:"Деревенский хлеб с авокадо",                   desc:"", price:3.00, emoji:"🍞", image:"Assets/tostados/bread-with-avocado.png", modalImage:"Assets/tostados/bread-with-avocado.png", tags:[] },
         ]},
         { id:"toast_semillas", name:"Хлеб с зёрнами", emoji:"🌾", items:[
-          { id:"toast_sem_aceite",   name:"Хлеб с зёрнами и оливковым маслом",            desc:"", price:2.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_jamon",    name:"Хлеб с зёрнами, ветчиной и маслом",            desc:"", price:3.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_mant",     name:"Хлеб с зёрнами, маслом и джемом",              desc:"", price:2.50, emoji:"🌾", tags:[] },
+          { id:"toast_sem_aceite",   name:"Хлеб с зёрнами и оливковым маслом",              desc:"", price:2.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil.png", tags:[] },
+          { id:"toast_sem_jamon",    name:"Хлеб с зёрнами, ветчиной и маслом",            desc:"", price:3.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", tags:[] },
+          { id:"toast_sem_mant",     name:"Хлеб с зёрнами, маслом и джемом",              desc:"", price:2.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-jam-butter.png", modalImage:"Assets/tostados/seeds-bread-with-jam-butter.png", tags:[] },
+          { id:"toast_sem_aguacate", name:"Хлеб с зёрнами, авокадо и маслом",             desc:"", price:3.00, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", tags:[] },
+          { id:"toast_sem_aguat",    name:"Хлеб с зёрнами, авокадо, томатом и маслом",   desc:"", price:3.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", tags:[] },
         ]},
       ]},
     ],
     specials:{ title:"Фавориты El Tres", subtitle:"Самое популярное у наших гостей", items:[
-      { id:"s1", name:"Кофе с молоком + Круассан", desc:"Кофе с молоком и масляный круассан",                           price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Латте + Макарон",           desc:"Мягкое латте с макароном на выбор",                            price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Набор 4 макарона",          desc:"Выберите 4 вкуса из нашей коллекции",                         price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Чай + Финик",               desc:"Чёрный или зелёный чай с фиником в шоколаде",                 price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Макарон фисташка-малина, клубника, манго-маракуйя", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Айс Матча с малиной",                               desc:"", emoji:"🍵" },
+      { id:"s3", name:"Капучино",                                          desc:"", emoji:"🫧" },
     ]}
   },
   uk: {
@@ -743,14 +758,14 @@ const MENU = {
       { id:"coffee", name:"Specialty кава", emoji:"☕", items:[
         { id:"espresso",   name:"Еспресо",        desc:"Інтенсивний соло",                                               price:1.50, emoji:"☕", tags:["popular"] },
         { id:"doble",      name:"Подвійний",       desc:"Подвійний еспресо",                                              price:2.20, emoji:"☕", tags:[] },
-        { id:"latte",      name:"Кава з молоком",  desc:"Еспресо зі спіненим молоком",                                    price:2.80, emoji:"🥛", tags:["popular"] },
+        { id:"latte",      name:"Кава з молоком",  desc:"Еспресо зі спіненим молоком",                                    price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Кортадо",         desc:"Еспресо з краплею молока",                                       price:2.30, emoji:"🍶", tags:[] },
         { id:"americano",  name:"Американо",       desc:"Еспресо з гарячою водою",                                        price:2.20, emoji:"🖤", tags:[] },
         { id:"flat",       name:"Флет Уайт",       desc:"Подвійний різтрето з шовковою мікропінкою",                     price:3.20, emoji:"🤍", tags:[] },
-        { id:"cappuccino", name:"Капучіно",        desc:"Еспресо з молоком і кремовою пінкою",                            price:3.50, emoji:"🫧", tags:[] },
+        { id:"cappuccino", name:"Капучіно",        desc:"Еспресо з молоком і кремовою пінкою",                            price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Лате",            desc:"Еспресо з м'яким спіненим молоком",                              price:2.80, emoji:"🥛", tags:[] },
         { id:"ice_latte",  name:"Айс Лате",        desc:"Еспресо з холодним молоком і льодом",                            price:3.50, emoji:"🧊", tags:[] },
-        { id:"cacao",      name:"Какао",           desc:"Авторське какао з молоком",                                       price:2.50, emoji:"🍫", tags:[] },
+        { id:"cacao",      name:"Какао",           desc:"Авторське какао з молоком",                                       price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Чаї", emoji:"🍵", items:[
         { id:"te_negro_s",  name:"Чорний чай 200 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:1.75, emoji:"🍵", tags:[] },
@@ -769,34 +784,36 @@ const MENU = {
         { id:"agua_gas_pell",   name:"Газована вода Pellegrino",       desc:"500 мл",                                                                                                           price:2.70, emoji:"💧", tags:[] },
         { id:"agua_sin",        name:"Вода без газу",                  desc:"500 мл",                                                                                                           price:1.80, emoji:"💧", tags:["healthy"] },
         { id:"aquarius",        name:"Aquarius",                       desc:"330 мл",                                                                                                           price:2.20, emoji:"🥤", tags:[] },
-        { id:"tonica",          name:"Тонік Schweppes",                desc:"330 мл",                                                                                                           price:2.20, emoji:"🥤", tags:[] },
+        { id:"tonica",          name:"Тонік Schweppes",                desc:"330 мл",                                                                                                           price:2.20, emoji:"🥤", image:"Assets/drinks/schweppes.png", modalImage:"Assets/drinks/schweppes.png", imageContain:true, tags:[] },
       ]},
       { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", groups:[
         { id:"croissant", name:"Круасан", emoji:"🥐", items:[
           { id:"croissant_mant",   name:"Круасан з маслом",         desc:"Ремісничий масляний круасан",                    price:1.80, emoji:"🥐", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie-pistachio.png", modalImage:"Assets/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
-          { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Червоний оксамит з Nutella",                     price:4.00, emoji:"🍪", image:"Assets/cookie-nutella.png", modalImage:"Assets/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
-          { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", image:"Assets/cookie-chocolate.png", modalImage:"Assets/cookie-cholate-modal.png", tags:[] },
+          { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Червоний оксамит з Nutella",                     price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
+          { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Макарон", emoji:"🩷", items:[
-          { id:"macaron",          name:"Макарон (мигдальне борошно)", desc:"Лимон · Лісові ягоди · Манго Матча · Ваніль & Червона смородина · Уточніть у персоналу смаки, доступні сьогодні", price:2.80, emoji:"🩷", image:"Assets/macaron.png", modalImage:"Assets/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron",          name:"Макарон (мигдальне борошно)",      desc:"Лимон · Лісові ягоди · Манго Матча · Ваніль & Червона смородина · Уточніть у персоналу смаки, доступні сьогодні",                     price:2.80, emoji:"🩷", image:"Assets/macaron/macaron.png", modalImage:"Assets/macaron/macaron.png", imageContain:true, tags:["popular"] },
+          { id:"macaron_box5",     name:"Коробка 5 макаронів",              desc:"Подарункова коробка з 5 макаронами на вибір · Ідеальний подарунок",                                                                     price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box16",    name:"Коробка 16 макаронів",             desc:"Подарункова коробка з 16 макаронами на вибір",                                                                                          price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
+          { id:"macaron_print",    name:"Коробка з персональним друком",    desc:"Індивідуальний дизайн на коробці · Доступно у форматі 5 або 16 · Уточніть у персоналу",                                               price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
         { id:"datil", name:"Фініки", emoji:"🍫", items:[
-          { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
+          { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date/date-pistachio.png", modalImage:"Assets/date/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Фінік з арахісом",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_avellana",   name:"Фінік з фундуком",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Фінік з волоським горіхом", desc:"Вкритий шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
-          { id:"datil_negro",      name:"Фінік у чорному шоколаді", desc:"Чорний шоколад без цукру",                      price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
+          { id:"datil_avellana",   name:"Фінік з фундуком",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date/date-avellana.png", modalImage:"Assets/date/date-avellana-modal.png", tags:[] },
+          { id:"datil_negro",      name:"Фінік у чорному шоколаді", desc:"Чорний шоколад без цукру",                      price:2.50, emoji:"🍫", image:"Assets/date/date-without-sugar.png", modalImage:"Assets/date/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
       { id:"packaged", name:"Кава в упаковці", emoji:"📦", items:[
-        { id:"pkg_milky_1kg",    name:"Milky Peak espresso",             desc:"1 кг",           price:37.00, emoji:"📦", tags:[] },
-        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 кг",           price:36.00, emoji:"📦", image:"Assets/blend-summer.png", modalImage:"Assets/blend-summer.png", imageContain:true, tags:[] },
-        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 г",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
-        { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 г",          price:18.00, emoji:"📦", tags:[] },
-        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 г",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
+
+        { id:"pkg_summer_1kg",   name:"Blend Summer",                    desc:"1 кг",           price:36.00, emoji:"📦", image:"Assets/coffee-products/blend-summer.png", modalImage:"Assets/coffee-products/blend-summer.png", imageContain:true, tags:[] },
+        { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 г",          price:15.00, emoji:"📦", image:"Assets/coffee-products/blend-berry-honey-filter.png", modalImage:"Assets/coffee-products/blend-berry-honey-filter.png", imageContain:true, tags:[] },
+
+        { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 г",          price:13.00, emoji:"📦", image:"Assets/coffee-products/Honduras-Caviflor-expresso.png", modalImage:"Assets/coffee-products/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
         { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
         { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
@@ -804,29 +821,31 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", tags:[] },
       ]},
       { id:"yogur", name:"Йогурт з гранолою", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Йогурт з гранолою",              desc:"Основа: натуральний або легкий йогурт · Гранола: шоколадна, ягідна або горіхова · Фруктове пюре: манго, банан або полуниця", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Йогурт з гранолою",              desc:"Основа: натуральний або легкий йогурт · Гранола: шоколадна, ягідна або горіхова · Фруктове пюре: манго, банан або полуниця", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Закуски", emoji:"🥗", items:[
-        { id:"es_salmon",        name:"Салат з лососем",                desc:"Свіжий салат з лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad-with-salmon.png", modalImage:"Assets/salad-with-salmon.png", tags:[] },
+        { id:"es_salmon",        name:"Салат з лососем",                desc:"Свіжий салат з лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
       ]},
       { id:"tostadas", name:"Тости", emoji:"🍞", groups:[
         { id:"toast_rustico", name:"Сільський хліб", emoji:"🍞", items:[
-          { id:"toast_rust_aceite",  name:"Сільський хліб з оливковою олією",           desc:"", price:2.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_jamon",   name:"Сільський хліб з шинкою і олією",            desc:"", price:3.00, emoji:"🍞", tags:[] },
-          { id:"toast_rust_mant",    name:"Сільський хліб з маслом і джемом",           desc:"", price:2.20, emoji:"🍞", tags:[] },
+          { id:"toast_rust_aceite",  name:"Сільський хліб з оливковою олією і томатом",  desc:"", price:2.40, emoji:"🍞", image:"Assets/tostados/bread-with-olive-oil.png", modalImage:"Assets/tostados/bread-with-tomatoes.png", tags:[] },
+          { id:"toast_rust_jamon",   name:"Сільський хліб з шинкою і олією",             desc:"", price:3.00, emoji:"🍞", image:"Assets/tostados/bread-with-tomatoe-and-avocado.png", modalImage:"Assets/tostados/bread-with-tomatoe-and-avocado.png", tags:[] },
+          { id:"toast_rust_mant",    name:"Сільський хліб з маслом і джемом",            desc:"", price:2.20, emoji:"🍞", image:"Assets/tostados/bread-with-jam.png", modalImage:"Assets/tostados/bread-with-jam.png", tags:[] },
+          { id:"toast_rust_aguacate", name:"Сільський хліб з авокадо",                   desc:"", price:3.00, emoji:"🍞", image:"Assets/tostados/bread-with-avocado.png", modalImage:"Assets/tostados/bread-with-avocado.png", tags:[] },
         ]},
         { id:"toast_semillas", name:"Хліб з насінням", emoji:"🌾", items:[
-          { id:"toast_sem_aceite",   name:"Хліб з насінням і оливковою олією",          desc:"", price:2.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_jamon",    name:"Хліб з насінням, шинкою і олією",            desc:"", price:3.30, emoji:"🌾", tags:[] },
-          { id:"toast_sem_mant",     name:"Хліб з насінням, маслом і джемом",           desc:"", price:2.50, emoji:"🌾", tags:[] },
+          { id:"toast_sem_aceite",   name:"Хліб з насінням і оливковою олією",              desc:"", price:2.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil.png", tags:[] },
+          { id:"toast_sem_jamon",    name:"Хліб з насінням, шинкою і олією",              desc:"", price:3.30, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-tomato-and-olive-oil.png", tags:[] },
+          { id:"toast_sem_mant",     name:"Хліб з насінням, маслом і джемом",             desc:"", price:2.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-jam-butter.png", modalImage:"Assets/tostados/seeds-bread-with-jam-butter.png", tags:[] },
+          { id:"toast_sem_aguacate", name:"Хліб з насінням, авокадо і олією",             desc:"", price:3.00, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", modalImage:"Assets/tostados/seeds-bread-with-olive-oil-and-avocado.png", tags:[] },
+          { id:"toast_sem_aguat",    name:"Хліб з насінням, авокадо, томатом і олією",   desc:"", price:3.50, emoji:"🌾", image:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", modalImage:"Assets/tostados/seeds-bread-with-avocado-and-tomato-and-olive-oil.png", tags:[] },
         ]},
       ]},
     ],
     specials:{ title:"Фаворити El Tres", subtitle:"Найпопулярніше у наших гостей", items:[
-      { id:"s1", name:"Кава з молоком + Круасан", desc:"Кава з молоком і масляний круасан",                             price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Лате + Макарон",           desc:"М'яке лате з макароном на вибір",                               price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Набір 4 макарони",         desc:"Оберіть 4 смаки з нашої колекції",                             price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Чай + Фінік",              desc:"Чорний або зелений чай з фініком у шоколаді",                   price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Макарон фісташка-малина, полуниця, манго-маракуйя", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Айс Матча з малиною",                               desc:"", emoji:"🍵" },
+      { id:"s3", name:"Капучіно",                                          desc:"", emoji:"🫧" },
     ]}
   },
 };
@@ -957,8 +976,7 @@ function tagLabel(t)  { return UI[currentLang].tags[t] || t; }
 function allItems() {
   const d = MENU[currentLang];
   return [
-    ...d.categories.flatMap(c => c.groups ? c.groups.flatMap(g=>g.items) : c.items),
-    ...d.specials.items
+    ...d.categories.flatMap(c => c.groups ? c.groups.flatMap(g=>g.items) : c.items)
   ];
 }
 
@@ -1048,12 +1066,12 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
       <div class="specials-sub">${sp.subtitle}</div>
       <div class="specials-scroll">
         ${sp.items.map(item=>`
-          <div class="special-card" onclick="openModal('${item.id}', this)">
+          <div class="special-card">
             <div class="special-card-img">${item.emoji}<span class="special-badge">${ui.specialsBadge}</span></div>
             <div class="special-card-body">
               <div class="card-name">${item.name}</div>
               <div class="card-desc">${item.desc}</div>
-              <span class="card-price">${fmt(item.price)}</span>
+              ${item.price != null ? `<span class="card-price">${fmt(item.price)}</span>` : ''}
             </div>
           </div>`).join("")}
       </div>

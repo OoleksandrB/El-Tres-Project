@@ -256,7 +256,8 @@
       transform:translateY(100%);
       transition:transform .38s cubic-bezier(.32,1.1,.6,1);
       will-change:transform;
-      overflow:hidden;
+      overflow-y:auto;
+      max-height:92vh;
     }
     .modal-overlay.open .modal {
       transform:translateY(0);
@@ -268,11 +269,13 @@
     }
     /* big emoji / image area */
     .modal-img {
-      width:100%; height:320px;
+      width:100%; height:300px;
       background:var(--brand-muted);
       display:flex; align-items:center; justify-content:center;
       font-size:80px;
       margin-top:12px;
+      overflow:hidden;
+      flex-shrink:0;
     }
     .modal-body { padding:20px 22px 0; }
     .modal-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
@@ -514,7 +517,6 @@ const MENU = {
           { id:"datil_pist",       name:"Dátil con pistacho",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Dátil con cacahuete",     desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_avellana",   name:"Dátil con avellana",      desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Dátil con nuez",          desc:"Cubierto de chocolate",                            price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_negro",      name:"Dátil chocolate negro",   desc:"En chocolate negro sin azúcar",                    price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
@@ -524,11 +526,11 @@ const MENU = {
         { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
         { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", tags:[] },
         { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
-        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
+        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-blend-h5.png", modalImage:"Assets/drip-blend-h5.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-costa-rica.png", modalImage:"Assets/drip-costa-rica.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-ethiopia.png", modalImage:"Assets/drip-ethiopia.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-guatemala.png", modalImage:"Assets/drip-guatemala.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-honduras.png", modalImage:"Assets/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Yogur con granola", emoji:"🥣", items:[
         { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
@@ -550,10 +552,9 @@ const MENU = {
       ]},
     ],
     specials:{ title:"Favoritos de El Tres", subtitle:"Lo más pedido por nuestros clientes", items:[
-      { id:"s1", name:"Café con leche + Croissant", desc:"Café con leche artesanal con croissant de mantequilla",        price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Latte + Macaron",            desc:"Latte suave con macaron de almendra a tu elección",            price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Caja de 4 Macarons",         desc:"Elige 4 sabores de nuestra selección artesanal",              price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Té + Dátil",                 desc:"Té negro o verde con dátil en chocolate a tu elección",        price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Macarons pistacho-frambuesa, fresa, mango-maracuyá", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Iced Matcha con frambuesa",                          desc:"", emoji:"🍵" },
+      { id:"s3", name:"Cappuccino",                                         desc:"", emoji:"🫧" },
     ]}
   },
   en: {
@@ -605,7 +606,6 @@ const MENU = {
           { id:"datil_pist",       name:"Date with pistachio",    desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Date with peanut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_avellana",   name:"Date with hazelnut",     desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Date with walnut",       desc:"Covered in chocolate",                              price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_negro",      name:"Dark chocolate date",    desc:"Sugar-free dark chocolate",                         price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
@@ -615,11 +615,11 @@ const MENU = {
         { id:"pkg_berry_250",    name:"Blend Berry Honey Filter",        desc:"250 g",          price:15.00, emoji:"📦", image:"Assets/blend-berry-honey-filter.png", modalImage:"Assets/blend-berry-honey-filter.png", imageContain:true, tags:[] },
         { id:"pkg_vanilla_250",  name:"Blend Vanilla Bloom Filter",      desc:"250 g",          price:18.00, emoji:"📦", tags:[] },
         { id:"pkg_honduras_250", name:"Honduras CAVIFLOR espresso",      desc:"250 g",          price:13.00, emoji:"📦", image:"Assets/Honduras-Caviflor-expresso.png", modalImage:"Assets/Honduras-Caviflor-expresso.png", imageContain:true, tags:[] },
-        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
-        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", tags:[] },
+        { id:"pkg_drip_h5",      name:"Drip Bags Blend H5 Filter",      desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-blend-h5.png", modalImage:"Assets/drip-blend-h5.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mango",   name:"Drip Bags Costa Rica El Mango",  desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-costa-rica.png", modalImage:"Assets/drip-costa-rica.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_uraga",   name:"Drip Bags Ethiopia Uraga",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-ethiopia.png", modalImage:"Assets/drip-ethiopia.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_guate",   name:"Drip Bags Guatemala Oriente",    desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-guatemala.png", modalImage:"Assets/drip-guatemala.png", imageContain:true, tags:[] },
+        { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/drip-honduras.png", modalImage:"Assets/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Yogurt with granola", emoji:"🥣", items:[
         { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
@@ -641,10 +641,9 @@ const MENU = {
       ]},
     ],
     specials:{ title:"El Tres Favourites", subtitle:"Most ordered by our customers", items:[
-      { id:"s1", name:"White coffee + Croissant", desc:"Coffee with milk and artisan butter croissant",                  price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Latte + Macaron",          desc:"Soft latte with almond macaron of your choice",                  price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Box of 4 Macarons",        desc:"Choose 4 flavours from our artisan selection",                  price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Tea + Date",               desc:"Black or green tea with chocolate date of your choice",          price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Macarons pistachio-raspberry, strawberry, mango-passionfruit", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Iced Matcha with raspberry",                                   desc:"", emoji:"🍵" },
+      { id:"s3", name:"Cappuccino",                                                   desc:"", emoji:"🫧" },
     ]}
   },
   ru: {
@@ -696,7 +695,6 @@ const MENU = {
           { id:"datil_pist",       name:"Финик с фисташкой",          desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Финик с арахисом",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_avellana",   name:"Финик с фундуком",           desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Финик с грецким орехом",     desc:"Покрыт шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_negro",      name:"Финик в чёрном шоколаде",   desc:"Чёрный шоколад без сахара",                   price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
@@ -732,10 +730,9 @@ const MENU = {
       ]},
     ],
     specials:{ title:"Фавориты El Tres", subtitle:"Самое популярное у наших гостей", items:[
-      { id:"s1", name:"Кофе с молоком + Круассан", desc:"Кофе с молоком и масляный круассан",                           price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Латте + Макарон",           desc:"Мягкое латте с макароном на выбор",                            price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Набор 4 макарона",          desc:"Выберите 4 вкуса из нашей коллекции",                         price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Чай + Финик",               desc:"Чёрный или зелёный чай с фиником в шоколаде",                 price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Макарон фисташка-малина, клубника, манго-маракуйя", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Айс Матча с малиной",                               desc:"", emoji:"🍵" },
+      { id:"s3", name:"Капучино",                                          desc:"", emoji:"🫧" },
     ]}
   },
   uk: {
@@ -787,7 +784,6 @@ const MENU = {
           { id:"datil_pist",       name:"Фінік з фісташкою",       desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date-pistachio.png", modalImage:"Assets/date-pistachio-modal.png", tags:[] },
           { id:"datil_cacahuete",  name:"Фінік з арахісом",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_avellana",   name:"Фінік з фундуком",        desc:"Вкритий шоколадом",                              price:2.50, emoji:"🍫", image:"Assets/date-avellana.png", modalImage:"Assets/date-avellana-modal.png", tags:[] },
-          { id:"datil_nuez",       name:"Фінік з волоським горіхом", desc:"Вкритий шоколадом",                            price:2.50, emoji:"🍫", tags:[] },
           { id:"datil_negro",      name:"Фінік у чорному шоколаді", desc:"Чорний шоколад без цукру",                      price:2.50, emoji:"🍫", image:"Assets/date-without-sugar.png", modalImage:"Assets/date-without-sugar-modal.png", tags:["healthy"] },
         ]},
       ]},
@@ -823,10 +819,9 @@ const MENU = {
       ]},
     ],
     specials:{ title:"Фаворити El Tres", subtitle:"Найпопулярніше у наших гостей", items:[
-      { id:"s1", name:"Кава з молоком + Круасан", desc:"Кава з молоком і масляний круасан",                             price:3.80, emoji:"🥐" },
-      { id:"s2", name:"Лате + Макарон",           desc:"М'яке лате з макароном на вибір",                               price:6.00, emoji:"🩷" },
-      { id:"s3", name:"Набір 4 макарони",         desc:"Оберіть 4 смаки з нашої колекції",                             price:10.00, emoji:"🎁" },
-      { id:"s4", name:"Чай + Фінік",              desc:"Чорний або зелений чай з фініком у шоколаді",                   price:4.00, emoji:"🍵" },
+      { id:"s1", name:"Макарон фісташка-малина, полуниця, манго-маракуйя", desc:"", emoji:"🩷" },
+      { id:"s2", name:"Айс Матча з малиною",                               desc:"", emoji:"🍵" },
+      { id:"s3", name:"Капучіно",                                          desc:"", emoji:"🫧" },
     ]}
   },
 };
@@ -957,8 +952,7 @@ function tagLabel(t)  { return UI[currentLang].tags[t] || t; }
 function allItems() {
   const d = MENU[currentLang];
   return [
-    ...d.categories.flatMap(c => c.groups ? c.groups.flatMap(g=>g.items) : c.items),
-    ...d.specials.items
+    ...d.categories.flatMap(c => c.groups ? c.groups.flatMap(g=>g.items) : c.items)
   ];
 }
 
@@ -1048,12 +1042,12 @@ document.getElementById("langFlag").textContent    = LANGS[currentLang].flag;
       <div class="specials-sub">${sp.subtitle}</div>
       <div class="specials-scroll">
         ${sp.items.map(item=>`
-          <div class="special-card" onclick="openModal('${item.id}', this)">
+          <div class="special-card">
             <div class="special-card-img">${item.emoji}<span class="special-badge">${ui.specialsBadge}</span></div>
             <div class="special-card-body">
               <div class="card-name">${item.name}</div>
               <div class="card-desc">${item.desc}</div>
-              <span class="card-price">${fmt(item.price)}</span>
+              ${item.price != null ? `<span class="card-price">${fmt(item.price)}</span>` : ''}
             </div>
           </div>`).join("")}
       </div>

@@ -282,6 +282,15 @@
     .modal-name { font-size:22px; font-weight:800; color:var(--text); line-height:1.2; }
     .modal-desc { font-size:14px; color:var(--text2); margin-top:8px; line-height:1.6; }
     .modal-price { font-size:26px; font-weight:800; color:var(--brand-dark); margin-top:14px; }
+    .modal-gallery { display:flex; gap:8px; overflow-x:auto; margin:14px -22px 0; padding:0 22px 2px; scrollbar-width:none; }
+    .modal-gallery::-webkit-scrollbar { display:none; }
+    .modal-gallery-thumb {
+      flex:0 0 90px; height:90px; border-radius:12px; overflow:hidden;
+      border:2px solid var(--border); background:#fff; cursor:pointer;
+      transition:border-color .15s, transform .1s;
+    }
+    .modal-gallery-thumb:hover { border-color:var(--brand); transform:scale(1.03); }
+    .modal-gallery-thumb img { width:100%; height:100%; object-fit:contain; display:block; }
 
     /* quantity row */
     .modal-qty-row {
@@ -411,13 +420,23 @@
 
     /* ─── CHECKOUT ─── */
     .order-type-btn {
-      flex:1; padding:10px 6px; border-radius:14px; border:2px solid var(--border);
-      background:var(--bg2); font-size:12px; font-weight:600; cursor:pointer;
-      transition:border-color .15s, background .15s; text-align:center; line-height:1.4;
+      flex:1; padding:12px 6px 10px; border-radius:16px; border:2px solid var(--border);
+      background:var(--bg2); font-size:11px; font-weight:600; cursor:pointer;
+      transition:border-color .15s, background .15s, transform .1s;
+      text-align:center; line-height:1.5;
+      display:flex; flex-direction:column; align-items:center; gap:4px;
     }
-    .order-type-btn.active { border-color:var(--brand); background:var(--brand-muted); color:var(--brand-dark); }
-    .order-type-btn.disabled { opacity:.5; pointer-events:none; position:relative; }
-    .order-type-btn .soon-badge { display:inline-block; background:var(--brand); color:#fff; font-size:9px; padding:1px 6px; border-radius:6px; margin-left:4px; vertical-align:middle; font-weight:700; letter-spacing:.5px; }
+    .order-type-btn .btn-icon { font-size:22px; line-height:1; }
+    .order-type-btn.active {
+      border-color:var(--brand); background:var(--brand-muted); color:var(--brand-dark);
+      transform:translateY(-1px); box-shadow:0 4px 12px var(--shadow);
+    }
+    .order-type-btn.disabled { opacity:.45; pointer-events:none; }
+    .order-type-btn .soon-badge {
+      display:inline-block; background:var(--brand); color:#fff;
+      font-size:9px; padding:1px 6px; border-radius:6px;
+      font-weight:700; letter-spacing:.5px; margin-top:2px;
+    }
     .checkout-field { margin-bottom:14px; }
     .checkout-field label { display:block; font-size:12px; color:var(--text2); margin-bottom:4px; font-weight:600; }
     .checkout-input {
@@ -444,6 +463,35 @@
     }
     .addr-suggestion:last-child { border-bottom:none; }
     .addr-suggestion:hover { background:var(--brand-muted); }
+    .checkout-summary {
+      margin:14px 22px 0; padding:12px 14px;
+      background:var(--brand-muted); border-radius:16px;
+      border:1.5px solid var(--border);
+    }
+    .checkout-summary-row { display:flex; align-items:center; justify-content:space-between; }
+    .checkout-summary-label { font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.6px; }
+    .checkout-summary-items { font-size:12px; color:var(--text2); margin-top:4px; line-height:1.6; }
+    .checkout-summary-total { font-size:18px; font-weight:800; color:var(--brand-dark); }
+    .checkout-divider { height:1px; background:var(--border); margin:14px 22px 0; }
+    .checkout-datetime-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .checkout-send-btn {
+      margin:16px 22px 22px; width:calc(100% - 44px);
+      padding:16px; border-radius:16px; border:none;
+      background:linear-gradient(135deg, var(--brand-dark), var(--brand));
+      color:#fff; font-size:16px; font-weight:700; cursor:pointer;
+      transition:opacity .15s, transform .1s; display:flex;
+      align-items:center; justify-content:center; gap:8px;
+      box-shadow:0 4px 16px var(--shadow); letter-spacing:.2px;
+    }
+    .checkout-send-btn:active { transform:scale(.98); opacity:.9; }
+    .checkout-textarea {
+      width:100%; padding:10px 14px; border-radius:12px;
+      border:1.5px solid var(--border); font-size:14px; font-family:inherit;
+      background:var(--bg); color:var(--text); outline:none; resize:none;
+      transition:border-color .2s; -webkit-appearance:none; appearance:none; line-height:1.5;
+    }
+    .checkout-textarea:focus { border-color:var(--brand-dark); }
+    .checkout-char-count { font-size:11px; color:var(--text2); text-align:right; margin-top:3px; }
   </style>
 </head>
 <body>
@@ -462,17 +510,17 @@ const LANGS = {
   uk: { label:"Українська", flag:"🇺🇦" },
 };
 const UI = {
-  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Nuestro horario puede variar.", weekend:"Consulta Google Maps para información actualizada", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", searchPlaceholder:"Buscar...", searchEmpty:"No hay resultados", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"}, soldOut:"Agotado", orderType:"Elige el tipo de pedido", pickup:"Recoger en cafetería", delivery:"Envío a domicilio", tableOrder:"Pedir en mesa", yourName:"Tu nombre", yourPhone:"Tu teléfono", pickupTime:"Hora de recogida", address2:"Dirección de entrega", tableNum:"Mesa", tableSelect:"¿Qué mesa?", send:"Enviar pedido por WhatsApp", soon:"PRONTO" },
-  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Our hours may vary.", weekend:"Check Google Maps for up-to-date information", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", searchPlaceholder:"Search...", searchEmpty:"No results found", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"}, soldOut:"Sold out", orderType:"Choose order type", pickup:"Pick up at café", delivery:"Home delivery", tableOrder:"Order at table", yourName:"Your name", yourPhone:"Your phone", pickupTime:"Pickup time", address2:"Delivery address", tableNum:"Table", tableSelect:"Which table?", send:"Send order via WhatsApp", soon:"SOON" },
-  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Часы работы могут меняться.", weekend:"Актуальное расписание — на Google Maps", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", searchPlaceholder:"Поиск...", searchEmpty:"Ничего не найдено", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"}, soldOut:"Нет в наличии", orderType:"Выберите тип заказа", pickup:"Самовывоз", delivery:"Доставка", tableOrder:"Заказ за столик", yourName:"Ваше имя", yourPhone:"Ваш телефон", pickupTime:"Время самовывоза", address2:"Адрес доставки", tableNum:"Стол", tableSelect:"Какой столик?", send:"Отправить заказ в WhatsApp", soon:"СКОРО" },
-  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Години роботи можуть змінюватись.", weekend:"Актуальний розклад — на Google Maps", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", searchPlaceholder:"Пошук...", searchEmpty:"Нічого не знайдено", tags:{popular:"Популярне",vegetarian:"Вегетаріанське",healthy:"Корисне",seasonal:"Сезонне"}, soldOut:"Немає в наявності", orderType:"Оберіть тип замовлення", pickup:"Самовивіз", delivery:"Доставка", tableOrder:"Замовлення за столик", yourName:"Ваше ім'я", yourPhone:"Ваш телефон", pickupTime:"Час самовивозу", address2:"Адреса доставки", tableNum:"Стіл", tableSelect:"Який столик?", send:"Надіслати замовлення у WhatsApp", soon:"СКОРО" },
+  es: { tagline:"Café artesanal en el corazón de la ciudad", about:"Sobre Nosotros", address:"Dirección", hours:"Horario", contact:"Contacto", weekdays:"Nuestro horario puede variar.", weekend:"Consulta Google Maps para información actualizada", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Especial", addToCart:"Agregar al pedido", cartTitle:"Mi Pedido", orderBtn:"Confirmar pedido", emptyCart:"Tu pedido está vacío", total:"Total", searchPlaceholder:"Buscar...", searchEmpty:"No hay resultados", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Sano",seasonal:"Temporada"}, soldOut:"Agotado", orderType:"Elige el tipo de pedido", pickup:"Recoger en cafetería", delivery:"Envío a domicilio", tableOrder:"Pedir en mesa", yourName:"Tu nombre", yourPhone:"Tu teléfono", pickupTime:"Hora de recogida", address2:"Dirección de entrega", tableNum:"Mesa", tableSelect:"¿Qué mesa?", send:"Enviar pedido por WhatsApp", soon:"PRONTO", pickupDate:"Fecha de recogida", orderSummary:"Tu pedido", notes:"Notas (opcional)", notesPlaceholder:"Alergias, preferencias..." },
+  en: { tagline:"Artisan cafe in the heart of the city",    about:"About Us",        address:"Address",   hours:"Hours",   contact:"Contact",  weekdays:"Our hours may vary.", weekend:"Check Google Maps for up-to-date information", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Special",  addToCart:"Add to order",       cartTitle:"My Order",   orderBtn:"Confirm order",    emptyCart:"Your order is empty", total:"Total", searchPlaceholder:"Search...", searchEmpty:"No results found", tags:{popular:"Popular",vegetarian:"Veggie",healthy:"Healthy",seasonal:"Seasonal"}, soldOut:"Sold out", orderType:"Choose order type", pickup:"Pick up at café", delivery:"Home delivery", tableOrder:"Order at table", yourName:"Your name", yourPhone:"Your phone", pickupTime:"Pickup time", address2:"Delivery address", tableNum:"Table", tableSelect:"Which table?", send:"Send order via WhatsApp", soon:"SOON", pickupDate:"Pickup date", orderSummary:"Your order", notes:"Notes (optional)", notesPlaceholder:"Allergies, preferences..." },
+  ru: { tagline:"Авторское кафе в сердце города",           about:"О нас",           address:"Адрес",     hours:"Часы работы", contact:"Контакты", weekdays:"Часы работы могут меняться.", weekend:"Актуальное расписание — на Google Maps", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпред.", addToCart:"Добавить в заказ",   cartTitle:"Мой заказ",  orderBtn:"Оформить заказ",   emptyCart:"Заказ пустой",        total:"Итого", searchPlaceholder:"Поиск...", searchEmpty:"Ничего не найдено", tags:{popular:"Популярное",vegetarian:"Вегетарианское",healthy:"Полезное",seasonal:"Сезонное"}, soldOut:"Нет в наличии", orderType:"Выберите тип заказа", pickup:"Самовывоз", delivery:"Доставка", tableOrder:"Заказ за столик", yourName:"Ваше имя", yourPhone:"Ваш телефон", pickupTime:"Время самовывоза", address2:"Адрес доставки", tableNum:"Стол", tableSelect:"Какой столик?", send:"Отправить заказ в WhatsApp", soon:"СКОРО", pickupDate:"Дата самовывоза", orderSummary:"Ваш заказ", notes:"Примечания (необязательно)", notesPlaceholder:"Аллергии, пожелания..." },
+  uk: { tagline:"Авторське кафе в серці міста",             about:"Про нас",         address:"Адреса",    hours:"Години роботи", contact:"Контакти", weekdays:"Години роботи можуть змінюватись.", weekend:"Актуальний розклад — на Google Maps", addressText:"Av. Bruselas, 12, 03540 Alicante", specialsBadge:"Спецпроп.", addToCart:"Додати до замовлення",cartTitle:"Моє замовлення",orderBtn:"Підтвердити замовлення",emptyCart:"Замовлення порожнє",total:"Разом", searchPlaceholder:"Пошук...", searchEmpty:"Нічого не знайдено", tags:{popular:"Популярне",vegetarian:"Вегетаріанське",healthy:"Корисне",seasonal:"Сезонне"}, soldOut:"Немає в наявності", orderType:"Оберіть тип замовлення", pickup:"Самовивіз", delivery:"Доставка", tableOrder:"Замовлення за столик", yourName:"Ваше ім'я", yourPhone:"Ваш телефон", pickupTime:"Час самовивозу", address2:"Адреса доставки", tableNum:"Стіл", tableSelect:"Який столик?", send:"Надіслати замовлення у WhatsApp", soon:"СКОРО", pickupDate:"Дата самовивозу", orderSummary:"Ваше замовлення", notes:"Примітки (необов'язково)", notesPlaceholder:"Алергії, побажання..." },
 };
 const MENU = {
   es: {
     categories: [
       { id:"coffee", name:"Café Specialty", emoji:"☕", items:[
         { id:"espresso",   name:"Espresso",      desc:"Solo intenso",                                                    price:1.50, emoji:"☕", image:"Assets/espresso.png", modalImage:"Assets/espresso.png", tags:["popular"] },
-        { id:"doble",      name:"Doble",          desc:"Espresso doble",                                                  price:2.20, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
+        { id:"doble",      name:"Doble",          desc:"Espresso doble",                                                  price:2.40, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
         { id:"latte",      name:"Café con leche", desc:"Espresso con leche vaporizada",                                   price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Cortado",        desc:"Espresso con un toque de leche",                                  price:2.30, emoji:"🍶", image:"Assets/cortado.png", modalImage:"Assets/cortado.png", tags:[] },
         { id:"americano",  name:"Americano",      desc:"Espresso alargado con agua caliente",                             price:2.20, emoji:"🖤", image:"Assets/americano.png", modalImage:"Assets/americano.png", tags:[] },
@@ -480,14 +528,14 @@ const MENU = {
         { id:"cappuccino", name:"Cappuccino",     desc:"Espresso con leche vaporizada y espuma cremosa",                  price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Latte",          desc:"Espresso con leche vaporizada suave",                             price:2.80, emoji:"🥛", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"ice_latte",    name:"Ice Latte",      desc:"Espresso con leche fría y hielo",                                 price:3.50, emoji:"🧊", image:"Assets/ice-latte.png", modalImage:"Assets/ice-latte.png", tags:[] },
-        { id:"matcha_latte", name:"Matcha Latte",  desc:"Matcha japonés con leche vaporizada",                              price:3.80, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
-        { id:"iced_matcha",  name:"Iced Matcha",   desc:"Base: leche entera, sin lactosa, coco, avena o almendra · Sabor: mango, fresa o frambuesa", price:4.50, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
+        { id:"matcha_latte", name:"Matcha Latte",  desc:"Matcha japonés con leche vaporizada",                              price:4.00, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
+        { id:"iced_matcha",  name:"Iced Matcha",   desc:"Base: leche entera, sin lactosa, coco, avena o almendra · Sabor: mango, fresa o frambuesa", price:5.00, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
         { id:"cacao",        name:"Cacao",          desc:"Cacao artesanal con leche",                                       price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Tés", emoji:"🍵", items:[
-        { id:"te_negro_s",  name:"Té negro 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:1.75, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
+        { id:"te_negro_s",  name:"Té negro 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:2.00, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
         { id:"te_negro_l",  name:"Té negro 500 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                     price:4.00, emoji:"🍵", image:"Assets/tea-500-ml.png", modalImage:"Assets/tea-500-ml.png", tags:[] },
-        { id:"te_verde_s",  name:"Té verde 200 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:1.75, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
+        { id:"te_verde_s",  name:"Té verde 200 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:2.00, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
         { id:"te_verde_l",  name:"Té verde 500 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                        price:4.00, emoji:"🌿", image:"Assets/green-tea-500-ml.png", modalImage:"Assets/green-tea-500-ml.png", tags:[] },
       ]},
       { id:"cold", name:"Bebidas", emoji:"🥤", items:[
@@ -504,10 +552,11 @@ const MENU = {
       ]},
       { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", groups:[
         { id:"macaron_group", name:"Macaron", emoji:"🩷", items:[
-          { id:"macaron",             name:"Macaron (harina de almendra)",        desc:"Limón · Frutos Rojos · Mango Matcha · Vainilla & Grosella Roja · Variedad de sabores — pregunta a nuestro personal por los disponibles hoy", price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Caja de 5 macarons",                 desc:"Caja regalo con 5 macarons a elegir · Ideal para regalar",                                                                                    price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
+          { id:"macaron",             name:"Macaron (harina de almendra)",        desc:"Limón · Frutos Rojos · Mango Matcha · Vainilla & Grosella Roja · Variedad de sabores — pregunta a nuestro personal por los disponibles hoy", price:2.80, emoji:"🩷", image:"Assets/macarons main.png", modalImage:"Assets/macarons main.png", tags:["popular"] },
+          { id:"macaron_box5",        name:"Caja de 5 macarons",                 desc:"Caja regalo con 5 macarons a elegir · Ideal para regalar",                                                                                    price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", imageCover:true, tags:[] },
           { id:"macaron_box18",       name:"Caja de 18 macarons",                desc:"Caja de 18 macarons. Los sabores pueden personalizarse bajo pedido con un mínimo de 3 días de antelación, o bien puede prepararse una selección variada con los sabores disponibles en el momento.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
-          { id:"macaron_box18_custom", name:"Caja de 16 macarons personalizados", desc:"Caja de 16 macarons personalizados. Los sabores pueden personalizarse a su gusto y, además, es posible añadir cualquier diseño o imagen según su preferencia. Pedido con un mínimo de 3 días de antelación.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-maracon-classic.png", modalImage:"Assets/macaron/big-box-maracon-classic.png", tags:[] },
+          { id:"macaron_box18_custom", name:"Caja de 16 macarons personalizados", desc:"Caja de 16 macarons personalizados. Los sabores pueden personalizarse a su gusto y, además, es posible añadir cualquier diseño o imagen según su preferencia. Pedido con un mínimo de 3 días de antelación.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", gallery:["Assets/macaron/big-box-maracon-classic.png"], tags:[] },
+          { id:"macaron_print", name:"Nuestros trabajos", desc:"Macarons personalizados hechos por encargo — una muestra de nuestros trabajos", emoji:"🖨️", image:"Assets/macaron-client-XB.png", modalImage:"Assets/macaron-client-XB.png", gallery:["Assets/macaron-client-67.png","Assets/macaron-client-XB.png","Assets/macaron-face-2.png","Assets/macarcon-face1.png","Assets/clinet-maracon.png"], tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
           { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
@@ -568,7 +617,7 @@ const MENU = {
     categories: [
       { id:"coffee", name:"Specialty Coffee", emoji:"☕", items:[
         { id:"espresso",   name:"Espresso",      desc:"Intense solo",                                                     price:1.50, emoji:"☕", image:"Assets/espresso.png", modalImage:"Assets/espresso.png", tags:["popular"] },
-        { id:"doble",      name:"Double",         desc:"Double espresso",                                                  price:2.20, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
+        { id:"doble",      name:"Double",         desc:"Double espresso",                                                  price:2.40, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
         { id:"latte",      name:"White coffee",   desc:"Espresso with steamed milk",                                       price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Cortado",        desc:"Espresso with a dash of milk",                                     price:2.30, emoji:"🍶", image:"Assets/cortado.png", modalImage:"Assets/cortado.png", tags:[] },
         { id:"americano",  name:"Americano",      desc:"Espresso with hot water",                                          price:2.20, emoji:"🖤", image:"Assets/americano.png", modalImage:"Assets/americano.png", tags:[] },
@@ -576,14 +625,14 @@ const MENU = {
         { id:"cappuccino", name:"Cappuccino",     desc:"Espresso with steamed milk and creamy foam",                       price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Latte",          desc:"Espresso with soft steamed milk",                                  price:2.80, emoji:"🥛", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"ice_latte",    name:"Ice Latte",      desc:"Espresso with cold milk and ice",                                  price:3.50, emoji:"🧊", image:"Assets/ice-latte.png", modalImage:"Assets/ice-latte.png", tags:[] },
-        { id:"matcha_latte", name:"Matcha Latte",  desc:"Japanese matcha with steamed milk",                                 price:3.80, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
-        { id:"iced_matcha",  name:"Iced Matcha",   desc:"Base: whole milk, lactose-free, coconut, oat or almond · Flavour: mango, strawberry or raspberry", price:4.50, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
+        { id:"matcha_latte", name:"Matcha Latte",  desc:"Japanese matcha with steamed milk",                                 price:4.00, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
+        { id:"iced_matcha",  name:"Iced Matcha",   desc:"Base: whole milk, lactose-free, coconut, oat or almond · Flavour: mango, strawberry or raspberry", price:5.00, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
         { id:"cacao",        name:"Cacao",          desc:"Artisan cacao with milk",                                          price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Teas", emoji:"🍵", items:[
-        { id:"te_negro_s",  name:"Black tea 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                    price:1.75, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
+        { id:"te_negro_s",  name:"Black tea 200 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                    price:2.00, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
         { id:"te_negro_l",  name:"Black tea 500 ml",  desc:"Ceylon Highlands · Earl Grey · Paradise",                    price:4.00, emoji:"🍵", image:"Assets/tea-500-ml.png", modalImage:"Assets/tea-500-ml.png", tags:[] },
-        { id:"te_verde_s",  name:"Green tea 200 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                       price:1.75, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
+        { id:"te_verde_s",  name:"Green tea 200 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                       price:2.00, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
         { id:"te_verde_l",  name:"Green tea 500 ml",  desc:"Milk Oolong · Sancha Jasmin · Sancha",                       price:4.00, emoji:"🌿", image:"Assets/green-tea-500-ml.png", modalImage:"Assets/green-tea-500-ml.png", tags:[] },
       ]},
       { id:"cold", name:"Drinks", emoji:"🥤", items:[
@@ -600,10 +649,11 @@ const MENU = {
       ]},
       { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", groups:[
         { id:"macaron_group", name:"Macaron", emoji:"🩷", items:[
-          { id:"macaron",             name:"Macaron (almond flour)",          desc:"Lemon · Red Berries · Mango Matcha · Vanilla & Red Currant · Ask our staff for today's available flavours",                                  price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Box of 5 macarons",               desc:"Gift box with 5 macarons of your choice · Perfect as a gift",                                                                                price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
+          { id:"macaron",             name:"Macaron (almond flour)",          desc:"Lemon · Red Berries · Mango Matcha · Vanilla & Red Currant · Ask our staff for today's available flavours",                                  price:2.80, emoji:"🩷", image:"Assets/macarons main.png", modalImage:"Assets/macarons main.png", tags:["popular"] },
+          { id:"macaron_box5",        name:"Box of 5 macarons",               desc:"Gift box with 5 macarons of your choice · Perfect as a gift",                                                                                price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", imageCover:true, tags:[] },
           { id:"macaron_box18",       name:"Box of 18 macarons",              desc:"Box of 18 macarons. Flavours can be customised to order with a minimum of 3 days' notice, or a varied selection of the available flavours can be prepared.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
-          { id:"macaron_box18_custom", name:"Box of 16 custom macarons",      desc:"Box of 16 custom macarons. Flavours can be personalised to your taste and any design or image can be added as desired. Order with a minimum of 3 days' notice.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-maracon-classic.png", modalImage:"Assets/macaron/big-box-maracon-classic.png", tags:[] },
+          { id:"macaron_box18_custom", name:"Box of 16 custom macarons",      desc:"Box of 16 custom macarons. Flavours can be personalised to your taste and any design or image can be added as desired. Order with a minimum of 3 days' notice.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", gallery:["Assets/macaron/big-box-maracon-classic.png"], tags:[] },
+          { id:"macaron_print", name:"Our works", desc:"Custom macarons made to order — a showcase of our work", emoji:"🖨️", image:"Assets/macaron-client-XB.png", modalImage:"Assets/macaron-client-XB.png", gallery:["Assets/macaron-client-67.png","Assets/macaron-client-XB.png","Assets/macaron-face-2.png","Assets/macarcon-face1.png","Assets/clinet-maracon.png"], tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
           { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
@@ -664,7 +714,7 @@ const MENU = {
     categories: [
       { id:"coffee", name:"Specialty кофе", emoji:"☕", items:[
         { id:"espresso",   name:"Эспрессо",       desc:"Интенсивный соло",                                               price:1.50, emoji:"☕", image:"Assets/espresso.png", modalImage:"Assets/espresso.png", tags:["popular"] },
-        { id:"doble",      name:"Двойной",         desc:"Двойной эспрессо",                                               price:2.20, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
+        { id:"doble",      name:"Двойной",         desc:"Двойной эспрессо",                                               price:2.40, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
         { id:"latte",      name:"Кофе с молоком",  desc:"Эспрессо с вспененным молоком",                                  price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Кортадо",         desc:"Эспрессо с каплей молока",                                       price:2.30, emoji:"🍶", image:"Assets/cortado.png", modalImage:"Assets/cortado.png", tags:[] },
         { id:"americano",  name:"Американо",       desc:"Эспрессо с горячей водой",                                       price:2.20, emoji:"🖤", image:"Assets/americano.png", modalImage:"Assets/americano.png", tags:[] },
@@ -672,14 +722,14 @@ const MENU = {
         { id:"cappuccino", name:"Капучино",        desc:"Эспрессо с молоком и кремовой пенкой",                           price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Латте",           desc:"Эспрессо с мягким вспененным молоком",                           price:2.80, emoji:"🥛", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"ice_latte",    name:"Айс Латте",       desc:"Эспрессо с холодным молоком и льдом",                            price:3.50, emoji:"🧊", image:"Assets/ice-latte.png", modalImage:"Assets/ice-latte.png", tags:[] },
-        { id:"matcha_latte", name:"Матча Латте",    desc:"Японская матча с вспененным молоком",                              price:3.80, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
-        { id:"iced_matcha",  name:"Айс Матча",     desc:"Основа: цельное молоко, без лактозы, кокос, овёс или миндаль · Вкус: манго, клубника или малина", price:4.50, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
+        { id:"matcha_latte", name:"Матча Латте",    desc:"Японская матча с вспененным молоком",                              price:4.00, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
+        { id:"iced_matcha",  name:"Айс Матча",     desc:"Основа: цельное молоко, без лактозы, кокос, овёс или миндаль · Вкус: манго, клубника или малина", price:5.00, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
         { id:"cacao",        name:"Какао",           desc:"Авторское какао с молоком",                                       price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Чаи", emoji:"🍵", items:[
-        { id:"te_negro_s",  name:"Чёрный чай 200 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:1.75, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
+        { id:"te_negro_s",  name:"Чёрный чай 200 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:2.00, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
         { id:"te_negro_l",  name:"Чёрный чай 500 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:4.00, emoji:"🍵", image:"Assets/tea-500-ml.png", modalImage:"Assets/tea-500-ml.png", tags:[] },
-        { id:"te_verde_s",  name:"Зелёный чай 200 мл", desc:"Milk Oolong · Sancha Jasmin · Sancha",                     price:1.75, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
+        { id:"te_verde_s",  name:"Зелёный чай 200 мл", desc:"Milk Oolong · Sancha Jasmin · Sancha",                     price:2.00, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
         { id:"te_verde_l",  name:"Зелёный чай 500 мл", desc:"Milk Oolong · Sancha Jasmin · Sancha",                     price:4.00, emoji:"🌿", image:"Assets/green-tea-500-ml.png", modalImage:"Assets/green-tea-500-ml.png", tags:[] },
       ]},
       { id:"cold", name:"Напитки", emoji:"🥤", items:[
@@ -696,10 +746,11 @@ const MENU = {
       ]},
       { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", groups:[
         { id:"macaron_group", name:"Макарон", emoji:"🩷", items:[
-          { id:"macaron",             name:"Макарон (миндальная мука)",           desc:"Лимон · Лесные ягоды · Манго Матча · Ваниль & Красная смородина · Уточните у персонала вкусы, доступные сегодня",                      price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Коробка 5 макарон",                  desc:"Подарочная коробка с 5 макаронами на выбор · Идеальный подарок",                                                                         price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
+          { id:"macaron",             name:"Макарон (миндальная мука)",           desc:"Лимон · Лесные ягоды · Манго Матча · Ваниль & Красная смородина · Уточните у персонала вкусы, доступные сегодня",                      price:2.80, emoji:"🩷", image:"Assets/macarons main.png", modalImage:"Assets/macarons main.png", tags:["popular"] },
+          { id:"macaron_box5",        name:"Коробка 5 макарон",                  desc:"Подарочная коробка с 5 макаронами на выбор · Идеальный подарок",                                                                         price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", imageCover:true, tags:[] },
           { id:"macaron_box18",       name:"Коробка 18 макарон",                 desc:"Коробка из 18 макарон. Вкусы можно заказать по желанию с минимальным уведомлением за 3 дня, или мы подберём ассортимент из вкусов, доступных на данный момент.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
-          { id:"macaron_box18_custom", name:"Коробка 16 персональных макарон",   desc:"Коробка из 16 персональных макарон. Вкусы можно подобрать по желанию, а также добавить любой дизайн или изображение. Заказ с минимальным уведомлением за 3 дня.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-maracon-classic.png", modalImage:"Assets/macaron/big-box-maracon-classic.png", tags:[] },
+          { id:"macaron_box18_custom", name:"Коробка 16 персональных макарон",   desc:"Коробка из 16 персональных макарон. Вкусы можно подобрать по желанию, а также добавить любой дизайн или изображение. Заказ с минимальным уведомлением за 3 дня.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", gallery:["Assets/macaron/big-box-maracon-classic.png"], tags:[] },
+          { id:"macaron_print", name:"Наши работы", desc:"Макароны на заказ — примеры наших работ", emoji:"🖨️", image:"Assets/macaron-client-XB.png", modalImage:"Assets/macaron-client-XB.png", gallery:["Assets/macaron-client-67.png","Assets/macaron-client-XB.png","Assets/macaron-face-2.png","Assets/macarcon-face1.png","Assets/clinet-maracon.png"], tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
           { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
@@ -760,7 +811,7 @@ const MENU = {
     categories: [
       { id:"coffee", name:"Specialty кава", emoji:"☕", items:[
         { id:"espresso",   name:"Еспресо",        desc:"Інтенсивний соло",                                               price:1.50, emoji:"☕", image:"Assets/espresso.png", modalImage:"Assets/espresso.png", tags:["popular"] },
-        { id:"doble",      name:"Подвійний",       desc:"Подвійний еспресо",                                              price:2.20, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
+        { id:"doble",      name:"Подвійний",       desc:"Подвійний еспресо",                                              price:2.40, emoji:"☕", image:"Assets/double-espresso.png", modalImage:"Assets/double-espresso.png", tags:[] },
         { id:"latte",      name:"Кава з молоком",  desc:"Еспресо зі спіненим молоком",                                    price:2.80, emoji:"🥛", image:"Assets/coffee-con-leche.png", modalImage:"Assets/coffee-con-leche.png", tags:["popular"] },
         { id:"cortado",    name:"Кортадо",         desc:"Еспресо з краплею молока",                                       price:2.30, emoji:"🍶", image:"Assets/cortado.png", modalImage:"Assets/cortado.png", tags:[] },
         { id:"americano",  name:"Американо",       desc:"Еспресо з гарячою водою",                                        price:2.20, emoji:"🖤", image:"Assets/americano.png", modalImage:"Assets/americano.png", tags:[] },
@@ -768,14 +819,14 @@ const MENU = {
         { id:"cappuccino", name:"Капучіно",        desc:"Еспресо з молоком і кремовою пінкою",                            price:3.50, emoji:"🫧", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"cafe_latte", name:"Лате",            desc:"Еспресо з м'яким спіненим молоком",                              price:2.80, emoji:"🥛", image:"Assets/cappuccino.png", modalImage:"Assets/cappuccino.png", tags:[] },
         { id:"ice_latte",    name:"Айс Лате",        desc:"Еспресо з холодним молоком і льодом",                            price:3.50, emoji:"🧊", image:"Assets/ice-latte.png", modalImage:"Assets/ice-latte.png", tags:[] },
-        { id:"matcha_latte", name:"Матча Лате",     desc:"Японська матча з спіненим молоком",                                price:3.80, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
-        { id:"iced_matcha",  name:"Айс Матча",     desc:"Основа: ціле молоко, без лактози, кокос, овес або мигдаль · Смак: манго, полуниця або малина", price:4.50, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
+        { id:"matcha_latte", name:"Матча Лате",     desc:"Японська матча з спіненим молоком",                                price:4.00, emoji:"🍵", image:"Assets/matcha-latte.png", modalImage:"Assets/matcha-latte.png", tags:["healthy"] },
+        { id:"iced_matcha",  name:"Айс Матча",     desc:"Основа: ціле молоко, без лактози, кокос, овес або мигдаль · Смак: манго, полуниця або малина", price:5.00, emoji:"🧊", image:"Assets/ice-matcha.png", modalImage:"Assets/ice-matcha.png", tags:["healthy"] },
         { id:"cacao",        name:"Какао",           desc:"Авторське какао з молоком",                                       price:2.50, emoji:"🍫", image:"Assets/cacao.png", modalImage:"Assets/cacao.png", tags:[] },
       ]},
       { id:"tea", name:"Чаї", emoji:"🍵", items:[
-        { id:"te_negro_s",  name:"Чорний чай 200 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:1.75, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
+        { id:"te_negro_s",  name:"Чорний чай 200 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:2.00, emoji:"🍵", image:"Assets/tea-200-ml.png", modalImage:"Assets/tea-200-ml.png", tags:[] },
         { id:"te_negro_l",  name:"Чорний чай 500 мл", desc:"Ceylon Highlands · Earl Grey · Paradise",                   price:4.00, emoji:"🍵", image:"Assets/tea-500-ml.png", modalImage:"Assets/tea-500-ml.png", tags:[] },
-        { id:"te_verde_s",  name:"Зелений чай 200 мл", desc:"Milk Oolong · Sancha Jasmin · Sancha",                     price:1.75, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
+        { id:"te_verde_s",  name:"Зелений чай 200 мл", desc:"Milk Oolong · Sancha Jasmin · Sancha",                     price:2.00, emoji:"🌿", image:"Assets/green-tea-200-ml.png", modalImage:"Assets/green-tea-200-ml.png", tags:[] },
         { id:"te_verde_l",  name:"Зелений чай 500 мл", desc:"Milk Oolong · Sancha Jasmin · Sancha",                     price:4.00, emoji:"🌿", image:"Assets/green-tea-500-ml.png", modalImage:"Assets/green-tea-500-ml.png", tags:[] },
       ]},
       { id:"cold", name:"Напої", emoji:"🥤", items:[
@@ -792,10 +843,11 @@ const MENU = {
       ]},
       { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", groups:[
         { id:"macaron_group", name:"Макарон", emoji:"🩷", items:[
-          { id:"macaron",             name:"Макарон (мигдальне борошно)",         desc:"Лимон · Лісові ягоди · Манго Матча · Ваніль & Червона смородина · Уточніть у персоналу смаки, доступні сьогодні",                     price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Коробка 5 макаронів",                 desc:"Подарункова коробка з 5 макаронами на вибір · Ідеальний подарунок",                                                                     price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
+          { id:"macaron",             name:"Макарон (мигдальне борошно)",         desc:"Лимон · Лісові ягоди · Манго Матча · Ваніль & Червона смородина · Уточніть у персоналу смаки, доступні сьогодні",                     price:2.80, emoji:"🩷", image:"Assets/macarons main.png", modalImage:"Assets/macarons main.png", tags:["popular"] },
+          { id:"macaron_box5",        name:"Коробка 5 макаронів",                 desc:"Подарункова коробка з 5 макаронами на вибір · Ідеальний подарунок",                                                                     price:14.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", imageCover:true, tags:[] },
           { id:"macaron_box18",       name:"Коробка 18 макаронів",                desc:"Коробка з 18 макаронів. Смаки можна замовити за бажанням з мінімальним попередженням за 3 дні, або ми підберемо асортимент зі смаків, доступних на даний момент.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
-          { id:"macaron_box18_custom", name:"Коробка 16 персональних макаронів",  desc:"Коробка з 16 персональних макаронів. Смаки можна підібрати за бажанням, а також додати будь-який дизайн або зображення. Замовлення з мінімальним попередженням за 3 дні.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-maracon-classic.png", modalImage:"Assets/macaron/big-box-maracon-classic.png", tags:[] },
+          { id:"macaron_box18_custom", name:"Коробка 16 персональних макаронів",  desc:"Коробка з 16 персональних макаронів. Смаки можна підібрати за бажанням, а також додати будь-який дизайн або зображення. Замовлення з мінімальним попередженням за 3 дні.", price:60.00, emoji:"🎨", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", gallery:["Assets/macaron/big-box-maracon-classic.png"], tags:[] },
+          { id:"macaron_print", name:"Наші роботи", desc:"Макарони на замовлення — приклади наших робіт", emoji:"🖨️", image:"Assets/macaron-client-67.png", modalImage:"Assets/macaron-client-67.png", gallery:["Assets/macaron-client-67.png","Assets/macaron-client-XB.png","Assets/macaron-face-2.png","Assets/macarcon-face1.png","Assets/clinet-maracon.png"], tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
           { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
@@ -902,12 +954,13 @@ const MENU = {
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal">
     <div class="modal-handle"></div>
-    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-img" id="modalImg" onclick="_closeModal()"></div>
     <div class="modal-body">
       <div class="modal-tags" id="modalTags"></div>
       <div class="modal-name" id="modalName"></div>
       <div class="modal-desc" id="modalDesc"></div>
       <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-gallery" id="modalGallery" style="display:none"></div>
       <div class="modal-qty-row">
         <button class="qty-btn" onclick="changeQty(-1)">−</button>
         <span class="qty-num" id="modalQty">1</span>
@@ -945,16 +998,24 @@ const MENU = {
       <span id="checkoutTitle"></span>
       <button class="cart-close" onclick="closeCheckout()">✕</button>
     </div>
-    <div id="orderTypeSection" style="padding:12px 22px 0">
-      <div id="orderTypeLabel" style="font-size:13px;color:var(--text2);margin-bottom:8px"></div>
+    <div id="checkoutSummary" class="checkout-summary" style="display:none">
+      <div class="checkout-summary-row">
+        <span class="checkout-summary-label" id="checkoutSummaryLabel"></span>
+        <span class="checkout-summary-total" id="checkoutSummaryTotal"></span>
+      </div>
+      <div class="checkout-summary-items" id="checkoutSummaryItems"></div>
+    </div>
+    <div id="orderTypeSection" style="padding:14px 22px 0">
+      <div id="orderTypeLabel" style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px"></div>
       <div style="display:flex;gap:8px" id="orderTypeBtns">
         <button class="order-type-btn" data-type="pickup"   onclick="selectOrderType('pickup')"></button>
         <button class="order-type-btn" data-type="delivery" onclick="selectOrderType('delivery')"></button>
         <button class="order-type-btn" data-type="table"    onclick="selectOrderType('table')"></button>
       </div>
     </div>
+    <div class="checkout-divider" id="checkoutDivider" style="display:none"></div>
     <div id="checkoutFields" style="padding:12px 22px 0"></div>
-    <button class="cart-order-btn" id="checkoutSendBtn" onclick="submitOrder()"></button>
+    <button class="checkout-send-btn" id="checkoutSendBtn" onclick="submitOrder()" disabled style="opacity:.45;cursor:default;pointer-events:none"></button>
   </div>
 </div>
 
@@ -975,6 +1036,11 @@ let modalQtyVal = 1;
 
 /* ─── helpers ─── */
 function fmt(price) { return price.toFixed(2).replace(".",",") + " €"; }
+function formatPickupDate(iso) {
+  if (!iso) return "";
+  const [,m,d] = iso.split("-");
+  return `${d}/${m}`;
+}
 function tagClass(t) { return t==="popular"?"tag-popular":t==="vegetarian"?"tag-veg":t==="healthy"?"tag-healthy":"tag-seasonal"; }
 function tagLabel(t)  { return UI[currentLang].tags[t] || t; }
 function allItems() {
@@ -987,12 +1053,12 @@ function allItems() {
 /* ─── card html ─── */
 function renderCard(item) {
   return `<div class="card${item.soldOut ? ' sold-out' : ''}" onclick="openModal('${item.id}', this)">
-    <div class="card-img" style="position:relative;background:#fff">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy" style="object-fit:contain">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
+    <div class="card-img" style="position:relative;background:${item.imageCover ? 'transparent' : '#fff'}">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy" style="object-fit:${item.imageCover ? 'cover' : 'contain'}">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
     <div class="card-body">
       <div class="card-name">${item.name}</div>
       <div class="card-desc">${item.desc}</div>
       <div class="card-footer">
-        <span class="card-price">${fmt(item.price)}</span>
+        ${item.price != null ? `<span class="card-price">${fmt(item.price)}</span>` : ''}
         <div class="card-tags">${item.tags.slice(0,2).map(t=>`<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`).join("")}</div>
       </div>
     </div>
@@ -1232,16 +1298,35 @@ function openModal(itemId, triggerEl) {
   }
   document.getElementById("modalName").textContent     = item.name;
   document.getElementById("modalDesc").textContent     = item.desc;
-  document.getElementById("modalPrice").textContent    = fmt(item.price);
+  const priceEl = document.getElementById("modalPrice");
+  priceEl.textContent = item.price != null ? fmt(item.price) : "";
+  priceEl.style.display = item.price != null ? "" : "none";
+  document.getElementById("modalAddBtn").style.display = item.price != null ? "" : "none";
   document.getElementById("modalQty").textContent      = "1";
   document.getElementById("addBtnLabel").textContent   = UI[currentLang].addToCart;
   document.getElementById("modalTags").innerHTML = (item.tags||[]).map(t=>
     `<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`).join("");
 
+  const galleryEl = document.getElementById("modalGallery");
+  if (item.gallery && item.gallery.length) {
+    galleryEl.style.display = "";
+    galleryEl.innerHTML = item.gallery.map(src =>
+      `<div class="modal-gallery-thumb" onclick="swapModalImage('${src}')"><img src="${src}" loading="lazy"></div>`
+    ).join("");
+  } else {
+    galleryEl.style.display = "none";
+    galleryEl.innerHTML = "";
+  }
+
   document.getElementById("modalOverlay").classList.add("open");
   document.body.style.overflow = "hidden";
 }
 
+function swapModalImage(src) {
+  const el = document.getElementById("modalImg");
+  el.innerHTML = `<img src="${src}" alt="" style="width:100%;height:100%;object-fit:contain;display:block;">`;
+  el.style.background = '#fff';
+}
 function closeModal(e) {
   if (e && e.target !== document.getElementById("modalOverlay")) return;
   _closeModal();
@@ -1381,7 +1466,7 @@ function closeCheckoutEvent(e) {
   if (e.target === document.getElementById("checkoutOverlay")) closeCheckout();
 }
 function selectOrderType(type) {
-  if (type === 'delivery') return;
+  if (type === 'delivery' || type === 'table' || type === 'pickup') return;
   orderType = type;
   selectedTable = null;
   document.querySelectorAll(".order-type-btn").forEach(b =>
@@ -1395,16 +1480,31 @@ function selectTable(n) {
 }
 function renderCheckout() {
   const ui = UI[currentLang];
-  document.getElementById("checkoutTitle").textContent    = ui.cartTitle;
-  document.getElementById("orderTypeLabel").textContent   = ui.orderType;
-  document.getElementById("checkoutSendBtn").textContent  = ui.send;
+  document.getElementById("checkoutTitle").textContent  = ui.cartTitle;
+  document.getElementById("orderTypeLabel").textContent = ui.orderType;
+  document.getElementById("checkoutSendBtn").innerHTML  = "📲 " + ui.send;
   document.getElementById("orderTypeSection").style.display = tableNumber ? "none" : "";
+
+  const summaryEl = document.getElementById("checkoutSummary");
+  document.getElementById("checkoutSummaryLabel").textContent = ui.orderSummary;
+  if (cart.length > 0) {
+    const total = cart.reduce((s,c) => s + c.item.price * c.qty, 0);
+    document.getElementById("checkoutSummaryItems").innerHTML =
+      cart.map(c => `${c.qty}× ${c.item.name}`).join("&nbsp; · &nbsp;");
+    document.getElementById("checkoutSummaryTotal").textContent = fmt(total);
+    summaryEl.style.display = "";
+  } else {
+    summaryEl.style.display = "none";
+  }
+
   const btns = document.getElementById("orderTypeBtns").children;
-  btns[0].textContent = "🥡 " + ui.pickup;
-  btns[1].innerHTML = "🛵 " + ui.delivery + ' <span class="soon-badge">' + ui.soon + '</span>';
-  btns[1].classList.add("disabled");
-  btns[1].disabled = true;
-  btns[2].textContent = "🪑 " + ui.tableOrder;
+  btns[0].innerHTML = `<span class="btn-icon">🥡</span>${ui.pickup}<br><span class="soon-badge">${ui.soon}</span>`;
+  btns[0].classList.add("disabled"); btns[0].disabled = true;
+  btns[1].innerHTML = `<span class="btn-icon">🛵</span>${ui.delivery}<br><span class="soon-badge">${ui.soon}</span>`;
+  btns[1].classList.add("disabled"); btns[1].disabled = true;
+  btns[2].innerHTML = `<span class="btn-icon">🪑</span>${ui.tableOrder}<br><span class="soon-badge">${ui.soon}</span>`;
+  btns[2].classList.add("disabled"); btns[2].disabled = true;
+
   document.querySelectorAll(".order-type-btn").forEach(b =>
     b.classList.toggle("active", tableNumber ? b.dataset.type === "table" : false));
   renderCheckoutFields();
@@ -1412,7 +1512,9 @@ function renderCheckout() {
 function renderCheckoutFields() {
   const ui = UI[currentLang];
   const el = document.getElementById("checkoutFields");
+  const divider = document.getElementById("checkoutDivider");
   if (orderType === "table") {
+    divider.style.display = "";
     if (tableNumber) {
       el.innerHTML = `<div class="checkout-field"><label>${ui.tableNum}</label><div style="font-size:24px;font-weight:800;color:var(--brand-dark);margin-top:2px">#${tableNumber}</div></div>`;
     } else {
@@ -1420,16 +1522,23 @@ function renderCheckoutFields() {
     }
     return;
   }
-  if (!orderType) { el.innerHTML = ""; return; }
+  if (!orderType) { el.innerHTML = ""; divider.style.display = "none"; return; }
+  divider.style.display = "";
+  const todayVal = new Date().toISOString().split("T")[0];
   let html = `
     <div class="checkout-field"><label>${ui.yourName} *</label><input class="checkout-input" id="co-name" type="text" autocomplete="given-name"></div>
     <div class="checkout-field"><label>${ui.yourPhone} *</label><input class="checkout-input" id="co-phone" type="tel" autocomplete="tel"></div>`;
   if (orderType === "pickup") {
-    html += `<div class="checkout-field"><label>${ui.pickupTime}</label><input class="checkout-input" id="co-time" type="time" min="09:00" max="18:00"></div>`;
+    html += `<div class="checkout-field"><label>${ui.pickupDate}</label><div class="checkout-datetime-row"><input class="checkout-input" id="co-date" type="date" min="${todayVal}"><input class="checkout-input" id="co-time" type="time" min="09:00" max="18:00"></div></div>`;
   } else if (orderType === "delivery") {
     html += `<div class="checkout-field"><label>${ui.address2} *</label><div style="position:relative" id="addr-wrap"><input class="checkout-input" id="co-address" type="text" autocomplete="off" oninput="onAddressInput(this.value)" onblur="hideAddrSuggestions()" placeholder="Calle, número, piso..."><div class="addr-suggestions" id="addr-suggestions" style="display:none"></div></div></div>`;
   }
+  html += `<div class="checkout-field"><label>${ui.notes}</label><textarea class="checkout-textarea" id="co-notes" rows="2" maxlength="200" placeholder="${ui.notesPlaceholder}" oninput="updateCharCount(this)"></textarea><div class="checkout-char-count" id="co-notes-count">0 / 200</div></div>`;
   el.innerHTML = html;
+}
+function updateCharCount(textarea) {
+  const el = document.getElementById("co-notes-count");
+  if (el) el.textContent = textarea.value.length + " / 200";
 }
 function submitOrder() {
   const ui = UI[currentLang];
@@ -1454,13 +1563,18 @@ function submitOrder() {
   } else if (orderType === "pickup") {
     const name  = document.getElementById("co-name").value.trim();
     const phone = document.getElementById("co-phone").value.trim();
+    const date  = document.getElementById("co-date")?.value || "";
     const time  = document.getElementById("co-time")?.value || "";
-    header = `🥡 ${ui.pickup}\n👤 ${name}\n📞 ${phone}${time?"\n🕐 "+time:""}`;
+    const notes = document.getElementById("co-notes")?.value.trim() || "";
+    header = `🥡 ${ui.pickup}\n👤 ${name}\n📞 ${phone}${date?"\n📅 "+formatPickupDate(date):""}${time?"\n🕐 "+time:""}`;
+    if (notes) header += `\n📝 ${notes}`;
   } else if (orderType === "delivery") {
     const name  = document.getElementById("co-name").value.trim();
     const phone = document.getElementById("co-phone").value.trim();
     const addr  = document.getElementById("co-address").value.trim();
+    const notes = document.getElementById("co-notes")?.value.trim() || "";
     header = `🛵 ${ui.delivery}\n👤 ${name}\n📞 ${phone}\n📍 ${addr}`;
+    if (notes) header += `\n📝 ${notes}`;
   }
   const message = `📋 El Tres — Nuevo pedido\n\n${header}\n\n${items}\n\n💰 Total: ${fmt(total)}`;
   cart = []; updateCartUI(); closeCheckout();

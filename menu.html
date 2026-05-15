@@ -191,7 +191,7 @@
       display:flex; align-items:center; justify-content:center; font-size:52px;
       overflow:hidden;
     }
-    .card-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    .card-img img { width:100%; height:100%; display:block; }
     .card-body { padding:10px 11px 12px; }
     .card-name { font-size:13px; font-weight:700; color:var(--text); line-height:1.4; }
     .card-desc { font-size:11px; color:var(--text3); margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.5; }
@@ -503,18 +503,18 @@ const MENU = {
       ]},
       { id:"pastry", name:"Bollería & Dulces", emoji:"🥐", groups:[
         { id:"croissant", name:"Croissant", emoji:"🥐", items:[
-          { id:"croissant_mant",   name:"Croissant mantequilla",   desc:"Croissant de mantequilla artesanal",               price:1.80, emoji:"🥐", tags:[] },
+          { id:"croissant_mant",   name:"Croissant mantequilla",   desc:"Croissant de mantequilla artesanal",               price:1.80, emoji:"🥐", image:"Assets/croassaint.png", modalImage:"Assets/croassaint.png", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_pist",      name:"Cookie Pistacho",         desc:"Cookie artesanal gourmet con azúcar muscovado",    price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
           { id:"cookie_rv",        name:"Cookie Red Velvet",       desc:"Red Velvet con Nutella, azúcar muscovado",         price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
           { id:"cookie_choco",     name:"Cookie Chocolate",        desc:"Chocolate con Nutella y avellana, azúcar muscovado", price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Macaron", emoji:"🩷", items:[
           { id:"macaron",             name:"Macaron (harina de almendra)",        desc:"Limón · Frutos Rojos · Mango Matcha · Vainilla & Grosella Roja · Variedad de sabores — pregunta a nuestro personal por los disponibles hoy", price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Caja de 5 macarons",                 desc:"Caja regalo con 5 macarons a elegir · Ideal para regalar",                                                                                    price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box5",        name:"Caja de 5 macarons",                 desc:"Caja regalo con 5 macarons a elegir · Ideal para regalar",                                                                                    price:12.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
           { id:"macaron_box16",       name:"Caja de 16 macarons",                desc:"Caja regalo con 16 macarons a elegir",                                                                                                        price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
-          { id:"macaron_box18",       name:"Caja de 18 macarons",                desc:"Caja de 18 macarons. Los sabores pueden personalizarse bajo pedido con un mínimo de 3 días de antelación, o bien puede prepararse una selección variada con los sabores disponibles en el momento.", price:55.00, emoji:"🎁", tags:[] },
+          { id:"macaron_box18",       name:"Caja de 18 macarons",                desc:"Caja de 18 macarons. Los sabores pueden personalizarse bajo pedido con un mínimo de 3 días de antelación, o bien puede prepararse una selección variada con los sabores disponibles en el momento.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
           { id:"macaron_box18_custom", name:"Caja de 16 macarons personalizados", desc:"Caja de 16 macarons personalizados. Los sabores pueden personalizarse a su gusto y, además, es posible añadir cualquier diseño o imagen según su preferencia. Pedido con un mínimo de 3 días de antelación.", price:60.00, emoji:"🎨", tags:[] },
           { id:"macaron_print",       name:"Caja con impresión personalizada",   desc:"Diseño personalizado impreso en la caja · Disponible en caja de 5 o 16 · Consulta con nuestro personal",                               price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
@@ -538,7 +538,7 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-honduras.png", modalImage:"Assets/coffee-products/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Yogur con granola", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Yogur con granola",              desc:"Base: yogur natural o yogur ligero · Granola: chocolate, bayas o frutos secos · Puré de fruta: mango, banana o fresa", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Salado", emoji:"🥗", items:[
         { id:"es_salmon",        name:"Ensalada con salmón",           desc:"Ensalada fresca con salmón",                                                                                   price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
@@ -603,18 +603,18 @@ const MENU = {
       ]},
       { id:"pastry", name:"Pastry & Sweets", emoji:"🥐", groups:[
         { id:"croissant", name:"Croissant", emoji:"🥐", items:[
-          { id:"croissant_mant",   name:"Butter croissant",       desc:"Artisan butter croissant",                         price:1.80, emoji:"🥐", tags:[] },
+          { id:"croissant_mant",   name:"Butter croissant",       desc:"Artisan butter croissant",                         price:1.80, emoji:"🥐", image:"Assets/croassaint.png", modalImage:"Assets/croassaint.png", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_pist",      name:"Pistachio cookie",       desc:"Gourmet artisan cookie with muscovado sugar",       price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
           { id:"cookie_rv",        name:"Red Velvet cookie",      desc:"Red Velvet with Nutella, muscovado sugar",          price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
           { id:"cookie_choco",     name:"Chocolate cookie",       desc:"Chocolate with Nutella and hazelnut",               price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Macaron", emoji:"🩷", items:[
           { id:"macaron",             name:"Macaron (almond flour)",          desc:"Lemon · Red Berries · Mango Matcha · Vanilla & Red Currant · Ask our staff for today's available flavours",                                  price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Box of 5 macarons",               desc:"Gift box with 5 macarons of your choice · Perfect as a gift",                                                                                price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box5",        name:"Box of 5 macarons",               desc:"Gift box with 5 macarons of your choice · Perfect as a gift",                                                                                price:12.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
           { id:"macaron_box16",       name:"Box of 16 macarons",              desc:"Gift box with 16 macarons of your choice",                                                                                                   price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
-          { id:"macaron_box18",       name:"Box of 18 macarons",              desc:"Box of 18 macarons. Flavours can be customised to order with a minimum of 3 days' notice, or a varied selection of the available flavours can be prepared.", price:55.00, emoji:"🎁", tags:[] },
+          { id:"macaron_box18",       name:"Box of 18 macarons",              desc:"Box of 18 macarons. Flavours can be customised to order with a minimum of 3 days' notice, or a varied selection of the available flavours can be prepared.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
           { id:"macaron_box18_custom", name:"Box of 16 custom macarons",      desc:"Box of 16 custom macarons. Flavours can be personalised to your taste and any design or image can be added as desired. Order with a minimum of 3 days' notice.", price:60.00, emoji:"🎨", tags:[] },
           { id:"macaron_print",       name:"Box with custom print",           desc:"Custom design printed on the box · Available in box of 5 or 16 · Ask our staff",                                                            price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
@@ -638,7 +638,7 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 pcs / 12 g",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-honduras.png", modalImage:"Assets/coffee-products/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Yogurt with granola", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Yogurt with granola",            desc:"Base: natural yogurt or light yogurt · Granola: chocolate, berries or nuts · Fruit purée: mango, banana or strawberry", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Savoury", emoji:"🥗", items:[
         { id:"es_salmon",        name:"Salmon salad",                   desc:"Fresh salad with salmon",                                                                                              price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
@@ -703,18 +703,18 @@ const MENU = {
       ]},
       { id:"pastry", name:"Выпечка & Сладкое", emoji:"🥐", groups:[
         { id:"croissant", name:"Круассан", emoji:"🥐", items:[
-          { id:"croissant_mant",   name:"Круассан с маслом",           desc:"Ремесленный масляный круассан",               price:1.80, emoji:"🥐", tags:[] },
+          { id:"croissant_mant",   name:"Круассан с маслом",           desc:"Ремесленный масляный круассан",               price:1.80, emoji:"🥐", image:"Assets/croassaint.png", modalImage:"Assets/croassaint.png", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_pist",      name:"Cookie Фисташка",             desc:"Гурме-печенье с сахаром мусковадо",           price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
           { id:"cookie_rv",        name:"Cookie Red Velvet",           desc:"Красный бархат с Nutella",                    price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
           { id:"cookie_choco",     name:"Cookie Шоколад",              desc:"Шоколад с Nutella и фундуком",                price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Макарон", emoji:"🩷", items:[
           { id:"macaron",             name:"Макарон (миндальная мука)",           desc:"Лимон · Лесные ягоды · Манго Матча · Ваниль & Красная смородина · Уточните у персонала вкусы, доступные сегодня",                      price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Коробка 5 макарон",                  desc:"Подарочная коробка с 5 макаронами на выбор · Идеальный подарок",                                                                         price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box5",        name:"Коробка 5 макарон",                  desc:"Подарочная коробка с 5 макаронами на выбор · Идеальный подарок",                                                                         price:12.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
           { id:"macaron_box16",       name:"Коробка 16 макарон",                 desc:"Подарочная коробка с 16 макаронами на выбор",                                                                                            price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
-          { id:"macaron_box18",       name:"Коробка 18 макарон",                 desc:"Коробка из 18 макарон. Вкусы можно заказать по желанию с минимальным уведомлением за 3 дня, или мы подберём ассортимент из вкусов, доступных на данный момент.", price:55.00, emoji:"🎁", tags:[] },
+          { id:"macaron_box18",       name:"Коробка 18 макарон",                 desc:"Коробка из 18 макарон. Вкусы можно заказать по желанию с минимальным уведомлением за 3 дня, или мы подберём ассортимент из вкусов, доступных на данный момент.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
           { id:"macaron_box18_custom", name:"Коробка 16 персональных макарон",   desc:"Коробка из 16 персональных макарон. Вкусы можно подобрать по желанию, а также добавить любой дизайн или изображение. Заказ с минимальным уведомлением за 3 дня.", price:60.00, emoji:"🎨", tags:[] },
           { id:"macaron_print",       name:"Коробка с персональной печатью",     desc:"Индивидуальный дизайн на коробке · Доступно в формате 5 или 16 · Уточните у персонала",                                                 price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
@@ -738,7 +738,7 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-honduras.png", modalImage:"Assets/coffee-products/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Йогурт с гранолой", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Йогурт с гранолой",              desc:"Основа: натуральный или лёгкий йогурт · Гранола: шоколадная, ягодная или из орехов · Фруктовое пюре: манго, банан или клубника", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Йогурт с гранолой",              desc:"Основа: натуральный или лёгкий йогурт · Гранола: шоколадная, ягодная или из орехов · Фруктовое пюре: манго, банан или клубника", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Закуски", emoji:"🥗", items:[
         { id:"es_salmon",        name:"Салат с лососем",                desc:"Свежий салат с лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
@@ -803,18 +803,18 @@ const MENU = {
       ]},
       { id:"pastry", name:"Випічка & Солодощі", emoji:"🥐", groups:[
         { id:"croissant", name:"Круасан", emoji:"🥐", items:[
-          { id:"croissant_mant",   name:"Круасан з маслом",         desc:"Ремісничий масляний круасан",                    price:1.80, emoji:"🥐", tags:[] },
+          { id:"croissant_mant",   name:"Круасан з маслом",         desc:"Ремісничий масляний круасан",                    price:1.80, emoji:"🥐", image:"Assets/croassaint.png", modalImage:"Assets/croassaint.png", tags:[] },
         ]},
         { id:"cookie", name:"Cookie", emoji:"🍪", items:[
-          { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", modalImagePosition:"center 25%", tags:["popular"] },
+          { id:"cookie_pist",      name:"Cookie Фісташка",          desc:"Гурме-печиво з цукром мусковадо",                price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-pistachio.png", modalImage:"Assets/cookie/cookie-pistachio-part.png", tags:["popular"] },
           { id:"cookie_rv",        name:"Cookie Red Velvet",        desc:"Червоний оксамит з Nutella",                     price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-nutella.png", modalImage:"Assets/cookie/Chocolate-con-nutella-y-avellana-part.png", tags:[] },
           { id:"cookie_choco",     name:"Cookie Шоколад",           desc:"Шоколад з Nutella і фундуком",                   price:4.00, emoji:"🍪", image:"Assets/cookie/cookie-chocolate.png", modalImage:"Assets/cookie/cookie-cholate-modal.png", tags:[] },
         ]},
         { id:"macaron", name:"Макарон", emoji:"🩷", items:[
           { id:"macaron",             name:"Макарон (мигдальне борошно)",         desc:"Лимон · Лісові ягоди · Манго Матча · Ваніль & Червона смородина · Уточніть у персоналу смаки, доступні сьогодні",                     price:2.80, emoji:"🩷", image:"Assets/macaron/macarons.png", modalImage:"Assets/macaron/macarons.png", tags:["popular"] },
-          { id:"macaron_box5",        name:"Коробка 5 макаронів",                 desc:"Подарункова коробка з 5 макаронами на вибір · Ідеальний подарунок",                                                                     price:12.00, emoji:"🎁", image:"Assets/macaron/small-box-with-print.png", modalImage:"Assets/macaron/small-box-with-print.png", tags:[] },
+          { id:"macaron_box5",        name:"Коробка 5 макаронів",                 desc:"Подарункова коробка з 5 макаронами на вибір · Ідеальний подарунок",                                                                     price:12.00, emoji:"🎁", image:"Assets/pack-5.png", modalImage:"Assets/pack-5.png", tags:[] },
           { id:"macaron_box16",       name:"Коробка 16 макаронів",                desc:"Подарункова коробка з 16 макаронами на вибір",                                                                                          price:35.00, emoji:"🎁", image:"Assets/macaron/big-box-macaron.png", modalImage:"Assets/macaron/big-box-macaron.png", tags:[] },
-          { id:"macaron_box18",       name:"Коробка 18 макаронів",                desc:"Коробка з 18 макаронів. Смаки можна замовити за бажанням з мінімальним попередженням за 3 дні, або ми підберемо асортимент зі смаків, доступних на даний момент.", price:55.00, emoji:"🎁", tags:[] },
+          { id:"macaron_box18",       name:"Коробка 18 макаронів",                desc:"Коробка з 18 макаронів. Смаки можна замовити за бажанням з мінімальним попередженням за 3 дні, або ми підберемо асортимент зі смаків, доступних на даний момент.", price:55.00, emoji:"🎁", image:"Assets/pack-18.png", modalImage:"Assets/pack-18.png", tags:[] },
           { id:"macaron_box18_custom", name:"Коробка 16 персональних макаронів",  desc:"Коробка з 16 персональних макаронів. Смаки можна підібрати за бажанням, а також додати будь-який дизайн або зображення. Замовлення з мінімальним попередженням за 3 дні.", price:60.00, emoji:"🎨", tags:[] },
           { id:"macaron_print",       name:"Коробка з персональним друком",       desc:"Індивідуальний дизайн на коробці · Доступно у форматі 5 або 16 · Уточніть у персоналу",                                               price:40.00, emoji:"🖨️", image:"Assets/macaron/big-box-with-print.png", modalImage:"Assets/macaron/big-box-with-print.png", tags:[] },
         ]},
@@ -838,7 +838,7 @@ const MENU = {
         { id:"pkg_drip_mario",   name:"Drip Bags Honduras Mario",       desc:"7 шт. / 12 г",   price:15.00, emoji:"📦", image:"Assets/coffee-products/drip-honduras.png", modalImage:"Assets/coffee-products/drip-honduras.png", imageContain:true, tags:[] },
       ]},
       { id:"yogur", name:"Йогурт з гранолою", emoji:"🥣", items:[
-        { id:"yogur_granola",    name:"Йогурт з гранолою",              desc:"Основа: натуральний або легкий йогурт · Гранола: шоколадна, ягідна або горіхова · Фруктове пюре: манго, банан або полуниця", price:4.00, emoji:"🥣", image:"Assets/yogurt/yogurt.png", modalImage:"Assets/yogurt/yogurt.png", tags:["healthy"] },
+        { id:"yogur_granola",    name:"Йогурт з гранолою",              desc:"Основа: натуральний або легкий йогурт · Гранола: шоколадна, ягідна або горіхова · Фруктове пюре: манго, банан або полуниця", price:4.00, emoji:"🥣", image:"Assets/yogurt.png", modalImage:"Assets/yogurt.png", tags:["healthy"] },
       ]},
       { id:"salado", name:"Закуски", emoji:"🥗", items:[
         { id:"es_salmon",        name:"Салат з лососем",                desc:"Свіжий салат з лососем",                                                                                           price:9.00, emoji:"🥗", image:"Assets/salad/salad-with-salmon.png", modalImage:"Assets/salad/salad-with-salmon.png", tags:[] },
@@ -1003,7 +1003,7 @@ function allItems() {
 /* ─── card html ─── */
 function renderCard(item) {
   return `<div class="card${item.soldOut ? ' sold-out' : ''}" onclick="openModal('${item.id}', this)">
-    <div class="card-img" style="position:relative${item.imageContain ? ';background:#fff' : ''}">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy"${item.imageContain ? ' style="object-fit:contain"' : ''}>` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
+    <div class="card-img" style="position:relative;background:#fff">${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy" style="object-fit:contain">` : item.emoji}${item.soldOut ? `<span class="sold-out-badge">${UI[currentLang].soldOut}</span>` : ''}</div>
     <div class="card-body">
       <div class="card-name">${item.name}</div>
       <div class="card-desc">${item.desc}</div>
@@ -1237,10 +1237,11 @@ function openModal(itemId, triggerEl) {
 
   const modalImgEl = document.getElementById("modalImg");
   const modalSrc = item.modalImage || item.image;
-  const modalPos = item.modalImagePosition || "center bottom";
+  const modalPos = item.modalImagePosition || "center center";
+  const useCover = item.modalImageCover === true;
   if (modalSrc) {
-    modalImgEl.style.background = item.imageContain ? '#fff' : '';
-    modalImgEl.innerHTML = `<img src="${modalSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:${item.imageContain ? 'contain' : 'cover'};object-position:${modalPos};display:block;">`;
+    modalImgEl.style.background = useCover ? '' : '#fff';
+    modalImgEl.innerHTML = `<img src="${modalSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:${useCover ? 'cover' : 'contain'};object-position:${modalPos};display:block;">`;
   } else {
     modalImgEl.style.background = '';
     modalImgEl.textContent = item.emoji;
